@@ -111,6 +111,15 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
     @Scheduled(fixedRate = 10 * 1000)
     public void sendPeriodicMessages()throws IOException{
     	List<CryptoCurrency> cryptoCurrencies = cryptoDaoMysql.findAllCryptos();
+    	for(WebSocketSession session : sessions) {
+    		if(session.isOpen()) {
+    			JsonObject cryptoObject = new JsonObject();
+    			cryptoObject.addProperty(Prop.TYPE.getName(),"cryptos");
+    			cryptoObject.add(Prop.CONTENT.getName(), gson.toJsonTree(cryptoCurrencies));
+    			logger.info("Server sends: {}", cryptoObject);
+				session.sendMessage(new TextMessage(gson.toJson(cryptoObject)));
+    		}
+    	}
     }
 
     
