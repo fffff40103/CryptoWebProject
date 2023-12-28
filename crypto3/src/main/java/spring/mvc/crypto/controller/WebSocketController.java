@@ -25,11 +25,9 @@ public class WebSocketController {
 		MyWebSocketHandler myWebSocketHandler;
 	    
 		
-		@RequestMapping("/websocket")
+		@RequestMapping("/send")
 	    @ResponseBody
-	    public String handleWebSocketMessage(@RequestParam("message") String message, WebSocketSession session) {
-			// 處理WebSocket訊息
-	        String response = "WebSocket Message: " + message;
+	    public String handleWebSocketMessage() {
 	        
 	     // 主動發送消息到指定目的地
 	       
@@ -40,7 +38,7 @@ public class WebSocketController {
 				e.printStackTrace();
 			}
 	        
-	        return response;
+	        return "Ok";
 	       
 		}
 		

@@ -128,6 +128,8 @@
             <mvc:exclude-mapping path="/crypto/login"/>
             <mvc:exclude-mapping path="/crypto/market"/>
             <mvc:exclude-mapping path="/crypto/register"/>
+            <mvc:exclude-mapping path="/crypto/send"/>
+            <mvc:exclude-mapping path="/crypto/getCryptoInfo"/>
             
             <!-- 
             <mvc:exclude-mapping path="/group_buy/login_backend"/>

@@ -18,9 +18,14 @@ import spring.mvc.crypto.handler.MyWebSocketHandler;
 public class WebSocketConfig implements WebSocketConfigurer {
 	
 	
+	@Autowired
+	private MyWebSocketHandler myWebSocketHandler;
 	
 	@Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(new MyWebSocketHandler(), "/websocket").setAllowedOrigins("*");
+        //這段程式碼表示webSocket連接的端點為/websocket
+		//myWebSocketHandler規定了所有連接過來的端點處理的方法
+		//setAllowedOrigins("*")允許所有來源連接至此websocket
+		registry.addHandler(myWebSocketHandler, "/websocket").setAllowedOrigins("*");
     }
 }
