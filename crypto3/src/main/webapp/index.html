@@ -19,16 +19,27 @@
 		
 		var socket = new WebSocket('ws://localhost:8080/crypto2/mvc/websocket');
 
-		socket.onopen = function() {
+		socket.onopen = function(event) {
 		    console.log('WebSocket連線已建立');
+		    console.log(event)
+
 		};
 		
 		socket.onmessage=function(event){
 			let message = JSON.parse(event.data);
-			let cryptos=message.content;
-			let h1=document.querySelector("h1");
-			h1.innerText=cryptos[0].name;
-			console.log(cryptos[0].name);
+			if(message.type === 'initial' && message.action === '建立連線'){
+				let cryptoData = message.cryptos;
+        		console.log('伺服器傳來的一次性資料:', cryptoData);
+			}else{
+				let cryptos=message.content;
+				
+				let h1=document.querySelector("h1");
+				h1.innerText=message.content[1].name;
+			}
+			
+			
+		
+			
 		
 		}
 		
@@ -40,7 +51,7 @@
 	</script>
 </head>
 <body>
-	<h1>Hi</h1>
+	<h1 class="h1t">Hi</h1>
 	
 </body>
 </html>

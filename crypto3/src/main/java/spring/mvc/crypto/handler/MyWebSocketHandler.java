@@ -53,6 +53,9 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
 	private final Set<WebSocketSession> sessions = new CopyOnWriteArraySet<>();
 	private final Gson gson = new Gson();
     
+	@Autowired
+    private CryptoDao cryptoDaoMysql;
+	
 	@Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         //當連線建立時傳送的消息
@@ -60,12 +63,10 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
 		
     	//把建立的客戶端連線都加到WebSocketSession方便管理
     	sessions.add(session);
-		
-    	JsonObject messageObject = getJsonMessage("response", "one-time message from server");
-		logger.info("Server sends: {}", messageObject);
-		
-		//這裡說明建立連線後，會發給客戶端什麼訊息
-		session.sendMessage(new TextMessage(gson.toJson(messageObject)));
+    	List<CryptoCurrency> myCryptos=cryptoDaoMysql.findAllCryptos();
+    	JsonObject initialMessageObject = getJsonMessage("initial", myCryptos);
+    	session.sendMessage(new TextMessage(gson.toJson(initialMessageObject)));
+
        
     }
 	
@@ -112,8 +113,7 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
     /**
 	 * 排程程式，從資料庫取出資料，傳送給前端
 	 */
-    @Autowired
-    private CryptoDao cryptoDaoMysql;
+    
     
     @Scheduled(fixedRate = 10 * 1000)
     public String sendPeriodicMessages()throws IOException{

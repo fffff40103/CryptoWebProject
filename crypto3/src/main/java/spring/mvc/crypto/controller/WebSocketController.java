@@ -1,6 +1,7 @@
 package spring.mvc.crypto.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,7 +12,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
 import spring.mvc.crypto.handler.MyWebSocketHandler;
+import spring.mvc.crypto.model.dao.CryptoDao;
+import spring.mvc.crypto.model.entity.CryptoCurrency;
 
 
 /*
@@ -25,20 +31,22 @@ public class WebSocketController {
 		MyWebSocketHandler myWebSocketHandler;
 	    
 		
+		
 		@RequestMapping("/send")
 	    @ResponseBody
 	    public String handleWebSocketMessage() {
 	        
 	     // 主動發送消息到指定目的地
-	       
+			
 	        try {
 				myWebSocketHandler.sendPeriodicMessages();
 			} catch (IOException e) {
 			
 				e.printStackTrace();
 			}
+	      
 	        
-	        return "Ok";
+	        return "ok";
 	       
 		}
 		
