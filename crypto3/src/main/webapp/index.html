@@ -23,6 +23,16 @@
 		    console.log('WebSocket連線已建立');
 		};
 		
+		socket.onmessage=function(event){
+			let message = JSON.parse(event.data);
+			let cryptos=message.content;
+			let h1=document.querySelector("h1");
+			h1.innerText=cryptos[0].name;
+			console.log(cryptos[0].name);
+		
+		}
+		
+		
 		socket.onclose = function() {
 		    console.log('WebSocket連線已關閉');
 		};
@@ -31,5 +41,6 @@
 </head>
 <body>
 	<h1>Hi</h1>
+	
 </body>
 </html>
