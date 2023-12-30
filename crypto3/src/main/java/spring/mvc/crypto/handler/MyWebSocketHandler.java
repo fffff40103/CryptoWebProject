@@ -63,10 +63,10 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
 		
     	//把建立的客戶端連線都加到WebSocketSession方便管理
     	sessions.add(session);
-    	List<CryptoCurrency> myCryptos=cryptoDaoMysql.findAllCryptos();
-    	JsonObject initialMessageObject = getJsonMessage("initial", myCryptos);
-    	session.sendMessage(new TextMessage(gson.toJson(initialMessageObject)));
-
+//    	List<CryptoCurrency> myCryptos=cryptoDaoMysql.findAllCryptos();
+//    	JsonObject initialMessageObject = getJsonMessage("initial", myCryptos);
+//    	session.sendMessage(new TextMessage(gson.toJson(initialMessageObject)));
+    	System.out.println("連線已建立");
        
     }
 	
