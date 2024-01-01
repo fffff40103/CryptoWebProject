@@ -25,7 +25,7 @@ public interface CryptoDao {
 	
 // 貨幣-Crypto
 //	1.查詢所有貨幣(多筆)
-	List<CryptoCurrency> findAllCryptos();
+	List<CryptoCurrency> findLatestCryptos();
 	
 //  2.新增貨幣
 	void addCrypto(CryptoCurrency crypto);
@@ -33,6 +33,6 @@ public interface CryptoDao {
 //  3.根據貨幣編號尋找該貨幣
 	Optional<CryptoCurrency> findCryptoByCryptoId(Integer cryptoId);
 	
-//  4.更新所有貨幣的資訊
-	boolean updateCryptos(List<CryptoCurrency> cryptos);
+//  4.插入批量加密貨幣資訊
+	public int[] insertCryptos(List<CryptoCurrency> cryptos);
 }

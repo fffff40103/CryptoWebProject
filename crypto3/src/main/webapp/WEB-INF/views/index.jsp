@@ -108,8 +108,8 @@
       }
     }
 
-    /*寬度1400以上設定導覽列左右距離*/
-    @media (min-width:1400px) {
+    /*寬度1500以上設定導覽列左右距離*/
+    @media (min-width:1500px) {
       nav {
         margin-left: 25rem;
         margin-right: 25rem;

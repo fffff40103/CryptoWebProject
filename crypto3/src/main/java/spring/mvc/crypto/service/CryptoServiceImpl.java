@@ -8,6 +8,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Repository;
 
 import spring.mvc.crypto.model.entity.CryptoCurrency;
@@ -17,8 +18,12 @@ public class CryptoServiceImpl implements CryptoService {
 	
 	//爬取市值前10大的加密或幣價格
 	@Override
+	//@Scheduled(fixedRate = 10000)
 	public List<CryptoCurrency> crawlCryptoData() throws IOException  {
 				
+				
+		
+	
 				//爬取的網站
 				String url = "https://coinmarketcap.com/";
 
@@ -29,6 +34,7 @@ public class CryptoServiceImpl implements CryptoService {
 				Elements trs = tbody.select("tr");//查找tbody標籤的全部tr子標籤
 				
 				List<CryptoCurrency> cryptos = new ArrayList<>();//創造一個資料型別為CryptoCurrency的List
+				
 				
 				//這裡用迴圈來查找市值前10大的加密貨幣，如果要查找市值前20大的加密貨幣只需把10改成20
 				int count = 1;
@@ -60,7 +66,7 @@ public class CryptoServiceImpl implements CryptoService {
 					}
 
 				}
-
+                
 				for (CryptoCurrency crypto : cryptos) {
 					System.out.println("貨幣名稱:"+crypto.getName());
 					System.out.println("貨幣價格:"+crypto.getPrice()+"$");
@@ -69,6 +75,7 @@ public class CryptoServiceImpl implements CryptoService {
 					System.out.println("---------------------");
 				}
 				return cryptos;
+				
 	}
 
 }

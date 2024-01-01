@@ -1,10 +1,13 @@
 package spring.mvc.crypto.model.dao;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -22,7 +25,7 @@ public class CryptoDaoMySQL implements CryptoDao {
 	// 1. 查詢所有使用者(多筆)
 	@Override
 	public List<User> findAllUsers() {
-		String sql = "select userId,username,password from user";
+		String sql = "select userId,username,password from user ";
 		return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(User.class));
 
 	}
@@ -69,8 +72,16 @@ public class CryptoDaoMySQL implements CryptoDao {
 	// 貨幣資訊Crypto:
 	@Override
 	//1.查詢所有貨幣(多筆)
-	public List<CryptoCurrency> findAllCryptos() {
-		String sql="select cryptoId,name,price,value,rate from cryptoInfo";
+	public List<CryptoCurrency> findLatestCryptos() {
+		String sql="SELECT *\r\n"
+				+ "FROM (\r\n"
+				+ "    SELECT *\r\n"
+				+ "    FROM cryptoInfo\r\n"
+				+ "    ORDER BY cryptoId DESC\r\n"
+				+ "    LIMIT 10\r\n"
+				+ ") AS subquery\r\n"
+				+ "ORDER BY cryptoId ASC\r\n"
+				+ "LIMIT 10";
 		return jdbcTemplate.query(sql,new BeanPropertyRowMapper<>(CryptoCurrency.class));
 	}
 	
@@ -96,15 +107,25 @@ public class CryptoDaoMySQL implements CryptoDao {
 	
 	// 4.更新所有貨幣的資訊
 	@Override
-	public boolean updateCryptos(List<CryptoCurrency> cryptos) {
-		// TODO Auto-generated method stub
-		return false;
+	public int[] insertCryptos(List<CryptoCurrency> cryptos) {
+		String sql="insert into cryptoinfo(name,price,value,rate) values(?,?,?,?)";
+		return this.jdbcTemplate.batchUpdate(
+				sql,
+				new BatchPreparedStatementSetter() {
+
+					public void setValues(PreparedStatement ps, int i) throws SQLException {
+						ps.setString(1, cryptos.get(i).getName());
+						ps.setFloat(2, cryptos.get(i).getPrice());					
+						ps.setString(3,cryptos.get(i).getValue());
+						ps.setFloat(4,cryptos.get(i).getRate() );
+					}
+
+					public int getBatchSize() {
+						return cryptos.size();
+					}
+
+				});
 	}
 	
 	
-	
-	
-	
-	
-
 }

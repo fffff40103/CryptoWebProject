@@ -117,7 +117,7 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
     
     @Scheduled(fixedRate = 10 * 1000)
     public String sendPeriodicMessages()throws IOException{
-    	List<CryptoCurrency> cryptoCurrencies = cryptoDaoMysql.findAllCryptos();
+    	List<CryptoCurrency> cryptoCurrencies = cryptoDaoMysql.findLatestCryptos();
     	for(WebSocketSession session : sessions) {
     		if(session.isOpen()) {
     			JsonObject cryptoObject = new JsonObject();

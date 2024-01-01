@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,7 +33,8 @@ public class CryptoController {
 	@Autowired
 	private CryptoDao dao;
 	
-	@Autowired
+	@Autowired()
+	@Qualifier(value="cryptoServiceImpl")
 	private CryptoService service;
 	
 
@@ -158,7 +160,7 @@ public class CryptoController {
 	//定期去網站爬最新資料，把最新資料更新到資料庫
 	@GetMapping("/getCryptoInfo")
     public String getCryptoData(Model model) throws IOException {
-        List<CryptoCurrency> cryptoCurrencies = dao.findAllCryptos();
+        List<CryptoCurrency> cryptoCurrencies = dao.findLatestCryptos();
         model.addAttribute("cryptoCurrencies", cryptoCurrencies);
         return "market";
     }
