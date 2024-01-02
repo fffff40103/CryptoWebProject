@@ -54,10 +54,11 @@
 					let allDivs=document.querySelectorAll(".uniquePrice");
 					let count=0;
 					allDivs.forEach((div)=>{
-						div.classList.add("text-end");
+						
 						//得到每個貨幣的名稱、價錢、漲跌幅、市值
 						div.querySelector(".name").innerText=cryptos[count].name;
 						let name=div.querySelector(".name").innerText=cryptos[count].name;
+						div.classList.add(name);
 						
 						div.querySelector(".price").innerText=cryptos[count].price+"$";
 						let price=div.querySelector(".price").innerText=cryptos[count].price+"$";
@@ -66,9 +67,9 @@
 						
 						let rate=cryptos[count].rate;
 						if(rate<0){
-							div.querySelector(".rate").innerHTML="<p style='color:red'>"+cryptos[count].rate+'%'+"</p>"
+							div.querySelector(".rate").style.color="red";
 						}else{
-							div.querySelector(".rate").innerHTML="<p style='color:green'>"+cryptos[count].rate+'%'+"</p>"
+							div.querySelector(".rate").style.color="green";
 						}
 						
 						div.querySelector(".value").innerText=cryptos[count].value;
@@ -95,6 +96,7 @@
 /*
 	    Css RWD排版規則，由大排到小，同屬性的話會單獨排，如果只有單一屬性會在最下面   
 	    */
+
 
 /*把背景顏色設定成:#181a20*/
 body {
@@ -131,6 +133,9 @@ body {
 	/*設定標題字體大小*/
 }
 
+
+
+
 /*把標題裡面的文字左右距離加1rem*/
 .title p {
 	padding-right: 1rem;
@@ -139,28 +144,38 @@ body {
 
 /*設定市場價格排版*/
 .marketPrice {
+	display: flex;
+	justify-content: space-between;
+	flex-direction:column;
 	width: 80vw;
-	/*把黑框範圍設定成螢幕可視度的80%*/
+	 
+   
 }
 
-/*設定市場價格幣種圖片大小*/
-.marketPrice img {
-	x;
-	height: 25pxwidth: 25p;
+.price p{
+	text-align:right;
 }
+/*設定市場價格幣種圖片大小*/
+
 
 /*在每個不同的幣種相同的uniquePrice設定相同的屬性*/
 .uniquePrice {
 	display: flex;
 	/*設定標題排版*/
 	justify-content: space-between;
-	align-items: flex-end;
+
 	/*設定標題排版*/
 	font-size: 1.5rem;
 	/*設定字體大小*/
 	color: white;
-	
+	padding-top:1rem;
 	margin-left: 1rem;
+	
+}
+
+
+.price p{
+	margin-top:1.5rem;
 }
 
 /*設定nav bar右半邊*/
@@ -195,7 +210,16 @@ body {
 /*讓導覽列左右各有3個字的距離*/
 .navRWD {
 	margin-left: 3rem;
-	margin-right: 3rem'
+	margin-right: 3rem;
+}
+
+
+@media(min-width:1500px){
+
+	.navRWD {
+	margin-left: 10rem;
+	margin-right: 10rem;
+	}
 }
 
 /*登出按鈕RWD設定*/
@@ -204,6 +228,8 @@ body {
 		height: 10vh;
 		width: 5vw;
 	}
+	
+	
 }
 
 /*在寬度為450時讓導覽列左右沒有距離*/
@@ -316,83 +342,89 @@ body {
 		<div class="marketPrice">
 			<!--XRP-->
 
-			<div class="xrp uniquePrice ">
+			<div class=" uniquePrice BTC ">
 				<p class="name">
-					<img src="./img/xrp.png" alt="">XRP
+					BTC
 				</p>
-				<p class="price">50.8$</p>
-				<p class="rate "  >22.5%</p>
-				<p class="value">3.44B</p>
+				<p class="price ">45265.1$</p>
+				<p class="rate " >7.18</p>
+				<p class="value">$886.99B</p>
 			</div>
-			<div class="xrp uniquePrice ">
+			<div class=" uniquePrice ">
 				<p class="name">
-					<img src="./img/xrp.png" alt="">XRP
+					ETH
 				</p>
-				<p class="price">50.8$</p>
-				<p class="rate" style="color: green">22.5%</p>
-				<p class="value">3.44B</p>
+				<p class="price ms-2">2379.27$</p>
+				<p class="rate " style="color: green">4.55</p>
+				<p class="value">$286.86B</p>
 			</div>
-			<div class="xrp uniquePrice ">
+			<div class="uniquePrice ">
 				<p class="name">
-					<img src="./img/xrp.png" alt="">XRP
+					USDT
 				</p>
-				<p class="price ">50.8$</p>
-				<p class="rate" style="color: green">22.5%</p>
-				<p class="value">3.44B</p>
+				<p class="price ">1.0007$</p>
+				<p class="rate me-2" style="color: green">0.01</p>
+				<p class="value">$91.77B</p>
 			</div>
-			<div class="xrp uniquePrice ">
+			<div class=" uniquePrice ">
 				<p class="name">
-					<img src="./img/xrp.png" alt="">XRP
+					SOL
 				</p>
-				<p class="price">50.8$</p>
-				<p class="rate" style="color: green">22.5%</p>
-				<p class="value">3.44B</p>
+				<p class="price ms-4">112.357$</p>
+				<p class="rate me-3" style="color: green">10.58</p>
+				<p class="value">$48.37B</p>
 			</div>
-			<div class="xrp uniquePrice">
+			<div class="uniquePrice">
 				<p class="name">
-					<img src="./img/xrp.png" alt="">XRP
+					BNB
 				</p>
-				<p class="price">50.8$</p>
-				<p class="rate" style="color: green">22.5%</p>
-				<p class="value">3.44B</p>
+				<p class="price ms-3 ">318.2$</p>
+				<p class="rate" style="color: green">3.11</p>
+				<p class="value">$48.32B</p>
 			</div>
-			<div class="xrp uniquePrice">
+			<div class=" uniquePrice">
 				<p class="name">
-					<img src="./img/xrp.png" alt="">XRP
+				XRP
 				</p>
-				<p class="price">50.8$</p>
-				<p class="rate" style="color: green">22.5%</p>
-				<p class="value">3.44B</p>
+				<p class="price ">0.63208$</p>
+				<p class="rate" style="color: green">3.85</p>
+				<p class="value">$34.34B</p>
 			</div>
-			<div class="xrp uniquePrice">
+			<div class=" uniquePrice">
 				<p class="name">
-					<img src="./img/xrp.png" alt="">XRP
+					USDC
 				</p>
-				<p class="price">50.8$</p>
-				<p class="rate" style="color: green">22.5%</p>
-				<p class="value">3.44B</p>
+				<p class="price ">0.9992$</p>
+				<p class="rate me-2" style="color: green">-0.07</p>
+				<p class="value">$24.69B</p>
 			</div>
-			<div class="xrp uniquePrice">
+			<div class=" uniquePrice">
 				<p class="name">
-					<img src="./img/xrp.png" alt="">XRP
+					ADA
 				</p>
-				<p class="price">50.8$</p>
-				<p class="rate" style="color: green">22.5%</p>
-				<p class="value">3.44B</p>
+				<p class="price ms-2">0.6242$</p>
+				<p class="rate ms-1" style="color: green">5.43</p>
+				<p class="value">$22.21B</p>
 			</div>
-			<div class="xrp uniquePrice">
+			<div class=" uniquePrice">
 				<p class="name">
-					<img src="./img/xrp.png" alt="">XRP
+					stETH
 				</p>
-				<p class="price">50.8$</p>
-				<p class="rate" style="color: green">22.5%</p>
-				<p class="value">3.44B</p>
+				<p class="price ">2309.89$</p>
+				<p class="rate me-2" style="color: green">3.07</p>
+				<p class="value">$21.92B</p>
+			</div>
+			
+			<div class="uniquePrice">
+				<p class="name">
+					AVAX
+				</p>
+				<p class="price ms-4">2309.89$</p>
+				<p class="rate" style="color: red;padding-left:1rem">3.07</p>
+				<p class="value">$21.92B</p>
 			</div>
 
-			<!--BTC-->
-
-
-
+		
 		</div>
 
 	</div>

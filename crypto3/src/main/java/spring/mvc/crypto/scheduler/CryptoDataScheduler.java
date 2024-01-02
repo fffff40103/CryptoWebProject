@@ -25,8 +25,9 @@ public class CryptoDataScheduler {
 	
 	@Autowired
 	private  CryptoDao cryptoDaoMySql;
-	//每5分鐘去網站爬資料，然後把它存到資料庫
-    @Scheduled(fixedRate = 500*10)  // 每5分鐘執行一次
+	
+	//每5秒去網站爬資料，然後把它存到資料庫
+    @Scheduled(fixedRate = 5000)  // 
     public void crawlCryptoDataAndSendToWebSocket() throws IOException {
         List<CryptoCurrency> cryptoCurrencies = cryptoService.crawlCryptoData();
         cryptoDaoMySql.insertCryptos(cryptoCurrencies);
