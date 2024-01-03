@@ -115,7 +115,7 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
 	 */
     
     
-    @Scheduled(fixedRate = 10*1000)//每10秒從資料庫撈出來最新的10筆資料
+    //@Scheduled(fixedRate = 10*1000)//每10秒從資料庫撈出來最新的10筆資料
     public String sendPeriodicMessages()throws IOException{
     	List<CryptoCurrency> cryptoCurrencies = cryptoDaoMysql.findLatestCryptos();
     	for(WebSocketSession session : sessions) {

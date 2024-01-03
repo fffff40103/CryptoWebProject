@@ -133,7 +133,9 @@ body {
 	/*設定標題字體大小*/
 }
 
-
+.SOL{
+	font-size:3.5rem;
+}
 
 
 /*把標題裡面的文字左右距離加1rem*/
@@ -217,8 +219,8 @@ body {
 @media(min-width:1500px){
 
 	.navRWD {
-	margin-left: 10rem;
-	margin-right: 10rem;
+		margin-left: 10rem;
+		margin-right: 10rem;
 	}
 }
 
@@ -346,15 +348,20 @@ body {
 				<p class="name">
 					BTC
 				</p>
-				<p class="price ">45265.1$</p>
-				<p class="rate " >7.18</p>
+				<div class=priceBorder>
+					<p class="price ms-3">45265.1$</p>
+				</div>
+				<p class="rate ms-2" >7.18</p>
 				<p class="value">$886.99B</p>
 			</div>
 			<div class=" uniquePrice ">
 				<p class="name">
 					ETH
 				</p>
-				<p class="price ms-2">2379.27$</p>
+				<div class=priceBorder>
+					<p class="price ms-2">2379.27$</p>
+				</div>
+				
 				<p class="rate " style="color: green">4.55</p>
 				<p class="value">$286.86B</p>
 			</div>
@@ -370,7 +377,7 @@ body {
 				<p class="name">
 					SOL
 				</p>
-				<p class="price ms-4">112.357$</p>
+				<p class="price me-2">112.357$</p>
 				<p class="rate me-3" style="color: green">10.58</p>
 				<p class="value">$48.37B</p>
 			</div>
@@ -386,7 +393,7 @@ body {
 				<p class="name">
 				XRP
 				</p>
-				<p class="price ">0.63208$</p>
+				<p class="price ms-2">0.63208$</p>
 				<p class="rate" style="color: green">3.85</p>
 				<p class="value">$34.34B</p>
 			</div>
@@ -394,7 +401,7 @@ body {
 				<p class="name">
 					USDC
 				</p>
-				<p class="price ">0.9992$</p>
+				<p class="price ms-2">0.9992$</p>
 				<p class="rate me-2" style="color: green">-0.07</p>
 				<p class="value">$24.69B</p>
 			</div>
@@ -410,7 +417,7 @@ body {
 				<p class="name">
 					stETH
 				</p>
-				<p class="price ">2309.89$</p>
+				<p class="price me-3">2309.89$</p>
 				<p class="rate me-2" style="color: green">3.07</p>
 				<p class="value">$21.92B</p>
 			</div>
@@ -452,4 +459,3 @@ body {
 </script>
 
 </html>
-
