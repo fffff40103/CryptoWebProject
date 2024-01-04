@@ -330,6 +330,37 @@ body {
 			</div>
 		</div>
 	</nav>
+	
+	<!--Crpto行情以及標題內容(新版)-->
+	<div class="container">
+	  <div class="row uniquePrice">
+	    <div class="col">名稱</div>
+	    <div class="col">價格</div>
+	    <div class="col">漲跌</div>
+	    <div class="col">市值</div>
+	  </div>
+	  <div class="row uniquePrice">
+	    <div class="col name">BTC</div>
+	    <div class="col price">45265.1$</div>
+	    <div class="col rate">7.18</div>
+	    <div class="col value">$886.99B</div>
+	  </div>
+	  <div class="row uniquePrice">
+	    <div class="col name">ETH</div>
+	    <div class="col price">2379.27$</div>
+	    <div class="col rate">4.55</div>
+	    <div class="col value">$286.86B</div>
+	  </div>
+	  <div class="row uniquePrice">
+	    <div class="col name">USDT</div>
+	    <div class="col price">1.0007$</div>
+	    <div class="col rate">0.01</div>
+	    <div class="col value">$91.77B</div>
+	  </div>
+	</div>
+	
+	
+	
 	<!--Crpto行情以及標題內容-->
 	<div class="cryptoBody">
 		<!--Crypto標題-->
@@ -433,9 +464,8 @@ body {
 
 		
 		</div>
-
 	</div>
-
+	
 </body>
 <script>
   /*對貨幣名稱超過4個字的貨幣位置微調*/
