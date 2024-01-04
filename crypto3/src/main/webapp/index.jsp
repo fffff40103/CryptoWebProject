@@ -4,13 +4,17 @@
 <html lang="en">
 
 <head>
-	<meta charset="BIG-5">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Homepage</title>
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-	<link rel="stylesheet" href="/crypto2/css/style.css">
+<meta charset="BIG-5">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Homepage</title>
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css"
+	rel="stylesheet">
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+<link rel="stylesheet" href="/crypto2/css/index.css">
 </head>
 
 <body>
@@ -26,7 +30,7 @@
 				<span class="navbar-toggler-icon"></span>
 			</button>
 			<div class="collapse navbar-collapse" id="navbarNavDropdown">
-				context<ul class="navbar-nav">
+				<ul class="navbar-nav">
 					<li class="nav-item"><a class="nav-link active text-light"
 						aria-current="page" href="/crypto2/mvc/crypto/market">Markets</a></li>
 					<li class="nav-item"><a class="nav-link text-light"
@@ -163,47 +167,6 @@
 	</div>
 
 </body>
-<script>
-	console.log(document.querySelector(".hour"));
-	console.log(document.querySelector(".minute"));
-	console.log(document.querySelector(".second"));
-	//算出時間差
-	function getTimeDifference(targetTime) {
-		let now = new Date();
-		let timeDifference = Math.abs(targetTime - now);
-		return timeDifference;
-
-	}
-
-	function updateTime() {
-		//設定目標天數
-		let targetDate = new Date('04/19/2024 17:34:50');
-
-		//取得現在與目標天數的天數差換成毫秒
-		let timeDifference = getTimeDifference(targetDate);
-
-		//得到毫秒後除1000=秒，再除60=分鐘，再除60=小時，再除24=一天
-		let days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-		document.querySelector(".day").innerHTML = days + "<span>D</span>";
-
-		//拿到上面天數的餘數，然後除1000=秒，再除60=分鐘，再除60=小時
-		let hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24))
-				/ (1000 * 60 * 60))
-
-		document.querySelector(".hour").innerHTML = hours + "<span>H</span>";
-
-		//拿到上面天數的餘數，然後除1000=秒，再除60=分鐘
-		let minutes = Math.floor((timeDifference % (1000 * 60 * 60))
-				/ (1000 * 60));
-		document.querySelector(".minute").innerHTML = minutes
-				+ "<span>M</span>";
-
-		//拿到上面天數的餘數，然後除1000=秒
-		let seconds = Math.floor((timeDifference % (1000 * 60)) / (1000));
-		document.querySelector(".second").innerHTML = seconds
-				+ "<span>S</span>";
-	}
-	let timeInterval = setInterval(updateTime, 1000);
-</script>
+<script src="/crypto2/js/index.js"></script>
 
 </html>
