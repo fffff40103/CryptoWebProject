@@ -170,6 +170,13 @@ div.cryptoprice p img {
 	}
 }
 
+/*高度在900以上時設定上面距離*/
+@media(min-height:900px){
+	.content{
+		margin-top:5rem;
+	}
+}
+
 /*在寬度900以下時設定slogn寬度為螢幕寬度100，且離左邊有7個字的距離*/
 @media ( max-width : 900px) {
 	.slog {
