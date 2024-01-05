@@ -109,7 +109,7 @@
 					<!--XRP part-->
 					<div class="xrp fivecrypto ">
 						<p>
-							<img src="" alt="xrp">XRP
+							<img src="/crypto2/images/xrp.png" alt="xrp">XRP
 						</p>
 						<p>$276.76</p>
 						<p style="color: green">1.52%</p>
@@ -117,7 +117,7 @@
 					<!--BNB part-->
 					<div class="bnb fivecrypto">
 						<p>
-							<img src="./img/bnb.png" alt="BNB">BNB
+							<img src="/crypto2/images/bnb.png" alt="BNB">BNB
 						</p>
 						<p>$276.76</p>
 						<p style="color: green">3.62%</p>
@@ -125,7 +125,7 @@
 					<!--ETH part-->
 					<div class="eth fivecrypto">
 						<p>
-							<img src="./img/eth.png" alt="ETH">ETH
+							<img src="/crypto2/images/eth.png" alt="ETH">ETH
 						</p>
 						<p>$276.76</p>
 						<p style="color: green">3.62%</p>
@@ -133,7 +133,7 @@
 					<!--USDT part-->
 					<div class="usdt fivecrypto">
 						<p>
-							<img src="./img/usdt.png" alt="usdt">USDT
+							<img src="/crypto2/images/usdt.png" alt="usdt">USDT
 						</p>
 						<p>$276.76</p>
 						<p style="color: red">5.52%</p>
