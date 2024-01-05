@@ -142,6 +142,8 @@ div.cryptoprice p img {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	
+	margin-right:5rem;
 }
 
 /*設定使用者圖片*/
@@ -151,8 +153,8 @@ div.cryptoprice p img {
 
 /*讓導覽列左右各有3個字的距離*/
 .navRWD {
-	margin-left: 3rem;
-	margin-right: 3rem'
+	margin-left: 7rem;
+	margin-right: 5rem'
 }
 /*讓導覽列按鈕在RWD出現之後可以變換顏色*/
 .navbar-toggler {
@@ -167,7 +169,7 @@ div.cryptoprice p img {
 }
 
 /*寬度1500以上設定導覽列左右距離*/
-@media ( min-width :1500px) {
+@media ( min-width :1600px) {
 	.navRWD {
 		margin-left: 20rem;
 		margin-right: 20rem;
