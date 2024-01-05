@@ -15,7 +15,93 @@
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+	
 <link rel="stylesheet" href="/crypto2/css/login.css">
+<style>
+		
+        .login{
+          
+          margin-top:5rem;
+          display: flex;
+          justify-content: center;
+        }
+        /*Login外框設定*/
+        form{
+          border:solid 1px #dadce0;
+          padding:2rem;
+        }
+
+        
+        /*form的輸入框*/
+        form input{
+            background-color: #D9D9D9;
+            width:20vw;
+            padding:0.5rem;
+            margin:1rem;
+            width:20rem;
+                                 
+        }
+        /*登入按鈕設定*/
+        form button{
+            width:20vw;
+            padding:0.5rem;
+            margin:1rem;
+            width:20rem;
+            
+        }
+        /*login按鈕設定*/
+        form button.loginbutton{
+            background-color: #0047ff;
+        }
+        /*用google login按鈕設定*/
+        form button.logingoogle{
+            background-color: white;
+            background-image: url(/crypto2/images/googlepig.png);
+            background-repeat: no-repeat;
+            background-size:contain ;
+            
+        }
+        /*form表單裡面密碼設定(position)*/
+        .password{
+            position: relative;
+        }
+        
+        /*設定密碼旁邊小眼睛*/
+        .password img{
+            position: absolute;
+            top: 50%;
+            left:82%;
+            transform: translateY(-50%);
+            padding: 0 16px;
+            cursor: pointer;
+        }
+        /*沒有密碼排版設定*/
+        .noaccount{
+            display: flex;
+            justify-content: space-evenly;
+            
+        }
+
+		
+		
+        /*在寬度340以下時把form裡面的input寬度都顯示為視窗寬度100*/
+       @media(max-width:340px){
+        .formRWD{
+          width:100vw;
+        }
+          
+       }
+       /*在寬度280以下時讓導覽列RWD按鈕可以跟右邊有距離*/
+       @media(max-width:280px){
+        .buttonRWD{
+          margin-right:3rem;
+        }
+        .password img{
+          padding:0 0;
+        }
+       }
+}
+</style>
 </head>
 <body>
 	<!--navbar-->
@@ -64,7 +150,7 @@
 			<div class="password">
 				<input class="inputpassword formRWD" name="password" id="password"
 					type="password" placeholder="Password" autocomplete="off">
-				<img src="./img/notseen.svg " alt="">
+				<img src="/crypto2/images/notseen.svg " alt="">
 			</div>
 
 			<!--login按鈕-->
