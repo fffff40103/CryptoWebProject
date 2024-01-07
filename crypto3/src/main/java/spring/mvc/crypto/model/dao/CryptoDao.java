@@ -3,6 +3,7 @@ package spring.mvc.crypto.model.dao;
 import java.util.List;
 import java.util.Optional;
 
+import spring.mvc.crypto.model.entity.CrawlerCurrency;
 import spring.mvc.crypto.model.entity.CryptoCurrency;
 import spring.mvc.crypto.model.entity.User;
 
@@ -25,14 +26,20 @@ public interface CryptoDao {
 	
 // 貨幣-Crypto
 //	1.查詢所有貨幣(多筆)
-	List<CryptoCurrency> findLatestCryptos();
+	List<CrawlerCurrency> findLatestCryptos();
 	
-//  2.新增貨幣
+//  2.查詢最熱門的5隻貨幣
+	List<CryptoCurrency> findTopFiveRanking();
+	
+//  3.新增貨幣
 	void addCrypto(CryptoCurrency crypto);
 	
-//  3.根據貨幣編號尋找該貨幣
-	Optional<CryptoCurrency> findCryptoByCryptoId(Integer cryptoId);
+//  4.根據貨幣編號尋找該貨幣
+	Optional<CryptoCurrency> findCryptoByCryptoId(Integer cNumber);
 	
-//  4.插入批量加密貨幣資訊
-	public int[] insertCryptos(List<CryptoCurrency> cryptos);
+//  5.插入批量加密貨幣資訊
+	public int[] insertCryptos(List<CrawlerCurrency> cryptos);
+	
+//  6.更新既有的5隻最熱門加密貨幣的資訊
+	public int updateTopFiveCryptos(List<CryptoCurrency> cryptos);
 }

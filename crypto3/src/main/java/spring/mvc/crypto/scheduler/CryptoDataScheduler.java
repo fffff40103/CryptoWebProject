@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import spring.mvc.crypto.model.dao.CryptoDao;
+import spring.mvc.crypto.model.entity.CrawlerCurrency;
 import spring.mvc.crypto.model.entity.CryptoCurrency;
 import spring.mvc.crypto.service.CryptoService;
 import spring.mvc.crypto.service.WebSocketService;
@@ -29,10 +30,17 @@ public class CryptoDataScheduler {
 	//每5秒去網站爬資料，然後把它存到資料庫
     @Scheduled(fixedRate = 5000)  // 
     public void crawlCryptoDataAndSendToWebSocket() throws IOException {
-        List<CryptoCurrency> cryptoCurrencies = cryptoService.crawlCryptoData();
+        List<CrawlerCurrency> cryptoCurrencies = cryptoService.crawlerCryptoData();
         cryptoDaoMySql.insertCryptos(cryptoCurrencies);
         
     }
+    
+    @Scheduled(fixedRate=5000)
+    	public void crawlTopFiveCrypto()throws IOException{
+    		List<CryptoCurrency> cryptoCurrencies=cryptoService.crawlerRanking();
+    		cryptoDaoMySql.updateTopFiveCryptos(cryptoCurrencies);
+    }
+    
 	
 	
 }

@@ -12,6 +12,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import spring.mvc.crypto.model.entity.CrawlerCurrency;
 import spring.mvc.crypto.model.entity.CryptoCurrency;
 import spring.mvc.crypto.model.entity.User;
 
@@ -72,52 +73,58 @@ public class CryptoDaoMySQL implements CryptoDao {
 	// 貨幣資訊Crypto:
 	@Override
 	//1.查詢所有貨幣(多筆)
-	public List<CryptoCurrency> findLatestCryptos() {
+	public List<CrawlerCurrency> findLatestCryptos() {
 		String sql="SELECT *\r\n"
 				+ "FROM (\r\n"
 				+ "    SELECT *\r\n"
-				+ "    FROM cryptoInfo\r\n"
-				+ "    ORDER BY cryptoId DESC\r\n"
+				+ "    FROM crawlerdata\r\n"
+				+ "    ORDER BY pNumber DESC\r\n"
 				+ "    LIMIT 10\r\n"
 				+ ") AS subquery\r\n"
-				+ "ORDER BY cryptoId ASC\r\n"
+				+ "ORDER BY pNumber ASC\r\n"
 				+ "LIMIT 10";
-		return jdbcTemplate.query(sql,new BeanPropertyRowMapper<>(CryptoCurrency.class));
+		return jdbcTemplate.query(sql,new BeanPropertyRowMapper<>(CrawlerCurrency.class));
 	}
 	
-    //  2.新增貨幣
+	//2.查詢最熱門的5隻貨幣
+	@Override
+	public List<CryptoCurrency> findTopFiveRanking() {
+		String sql="select cNumber,cName,price,rate,cap from cryptoinfo";
+	}
+	
+    //  3.新增貨幣
 	@Override
 	public void addCrypto(CryptoCurrency crypto) {
 		String sql="insert into cryptoInfo(name,price,value,rate) values(?,?,?,?)";
-		jdbcTemplate.update(sql,crypto.getName(),crypto.getPrice(),crypto.getValue(),crypto.getRate());
+		jdbcTemplate.update(sql,crypto.getcName(),crypto.getPrice(),crypto.getCap(),crypto.getRate());
 		
 	}
 	
-    //  3.根據貨幣編號尋找該貨幣
+    //  4.根據貨幣編號尋找該貨幣
 	@Override
-	public Optional<CryptoCurrency> findCryptoByCryptoId(Integer cryptoId) {
-		String sql="select cryptoId,name,price,value,rate from cryptoInfo where cryptoId=?";
+	public Optional<CryptoCurrency> findCryptoByCryptoId(Integer cNumber) {
+		String sql="select cNumber,cName,price,rate,cap from cryptoInfo where cNumber=?";
 		try {
-			CryptoCurrency crypto = jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(CryptoCurrency.class), cryptoId);
+			CryptoCurrency crypto = jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(CryptoCurrency.class), cNumber);
 			return Optional.ofNullable(crypto);
 		} catch (EmptyResultDataAccessException e) {
 			return Optional.empty();
 		}
 	}
 	
-	// 4.更新所有貨幣的資訊
+	//5.批量插入最新爬取的10隻加密貨幣
 	@Override
-	public int[] insertCryptos(List<CryptoCurrency> cryptos) {
-		String sql="insert into cryptoinfo(name,price,value,rate) values(?,?,?,?)";
+	public int[] insertCryptos(List<CrawlerCurrency> cryptos) {
+		String sql="insert into crawlerData(pName,pPrice,pRate,pCap) values(?,?,?,?)";
 		return this.jdbcTemplate.batchUpdate(
 				sql,
 				new BatchPreparedStatementSetter() {
 
 					public void setValues(PreparedStatement ps, int i) throws SQLException {
-						ps.setString(1, cryptos.get(i).getName());
-						ps.setFloat(2, cryptos.get(i).getPrice());					
-						ps.setString(3,cryptos.get(i).getValue());
-						ps.setFloat(4,cryptos.get(i).getRate() );
+						ps.setString(1, cryptos.get(i).getpName());
+						ps.setFloat(2, cryptos.get(i).getpPrice());					
+						ps.setFloat(3,cryptos.get(i).getpRate());
+						ps.setString(4,cryptos.get(i).getpCap() );
 					}
 
 					public int getBatchSize() {
@@ -126,6 +133,24 @@ public class CryptoDaoMySQL implements CryptoDao {
 
 				});
 	}
+
+	//6.更新既有的最熱門5隻加密貨幣
+	@Override
+	public int updateTopFiveCryptos(List<CryptoCurrency> cryptos) {
+		String sql="update cryptoinfo set cName=?,price=?,rate=?,cap=? where cNumber=?";
+		int result=0;
+		for(CryptoCurrency crypto:cryptos) {
+			int count=jdbcTemplate.update(sql,crypto.getcName(),crypto.getPrice(),crypto.getRate(),crypto.getCap(),crypto.getcNumber());
+			result+=count;
+		}
+		return result;
+	}
+
+	
+	
+	
+	
+	
 	
 	
 }

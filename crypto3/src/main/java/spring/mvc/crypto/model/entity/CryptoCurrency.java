@@ -2,40 +2,40 @@ package spring.mvc.crypto.model.entity;
 
 public class CryptoCurrency {
 		
-		private Integer cryptoId;//貨幣代號
-	 	private String name;//貨幣名稱
-	    private Float price;//貨幣價格
-		private String value;//貨幣市值
+		private Integer cNumber;//貨幣代號
+	 	private String cName;//貨幣名稱
+	    private Float price;//貨幣價格	
 		private Float rate;//貨幣漲跌幅度
+		private String cap;//貨幣市值
 		
 		//建立空建構子，讓他可以用setter方式注入
 		public CryptoCurrency() {
 			
 		}
-		public CryptoCurrency(String name,Float price,String value,Float  rate) {
-	    	this.name=name;//貨幣名稱
+		public CryptoCurrency(String cName,Float price,Float  rate,String cap) {
+	    	this.cName=cName;//貨幣名稱
 	    	this.price=price;//貨幣價格
-	    	this.value=value;//貨幣市值
+	    	this.cap=cap;//貨幣市值
 	    	this.rate=rate;
 	    }
-	    public CryptoCurrency(Integer cryptoId,String name,Float price,String value,Float rate) {
-	    	this.cryptoId=cryptoId;//貨幣代號，這裡用auto_increment
-	    	this.name=name;//貨幣名稱
+	    public CryptoCurrency(Integer cNumber,String cName,Float price,Float rate,String cap) {
+	    	this.cNumber=cNumber;//貨幣代號，這裡用auto_increment
+	    	this.cName=cName;//貨幣名稱
 	    	this.price=price;//貨幣價格
-	    	this.value=value;//貨幣市值
+	    	this.cap=cap;//貨幣市值
 	    	this.rate=rate;
 	    }
-		public Integer getCryptoId() {
-			return cryptoId;
+		public Integer getcNumber() {
+			return cNumber;
 		}
-		public void setCryptoId(Integer cryptoId) {
-			this.cryptoId = cryptoId;
+		public void setcNumber(Integer cNumber) {
+			this.cNumber = cNumber;
 		}
-		public String getName() {
-			return name;
+		public String getcName() {
+			return cName;
 		}
-		public void setName(String name) {
-			this.name = name;
+		public void setcName(String cName) {
+			this.cName = cName;
 		}
 		public Float getPrice() {
 			return price;
@@ -43,27 +43,24 @@ public class CryptoCurrency {
 		public void setPrice(Float price) {
 			this.price = price;
 		}
-		public String getValue() {
-			return value;
-		}
-		public void setValue(String value) {
-			this.value = value;
-		}
-		
-		public void setRate(Float rate) {
-			this.rate=rate;
-		}
-		
-		
 		public Float getRate() {
 			return rate;
 		}
-		
+		public void setRate(Float rate) {
+			this.rate = rate;
+		}
+		public String getCap() {
+			return cap;
+		}
+		public void setCap(String cap) {
+			this.cap = cap;
+		}
 		@Override
 		public String toString() {
-			return "CryptoCurrency [" +  " name=" + name + ", price=" + price + ", value=" + value
-					+ ", rate=" + rate + "]";
+			
+			return "名稱"+cName+"價格"+price+"波動率"+rate+"市值"+cap;
 		}
+		
 
 		
 }

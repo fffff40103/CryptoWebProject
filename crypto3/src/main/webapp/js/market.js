@@ -1,6 +1,7 @@
 
 
    //把WebSocket連線包成一個function
+  		console.log("幹你娘")
 		webSocketConnection();
 		
 		function webSocketConnection(){

@@ -7,25 +7,22 @@
 <meta charset="BIG-5">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Homepage</title>
+<!-- 這裡加入Bootstrap以及jquery的相關包 -->
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css"
 	rel="stylesheet">
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-<link rel="stylesheet" href="/crypto2/css/index.css">
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 <style>
-	
-/*
-    Css RWD排版規則，由大排到小，同屬性的話會單獨排，如果只有單一屬性會在最下面   
-    */
 
 /*把背景變成黑色和導覽列變成同一個顏色*/
 /*Making navbar and background as same color*/
 body {
 	background-color: #181a20;
-
 	-ms-overflow-style: none;
 }
 
@@ -70,7 +67,7 @@ div.cryptoprice p img {
 	margin-top: 0.5rem;
 	display: flex;
 	justify-content: space-evenly;
-	font-weight:bold;
+	font-weight: bold;
 }
 
 /*設定距離比特幣減半日期*/
@@ -82,7 +79,6 @@ div.cryptoprice p img {
 	height: 20vh;
 	background-color: #1E2329;
 	border-radius: 15px;
-	
 	position: relative;
 }
 /*設定比特幣減半的標題*/
@@ -90,29 +86,24 @@ div.cryptoprice p img {
 	display: flex;
 	padding-top: 1rem;
 	margin-left: 1rem;
-	
-	
 }
 /*設定標題旁邊的問號*/
 .questionMark {
 	cursor: pointer;
-	
 }
-
 
 /*滑上去問號後的內容怎麼顯示*/
 .questionMarkContent {
-  display: none;
+	display: none;
 }
 
 /*滑上去後的內容以及設定*/
-.questionMark:hover .questionMarkContent{
+.questionMark:hover .questionMarkContent {
 	display: block;
-  	position: absolute;
-  	font-size:1rem;
-  	top:3rem;
-  	background-color:#808080;
-	
+	position: absolute;
+	font-size: 1rem;
+	top: 3rem;
+	background-color: #808080;
 }
 /*設定彼特幣減半的日期*/
 .halvingDate {
@@ -142,8 +133,7 @@ div.cryptoprice p img {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	
-	margin-right:5rem;
+	margin-right: 5rem;
 }
 
 /*設定使用者圖片*/
@@ -168,18 +158,18 @@ div.cryptoprice p img {
 	}
 }
 
-/*寬度1500以上設定導覽列左右距離*/
+/*寬度1600以上設定導覽列左右距離*/
 @media ( min-width :1600px) {
 	.navRWD {
-		margin-left: 20rem;
-		margin-right: 20rem;
+		margin-left: 10rem;
+		margin-right: 10rem;
 	}
 }
 
 /*高度在900以上時設定上面距離*/
-@media(min-height:900px){
-	.content{
-		margin-top:5rem;
+@media ( min-height :900px) {
+	.content {
+		margin-top: 5rem;
 	}
 }
 
@@ -244,7 +234,6 @@ div.cryptoprice p img {
 		margin-left: 0rem;
 	}
 }
-
 </style>
 
 
@@ -277,7 +266,8 @@ div.cryptoprice p img {
 
 			<!--rigth side navbar-->
 			<div class="rightPartNav">
-				<a class="nav-link text-light" href="/crypto2/mvc/crypto/login">Assets</a> <i
+				<a class="nav-link text-light" href="/crypto2/mvc/crypto/login">Assets</a>
+				<i
 					class="bi bi-person-circle text-light h5 mb-0  d-md-block userIcon"
 					onclick="location.href='./login'"></i> <a
 					class="nav-link text-light" href="/crypto2/mvc/crypto/login">username</a>
@@ -336,9 +326,9 @@ div.cryptoprice p img {
 					<!--BTC part-->
 					<div class="btc fivecrypto ">
 						<p>
-							<img src="/crypto2/images/bitcoin.png" alt="bitcoin">BTC
+							<img src="/crypto2/images/btc.png" alt="bitcoin">BTC
 						</p>
-						<p >$276.76</p>
+						<p>$276.76</p>
 						<p style="color: red">5.52%</p>
 					</div>
 					<!--XRP part-->
@@ -402,6 +392,50 @@ div.cryptoprice p img {
 	</div>
 
 </body>
-<script src="/crypto2/js/index.js"></script>
+<script>
 
+//把WebSocket連線包成一個function
+		webSocketConnection();
+		
+		function webSocketConnection(){
+			$(function() {
+				$.ajax({
+					//利用ajax方式請求資料(在controller也要建立相同網址)
+			        url: 'http://localhost:8080/crypto2/mvc/crypto/send',
+			        success: function ( data ){
+						console.log(data);
+			        }
+			    });
+			});
+			
+			//連線是用websocket建立，相較於一般http，websocket連線可以只建立一次，不用中斷
+			var socket = new WebSocket('ws://localhost:8080/crypto2/mvc/websocket');
+			
+			//連線建立後的訊息(只發一次)
+			socket.onopen = function(event) {
+			    console.log('WebSocket連線已建立');
+			 
+		
+			};
+			
+			//只要伺服器端有新的消息，就會傳給客戶端渲染
+			socket.onmessage=function(event){
+					//將資料反序列化
+				    let message = JSON.parse(event.data);
+					console.log(message)
+					console.log(message.content)
+					let cryptos=message.content;
+					
+			
+					
+						
+		   };
+		   //連線關閉時會建立的消息(只有一次)
+			socket.onclose = function() {
+			    console.log('WebSocket連線已關閉');
+			};
+		}  
+
+</script>
+<script src="/crypto2/js/index.js"></script>
 </html>

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import spring.mvc.crypto.model.dao.CryptoDao;
+import spring.mvc.crypto.model.entity.CrawlerCurrency;
 import spring.mvc.crypto.model.entity.CryptoCurrency;
 import spring.mvc.crypto.model.entity.User;
 import spring.mvc.crypto.service.CryptoService;
@@ -160,7 +161,7 @@ public class CryptoController {
 	//定期去網站爬最新資料，把最新資料更新到資料庫
 	@GetMapping("/getCryptoInfo")
     public String getCryptoData(Model model) throws IOException {
-        List<CryptoCurrency> cryptoCurrencies = dao.findLatestCryptos();
+        List<CrawlerCurrency> cryptoCurrencies = dao.findLatestCryptos();
         model.addAttribute("cryptoCurrencies", cryptoCurrencies);
         return "market";
     }

@@ -23,6 +23,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import spring.mvc.crypto.model.dao.CryptoDao;
+import spring.mvc.crypto.model.entity.CrawlerCurrency;
 import spring.mvc.crypto.model.entity.CryptoCurrency;
 import spring.mvc.crypto.service.CryptoService;
 
@@ -63,9 +64,10 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
 		
     	//把建立的客戶端連線都加到WebSocketSession方便管理
     	sessions.add(session);
-    	List<CryptoCurrency> myCryptos=cryptoDaoMysql.findLatestCryptos();
-    	JsonObject initialMessageObject = getJsonMessage("initial", myCryptos);
-    	session.sendMessage(new TextMessage(gson.toJson(initialMessageObject)));
+    	
+    	//List<CryptoCurrency> myCryptos=cryptoDaoMysql.findLatestCryptos();
+    	//JsonObject initialMessageObject = getJsonMessage("initial", myCryptos);
+    	//session.sendMessage(new TextMessage(gson.toJson(initialMessageObject)));
     	System.out.println("連線已建立");
        
     }
@@ -115,17 +117,29 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
 	 */
     
     
-    //@Scheduled(fixedRate = 10*1000)//每10秒從資料庫撈出來最新的10筆資料
+    @Scheduled(fixedRate = 10*1000)//每10秒從資料庫撈出來最新的10筆資料
     public String sendPeriodicMessages()throws IOException{
-    	List<CryptoCurrency> cryptoCurrencies = cryptoDaoMysql.findLatestCryptos();
+    
+    	List<CrawlerCurrency> cryptoCurrencies = cryptoDaoMysql.findLatestCryptos();
+  
     	for(WebSocketSession session : sessions) {
+    		
     		if(session.isOpen()) {
-    			JsonObject cryptoObject = new JsonObject();
-    			cryptoObject.addProperty(Prop.TYPE.getName(),"cryptos");
-    			cryptoObject.add(Prop.CONTENT.getName(), gson.toJsonTree(cryptoCurrencies));
-    			logger.info("Server sends: {}", cryptoObject);
-				session.sendMessage(new TextMessage(gson.toJson(cryptoObject)));
-				
+    				//如果sessionId是0另外處理
+    				if(session.getId().equals("0")) {
+    					JsonObject testObject = new JsonObject();
+    					testObject.addProperty(Prop.TYPE.getName(),"test");
+    					testObject.add(Prop.CONTENT.getName(),gson.toJsonTree("嗨嗨"));
+    					session.sendMessage(new TextMessage(gson.toJson(testObject)));
+    				}else {
+    					
+    					JsonObject cryptoObject = new JsonObject();
+            			cryptoObject.addProperty(Prop.TYPE.getName(),"cryptos");
+            			cryptoObject.add(Prop.CONTENT.getName(), gson.toJsonTree(cryptoCurrencies));
+            			logger.info("Server sends: {}", cryptoObject);
+        				session.sendMessage(new TextMessage(gson.toJson(cryptoObject)));
+    				}
+    							
     		}
     	}
     	return "嗨";
