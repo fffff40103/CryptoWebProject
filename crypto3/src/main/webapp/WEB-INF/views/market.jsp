@@ -129,6 +129,14 @@ body {
 	}
 }
 
+@media(min-width:1400px){
+
+	.navRWD {
+		margin-left: 12rem;
+		margin-right: 12rem;
+	}
+}
+
 
 
 
@@ -157,11 +165,7 @@ body {
 	.uniquePrice{
 		padding-top:2rem;
 	}
-	/*
-	.titleRate{
-		margin-right:4rem;
-	}
-	*/
+	
 }
 
 

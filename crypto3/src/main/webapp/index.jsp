@@ -64,10 +64,9 @@ div.cryptoprice p img {
 
 /*五檔加密或幣單獨設定*/
 .fivecrypto {
-	margin-top: 0.5rem;
-	display: flex;
-	justify-content: space-evenly;
+	margin-top: 0.5rem;	
 	font-weight: bold;
+	font-size:2rem;
 }
 
 /*設定距離比特幣減半日期*/
@@ -143,7 +142,7 @@ div.cryptoprice p img {
 
 /*讓導覽列左右各有3個字的距離*/
 .navRWD {
-	margin-left: 7rem;
+	margin-left: 5rem;
 	margin-right: 5rem'
 }
 /*讓導覽列按鈕在RWD出現之後可以變換顏色*/
@@ -159,12 +158,24 @@ div.cryptoprice p img {
 }
 
 /*寬度1600以上設定導覽列左右距離*/
-@media ( min-width :1600px) {
+
+@media ( min-width :1700px) {
 	.navRWD {
 		margin-left: 18rem;
-		margin-right: 15rem;
+		margin-right: 18rem;
 	}
 }
+
+
+@media ( min-width :1600px) {
+	.navRWD {
+		margin-left: 15rem;
+		margin-right: 10rem;
+	}
+}
+
+
+
 
 /*高度在900以上時設定上面距離*/
 @media ( min-height :900px) {
@@ -322,53 +333,43 @@ div.cryptoprice p img {
 			<div class="col rightpart ">
 				<!--current price and top five hotest crypto(display:column)-->
 				<div class="cryptoprice">
-					<!--Deep control of five crypto-->
-
-
-
-					<!--BTC part-->
-					<div class="btc fivecrypto ">
-						<p>
-							<img src="/crypto2/images/btc.png" alt="bitcoin">BTC
-						</p>
-						<p>$276.76</p>
-						<p style="color: red">5.52%</p>
-					</div>
-					<!--XRP part-->
-					<div class="xrp fivecrypto ">
-						<p>
-							<img src="/crypto2/images/xrp.png" alt="xrp">XRP
-						</p>
-						<p>$276.76</p>
-						<p style="color: green">1.52%</p>
-					</div>
-					<!--BNB part-->
-					<div class="bnb fivecrypto">
-						<p>
-							<img src="/crypto2/images/bnb.png" alt="BNB">BNB
-						</p>
-						<p>$276.76</p>
-						<p style="color: green">3.62%</p>
-					</div>
-					<!--ETH part-->
-					<div class="eth fivecrypto">
-						<p>
-							<img src="/crypto2/images/eth.png" alt="ETH">ETH
-						</p>
-						<p>$276.76</p>
-						<p style="color: green">3.62%</p>
-					</div>
-					<!--USDT part-->
-					<div class="usdt fivecrypto">
-						<p>
-							<img src="/crypto2/images/usdt.png" alt="usdt">USDT
-						</p>
-						<p>$276.76</p>
-						<p style="color: red">5.52%</p>
-					</div>
-
-
-
+				
+					<div class=" container">
+						  <!-- 第一個 -->
+						  <div class="row fivecrypto">
+						    <div class="col cryptoName">名稱</div>
+						    <div class="col cryptoPrice">價格</div>
+						    <div class="col cryptoRate">漲跌</div>
+						  </div>
+					  		<!-- 第二個 -->
+						  <div class="row fivecrypto">
+						    <div class="col cryptoName">名稱</div>
+						    <div class="col cryptoPrice">價格</div>
+						    <div class="col cryptoRate">漲跌</div>
+						  </div>
+						  
+						  <!-- 第三個 -->
+						  <div class="row fivecrypto">
+						    <div class="col cryptoName">名稱</div>
+						    <div class="col cryptoPrice">價格</div>
+						    <div class="col cryptoRate">漲跌</div>
+						  </div>
+						  
+						  <!-- 第四個 -->
+						  <div class="row fivecrypto">
+						    <div class="col cryptoName">名稱</div>
+						    <div class="col cryptoPrice">價格</div>
+						    <div class="col cryptoRate">漲跌</div>
+						  </div>
+						  
+						  <!-- 第五個 -->
+						  <div class="row fivecrypto">
+						    <div class="col cryptoName">名稱</div>
+						    <div class="col cryptoPrice">價格</div>
+						    <div class="col cryptoRate">漲跌</div>
+						  </div>
+						  
+					 </div>
 
 				</div>
 				<!--Day from cut-->
@@ -396,6 +397,7 @@ div.cryptoprice p img {
 
 </body>
 <script>
+	
 	//把WebSocket連線包成一個function
 	webSocketConnection();
 
@@ -423,9 +425,30 @@ div.cryptoprice p img {
 		socket.onmessage = function(event) {
 			//將資料反序列化
 			let message = JSON.parse(event.data);
-			console.log(message)
-			console.log(message.content)
 			let cryptos = message.content;
+			
+			let allDivTags=document.querySelectorAll(".fivecrypto");
+			let count=0;
+			allDivTags.forEach((div)=>{
+				//找到貨幣名稱
+				if( typeof cryptos[count].cName!="undefined"){
+					div.querySelector(".cryptoName").innerText=cryptos[count].cName;
+				}
+				
+				//找到貨幣價格
+				
+				if( typeof cryptos[count].price!="undefined"){
+					div.querySelector(".cryptoPrice").innerText=cryptos[count].price;
+				}
+				
+				//找到貨幣漲跌幅
+				if( typeof cryptos[count].rate!="undefined"){
+					div.querySelector(".cryptoRate").innerText=cryptos[count].rate;
+				}
+				
+				count++;
+			})
+			
 
 		};
 		//連線關閉時會建立的消息(只有一次)
