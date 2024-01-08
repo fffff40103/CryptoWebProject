@@ -117,20 +117,21 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
 	 */
     
     
-    @Scheduled(fixedRate = 10*1000)//每10秒從資料庫撈出來最新的10筆資料
+    @Scheduled(fixedRate = 6000)//每10秒從資料庫撈出來最新的10筆資料
     public String sendPeriodicMessages()throws IOException{
     
     	List<CrawlerCurrency> cryptoCurrencies = cryptoDaoMysql.findLatestCryptos();
-  
+    	List<CryptoCurrency> cryptoRanking=cryptoDaoMysql.findTopFiveRanking();
     	for(WebSocketSession session : sessions) {
     		
     		if(session.isOpen()) {
     				//如果sessionId是0另外處理
     				if(session.getId().equals("0")) {
-    					JsonObject testObject = new JsonObject();
-    					testObject.addProperty(Prop.TYPE.getName(),"test");
-    					testObject.add(Prop.CONTENT.getName(),gson.toJsonTree("嗨嗨"));
-    					session.sendMessage(new TextMessage(gson.toJson(testObject)));
+    					JsonObject rankingObject = new JsonObject();
+    					rankingObject.addProperty(Prop.TYPE.getName(),"ranking");
+    					rankingObject.add(Prop.CONTENT.getName(),gson.toJsonTree(cryptoRanking));
+    					logger.info("Server sends: {}", rankingObject);
+    					session.sendMessage(new TextMessage(gson.toJson(rankingObject)));
     				}else {
     					
     					JsonObject cryptoObject = new JsonObject();

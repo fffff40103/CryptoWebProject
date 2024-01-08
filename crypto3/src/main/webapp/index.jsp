@@ -161,16 +161,18 @@ div.cryptoprice p img {
 /*寬度1600以上設定導覽列左右距離*/
 @media ( min-width :1600px) {
 	.navRWD {
-		margin-left: 10rem;
-		margin-right: 10rem;
+		margin-left: 18rem;
+		margin-right: 15rem;
 	}
 }
 
 /*高度在900以上時設定上面距離*/
 @media ( min-height :900px) {
+	
 	.content {
 		margin-top: 5rem;
 	}
+	
 }
 
 /*在寬度900以下時設定slogn寬度為螢幕寬度100，且離左邊有7個字的距離*/
@@ -192,6 +194,7 @@ div.cryptoprice p img {
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
+		margin-top: 0rem;
 	}
 }
 
@@ -393,49 +396,82 @@ div.cryptoprice p img {
 
 </body>
 <script>
+	//把WebSocket連線包成一個function
+	webSocketConnection();
 
-//把WebSocket連線包成一個function
-		webSocketConnection();
-		
-		function webSocketConnection(){
-			$(function() {
-				$.ajax({
-					//利用ajax方式請求資料(在controller也要建立相同網址)
-			        url: 'http://localhost:8080/crypto2/mvc/crypto/send',
-			        success: function ( data ){
-						console.log(data);
-			        }
-			    });
+	function webSocketConnection() {
+		$(function() {
+			$.ajax({
+				//利用ajax方式請求資料(在controller也要建立相同網址)
+				url : 'http://localhost:8080/crypto2/mvc/crypto/send',
+				success : function(data) {
+					console.log(data);
+				}
 			});
-			
-			//連線是用websocket建立，相較於一般http，websocket連線可以只建立一次，不用中斷
-			var socket = new WebSocket('ws://localhost:8080/crypto2/mvc/websocket');
-			
-			//連線建立後的訊息(只發一次)
-			socket.onopen = function(event) {
-			    console.log('WebSocket連線已建立');
-			 
-		
-			};
-			
-			//只要伺服器端有新的消息，就會傳給客戶端渲染
-			socket.onmessage=function(event){
-					//將資料反序列化
-				    let message = JSON.parse(event.data);
-					console.log(message)
-					console.log(message.content)
-					let cryptos=message.content;
-					
-			
-					
-						
-		   };
-		   //連線關閉時會建立的消息(只有一次)
-			socket.onclose = function() {
-			    console.log('WebSocket連線已關閉');
-			};
-		}  
+		});
 
+		//連線是用websocket建立，相較於一般http，websocket連線可以只建立一次，不用中斷
+		var socket = new WebSocket('ws://localhost:8080/crypto2/mvc/websocket');
+
+		//連線建立後的訊息(只發一次)
+		socket.onopen = function(event) {
+			console.log('WebSocket連線已建立');
+
+		};
+
+		//只要伺服器端有新的消息，就會傳給客戶端渲染
+		socket.onmessage = function(event) {
+			//將資料反序列化
+			let message = JSON.parse(event.data);
+			console.log(message)
+			console.log(message.content)
+			let cryptos = message.content;
+
+		};
+		//連線關閉時會建立的消息(只有一次)
+		socket.onclose = function() {
+			console.log('WebSocket連線已關閉');
+		};
+	}
+
+	//**************************************************************************************
+	//算出今天與目標日期的時間差，得出的結果是毫秒
+	function getTimeDifference(targetDate) {
+		let today = new Date();
+
+		return targetDate - today;
+
+	}
+
+	function updateTime() {
+		//設定目標天數
+		let targetDate = new Date('04/19/2024 17:34:50');
+
+		//取得現在與目標天數的天數差換成毫秒
+		let timeDifference = getTimeDifference(targetDate);
+
+		//得到毫秒後除1000=秒，再除60=分鐘，再除60=小時，再除24=一天
+		let days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+		document.querySelector(".day").innerHTML = days + "<span>D</span>";
+
+		//拿到上面天數的餘數，然後除1000=秒，再除60=分鐘，再除60=小時
+		let hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24))
+				/ (1000 * 60 * 60))
+
+		document.querySelector(".hour").innerHTML = hours + "<span>H</span>";
+
+		//拿到上面天數的餘數，然後除1000=秒，再除60=分鐘
+		let minutes = Math.floor((timeDifference % (1000 * 60 * 60))
+				/ (1000 * 60));
+		document.querySelector(".minute").innerHTML = minutes
+				+ "<span>M</span>";
+
+		//拿到上面天數的餘數，然後除1000=秒
+		let seconds = Math.floor((timeDifference % (1000 * 60)) / (1000));
+		document.querySelector(".second").innerHTML = seconds
+				+ "<span>S</span>";
+	}
+	//設定排程(多久執行一次)
+	setInterval(updateTime, 1000);
 </script>
-<script src="/crypto2/js/index.js"></script>
 </html>

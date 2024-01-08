@@ -34,9 +34,7 @@ public class CryptoController {
 	@Autowired
 	private CryptoDao dao;
 	
-	@Autowired()
-	@Qualifier(value="cryptoServiceImpl")
-	private CryptoService service;
+
 	
 
 	//登入頁面

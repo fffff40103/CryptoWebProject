@@ -106,7 +106,7 @@ public class CryptoServiceImpl2 implements CryptoService {
 				System.out.println("--------------------");
 				count++;
 				cryptoNumber++;
-				if(count>5) {
+				if(count>10) {
 					break;
 				}
 						

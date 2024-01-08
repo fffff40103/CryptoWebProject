@@ -89,7 +89,8 @@ public class CryptoDaoMySQL implements CryptoDao {
 	//2.查詢最熱門的5隻貨幣
 	@Override
 	public List<CryptoCurrency> findTopFiveRanking() {
-		String sql="select cNumber,cName,price,rate,cap from cryptoinfo";
+		String sql="select cNumber,cName,price,rate,cap from cryptoinfo limit 5";
+		return jdbcTemplate.query(sql,new BeanPropertyRowMapper<>(CryptoCurrency.class));
 	}
 	
     //  3.新增貨幣

@@ -121,11 +121,11 @@ body {
 }
 
 
-@media(min-width:1500px){
+@media(min-width:1600px){
 
 	.navRWD {
-		margin-left: 10rem;
-		margin-right: 10rem;
+		margin-left: 18rem;
+		margin-right: 18rem;
 	}
 }
 
