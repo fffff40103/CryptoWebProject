@@ -32,7 +32,13 @@ body {
 .slog {
 	font-size: 5rem;
 }
-
+.fivecrypto{
+	img{
+	  margin-top:0.5rem;
+	  width:25px;
+	  height:25px;
+	}
+}
 /*把內容設定最高低高度為100vh*/
 /*set min-height as 100vh*/
 .content {
@@ -56,17 +62,13 @@ body {
 	border-radius: 15px;
 }
 
-/*設定五檔加密或幣圖片高度寬度*/
-div.cryptoprice p img {
-	width: 2rem;
-	height: 2rem;
-}
+
 
 /*五檔加密或幣單獨設定*/
 .fivecrypto {
 	margin-top: 0.5rem;	
 	font-weight: bold;
-	font-size:2rem;
+	font-size:1.5rem;
 }
 
 /*設定距離比特幣減半日期*/
@@ -159,18 +161,11 @@ div.cryptoprice p img {
 
 /*寬度1600以上設定導覽列左右距離*/
 
-@media ( min-width :1700px) {
-	.navRWD {
-		margin-left: 18rem;
-		margin-right: 18rem;
-	}
-}
-
 
 @media ( min-width :1600px) {
 	.navRWD {
-		margin-left: 15rem;
-		margin-right: 10rem;
+		margin-left: 19rem;
+		margin-right: 12rem;
 	}
 }
 
@@ -186,8 +181,8 @@ div.cryptoprice p img {
 	
 }
 
-/*在寬度900以下時設定slogn寬度為螢幕寬度100，且離左邊有7個字的距離*/
-@media ( max-width : 900px) {
+/*在寬度1000以下時設定slogn寬度為螢幕寬度100，且離左邊有7個字的距離*/
+@media ( max-width : 1000px) {
 	.slog {
 		width: 100vw;
 		margin-left: 7rem;
@@ -337,36 +332,37 @@ div.cryptoprice p img {
 					<div class=" container">
 						  <!-- 第一個 -->
 						  <div class="row fivecrypto">
-						    <div class="col cryptoName">名稱</div>
-						    <div class="col cryptoPrice">價格</div>
-						    <div class="col cryptoRate">漲跌</div>
+						    <div class="col cryptoName d-flex justify-content-center "></div>
+						    <div class="col cryptoPrice"></div>
+						    <div class="col cryptoRate"></div>
 						  </div>
 					  		<!-- 第二個 -->
 						  <div class="row fivecrypto">
-						    <div class="col cryptoName">名稱</div>
-						    <div class="col cryptoPrice">價格</div>
-						    <div class="col cryptoRate">漲跌</div>
+						    <div class="col cryptoName d-flex justify-content-center"></div>
+						    <div class="col cryptoPrice "></div>
+						    <div class="col cryptoRate"></div>
 						  </div>
 						  
 						  <!-- 第三個 -->
 						  <div class="row fivecrypto">
-						    <div class="col cryptoName">名稱</div>
-						    <div class="col cryptoPrice">價格</div>
-						    <div class="col cryptoRate">漲跌</div>
+						    <div class="col cryptoName d-flex justify-content-center ms-2"></div>
+						    <div class="col cryptoPrice me-1"></div>
+						    <div class="col cryptoRate"></div>
 						  </div>
 						  
 						  <!-- 第四個 -->
 						  <div class="row fivecrypto">
-						    <div class="col cryptoName">名稱</div>
-						    <div class="col cryptoPrice">價格</div>
-						    <div class="col cryptoRate">漲跌</div>
+						    <div class="col cryptoName d-flex justify-content-center "> </div>
+						    <div class="col cryptoPrice"></div>
+						    <div class="col cryptoRate"></div>
 						  </div>
 						  
 						  <!-- 第五個 -->
 						  <div class="row fivecrypto">
-						    <div class="col cryptoName">名稱</div>
-						    <div class="col cryptoPrice">價格</div>
-						    <div class="col cryptoRate">漲跌</div>
+						    <div class="col cryptoName d-flex justify-content-center ">
+						    </div>
+						    <div class="col cryptoPrice"></div>
+						    <div class="col cryptoRate"></div>
 						  </div>
 						  
 					 </div>
@@ -431,19 +427,44 @@ div.cryptoprice p img {
 			let count=0;
 			allDivTags.forEach((div)=>{
 				//找到貨幣名稱
-				if( typeof cryptos[count].cName!="undefined"){
-					div.querySelector(".cryptoName").innerText=cryptos[count].cName;
+				if( typeof cryptos[count].cName!="undefined"&&cryptos.length==5){
+					let name=cryptos[count].cName;
+					let nameDiv=div.querySelector(".cryptoName");
+					if(nameDiv.querySelector("p")===null){
+						let imgTag=document.createElement("img");
+						imgTag.src="/crypto2/images/"+name.toLowerCase()+".png";
+						let pTag=document.createElement("p");
+						pTag.innerText=cryptos[count].cName;
+						nameDiv.appendChild(imgTag);
+						nameDiv.appendChild(pTag);
+						
+					}else{
+						let nameDiv=div.querySelector(".cryptoName");
+						nameDiv.querySelector("p").innerText=cryptos[count].cName;
+						nameDiv.querySelector("img").src="/crypto2/images/"+name.toLowerCase()+".png";
+					}
+					
 				}
 				
 				//找到貨幣價格
 				
-				if( typeof cryptos[count].price!="undefined"){
+				if( typeof cryptos[count].price!="undefined"&&cryptos.length==5){
 					div.querySelector(".cryptoPrice").innerText=cryptos[count].price;
 				}
 				
 				//找到貨幣漲跌幅
-				if( typeof cryptos[count].rate!="undefined"){
-					div.querySelector(".cryptoRate").innerText=cryptos[count].rate;
+				if( typeof cryptos[count].rate!="undefined"&&cryptos.length==5){
+					
+					let rate=cryptos[count].rate;
+					
+			
+					if(rate>=0){
+						div.querySelector(".cryptoRate").innerText="+"+cryptos[count].rate+"%";
+						div.querySelector(".cryptoRate").style.color="green";
+					}else{
+						div.querySelector(".cryptoRate").innerText=cryptos[count].rate+"%";
+						div.querySelector(".cryptoRate").style.color="red";
+					}
 				}
 				
 				count++;

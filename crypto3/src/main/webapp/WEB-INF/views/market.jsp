@@ -80,6 +80,15 @@ body {
 	
 }
 
+.uniquePrice{
+
+	img{
+	  margin-top:0.5rem;
+	  width:25px;
+	  height:25px;
+	}
+}
+
 
 .price p{
 	margin-top:1.5rem;
@@ -121,19 +130,13 @@ body {
 }
 
 
-@media(min-width:1600px){
+/*寬度1600以上設定導覽列左右距離*/
 
+
+@media ( min-width :1600px) {
 	.navRWD {
-		margin-left: 18rem;
+		margin-left: 19rem;
 		margin-right: 18rem;
-	}
-}
-
-@media(min-width:1400px){
-
-	.navRWD {
-		margin-left: 12rem;
-		margin-right: 12rem;
 	}
 }
 
@@ -147,6 +150,13 @@ body {
 		width: 5vw;
 	}
 	
+	.uniquePrice{
+	img{
+	  margin-top:0rem;
+	  width:25px;
+	  height:25px;
+	}
+}
 	
 }
 
@@ -270,7 +280,7 @@ body {
 	</nav>
 	
 	<!--Crpto行情以及標題內容(新版)-->
-	<div class=" container">
+	<div class=" container my-5">
 	  <div class="row title">
 	    <div class="col">名稱</div>
 	    <div class="col">價格</div>
@@ -279,79 +289,79 @@ body {
 	  </div>
 	  <!-- BTC -->
 	  <div class="row uniquePrice BTC">
-	    <div class="col cName">BTC</div>
-	    <div class="col price">45265.1$</div>
-	    <div class="col rate  ">7.18</div>
-	    <div class="col cap">$886.99B</div>
+	    <div class="col cName d-flex "></div>
+	    <div class="col price"></div>
+	    <div class="col rate  "></div>
+	    <div class="col cap"></div>
 	  </div>
 	    <!-- ETH -->
 	  <div class="row uniquePrice">
-	    <div class="col cName">ETH</div>
-	    <div class="col price">2379.27$</div>
-	    <div class="col rate  me-2">4.55</div>
-	    <div class="col cap">$286.86B</div>
+	    <div class="col cName d-flex "></div>
+	    <div class="col price"></div>
+	    <div class="col rate  me-2"></div>
+	    <div class="col cap"></div>
 	  </div>
 	  
 	    <!-- USDT -->
 	  <div class="row uniquePrice">
-	    <div class="col cName">USDT</div>
-	    <div class="col price">1.0007$</div>
-	    <div class="col rate">0.01</div>
-	    <div class="col cap">$91.77B</div>
+	    <div class="col cName d-flex "></div>
+	    <div class="col price"></div>
+	    <div class="col rate"></div>
+	    <div class="col cap"></div>
 	  </div>
 	    <!-- SOL -->
 	  <div class="row uniquePrice">
-	    <div class="col cName">SOL</div>
-	    <div class="col price">112.357$</div>
-	    <div class="col rate">8.5</div>
-	    <div class="col cap">$91.77B</div>
+	    <div class="col cName d-flex "></div>
+	    <div class="col price"></div>
+	    <div class="col rate"></div>
+	    <div class="col cap"></div>
 	  </div>
 	    <!-- BNB -->
 	  <div class="row uniquePrice">
-	    <div class="col cName">BNB</div>
-	    <div class="col price">112.357$</div>
-	    <div class="col rate">8.5</div>
-	    <div class="col cap">$91.77B</div>
+	    <div class="col cName d-flex "></div>
+	    <div class="col price"></div>
+	    <div class="col rate"></div>
+	    <div class="col cap"></div>
 	  </div>
 	  
 	    <!-- XRP -->
 	  <div class="row uniquePrice">
-	    <div class="col cName">XRP</div>
-	    <div class="col price">112.357$</div>
-	    <div class="col rate ">8.5</div>
-	    <div class="col cap">$91.77B</div>
+	    <div class="col cName d-flex "></div>
+	    <div class="col price"></div>
+	    <div class="col rate "></div>
+	    <div class="col cap"></div>
 	  </div>
 	    <!-- USDC -->
 	   <div class="row uniquePrice">
-	    <div class="col cName">USDC</div>
-	    <div class="col price">112.357$</div>
-	    <div class="col rate ">8.5</div>
-	    <div class="col cap">$91.77B</div>
+	    <div class="col cName d-flex "></div>
+	    <div class="col price"></div>
+	    <div class="col rate "></div>
+	    <div class="col cap"></div>
 	
 	   </div>
 		  <!-- ADA -->
 	   <div class="row uniquePrice">
-	    <div class="col cName">ADA</div>
-	    <div class="col price">112.357$</div>
-	    <div class="col rate">8.5</div>
-	    <div class="col cap">$91.77B</div>
+	    <div class="col cName d-flex "></div>
+	    <div class="col price"></div>
+	    <div class="col rate"></div>
+	    <div class="col cap"></div>
 	  </div>
 	
 	  	<!-- stETH -->
 		<div class="row uniquePrice">
-		    <div class="col cName">stETH</div>
-		    <div class="col price">112.357$</div>
-		    <div class="col rate">8.5</div>
-		    <div class="col cap">$91.77B</div>
+		    <div class="col cName d-flex "></div>
+		    <div class="col price"></div>
+		    <div class="col rate"></div>
+		    <div class="col cap"></div>
 		
 		</div>
 		
 		  <!-- AVAX -->
 		<div class="row uniquePrice">
-		    <div class="col cName">AVAX</div>
-			<div class="col price">112.357$</div>
-			<div class="col rate">8.5</div>
-			<div class="col cap">$91.77B</div>
+		    <div class="col cName d-flex "></div>
+			<div class="col price"></div>
+			<div class="col rate"></div>
+			<div class="col cap"></div>
 		</div>
 
 
@@ -389,8 +399,6 @@ body {
 			socket.onmessage=function(event){
 					//將資料反序列化
 				    let message = JSON.parse(event.data);
-					console.log(message)
-					console.log(message.content)
 					let cryptos=message.content;
 					
 			
@@ -402,15 +410,28 @@ body {
 						//得到每個貨幣的名稱、價錢、漲跌幅、市值
 						
 						/*名字*/
-						
-						if( typeof cryptos[count].pName!="undefined"){
-							div.querySelector(".cName").innerText=cryptos[count].pName;
+						if( typeof cryptos[count].pName!="undefined"&&cryptos.length==10){
+							let name=cryptos[count].pName;
+							let nameDiv=div.querySelector(".cName");
+							if(nameDiv.querySelector("p")===null){
+								let imgTag=document.createElement("img");
+								imgTag.src="/crypto2/images/"+name.toLowerCase()+".png";
+								let pTag=document.createElement("p");
+								pTag.innerText=cryptos[count].pName;
+								nameDiv.appendChild(imgTag);
+								nameDiv.appendChild(pTag);
+								
+							}else{
+								let nameDiv=div.querySelector(".cName");
+								nameDiv.querySelector("p").innerText=cryptos[count].pName;
+								nameDiv.querySelector("img").src="/crypto2/images/"+name.toLowerCase()+".png";
+							}
+							
 						}
-						let cName=cryptos[count].pName;
 						
 						
 						/*價格*/
-						if(typeof cryptos[count].pPrice!="undefined"){
+						if(typeof cryptos[count].pPrice!="undefined"&&cryptos.length==10){
 							div.querySelector(".price").innerText="$"+cryptos[count].pPrice;
 						}
 						
@@ -418,26 +439,23 @@ body {
 						let price=cryptos[count].pPrice+"$";
 						
 						/*漲幅*/
-						if(typeof cryptos[count].pCap!="undefined"){
-							div.querySelector(".rate").innerText=cryptos[count].pRate+"%";
-						}
-						
-						if(cryptos[count].pRate>=0){
-							div.querySelector(".rate").innerText="+"+cryptos[count].pRate+"%";
-						}
-						
-						let rate=cryptos[count].pRate;
-						
-						
-						if(rate<0){
-							div.querySelector(".rate").style.color="red";
-						}else{
-							div.querySelector(".rate").style.color="green";
+						if( typeof cryptos[count].pRate!="undefined"&&cryptos.length==10){
+							
+							let rate=cryptos[count].pRate;
+							
+					
+							if(rate>=0){
+								div.querySelector(".rate").innerText="+"+cryptos[count].pRate+"%";
+								div.querySelector(".rate").style.color="green";
+							}else{
+								div.querySelector(".rate").innerText=cryptos[count].pRate+"%";
+								div.querySelector(".rate").style.color="red";
+							}
 						}
 						
 						/*市值*/
 						
-						if(typeof cryptos[count].pCap!="undefined"){
+						if(typeof cryptos[count].pCap!="undefined"&&cryptos.length==10){
 							
 							
 							div.querySelector(".cap").innerText=cryptos[count].pCap;
