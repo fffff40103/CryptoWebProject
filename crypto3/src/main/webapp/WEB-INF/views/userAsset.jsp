@@ -1,85 +1,76 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>User</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-  <style>
-  	
-/*   Css RWD排版規則，由大排到小，同屬性的話會單獨排，如果只有單一屬性會在最下面    */
-	  
-	
-*{
-	margin:0;
-	padding:0;
-	box-sizing:border-box;
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User</title>
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css"
+	rel="stylesheet">
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+<style>
 
+/*   Css RWD排版規則，由大排到小，同屬性的話會單獨排，如果只有單一屬性會在最下面    */
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
 }
 
-img{
+img {
 	width: 2rem;
 	height: 2rem;
 }
 
 body {
 	background-color: white;
-	
 }
-
-
 
 /*黑色被景色的框框以及標題*/
 .title {
-	
-	padding-bottom:1rem;
+	padding-bottom: 1rem;
 	display: flex;
-
 	/*設定標題排版*/
 	font-size: 2rem;
 	/*設定字體大小*/
 	color: black;
-	padding-top:1rem;
-	
-	font-weight:bold;
-
+	padding-top: 1rem;
+	font-weight: bold;
+}
+/***********test***************/
+input{
+	border:none;
+	outline:none;
 }
 
+table, tr, td,th, tbody {
+  border: none;
+  padding: 0;
+  margin: 0;
+}
 
-
-
-
-
-
-.amount{
-	background-color:#f6f6f6;
+/************test**********************/
+.amount {
+	background-color: #f6f6f6;
 }
 /*設定市場價格幣種圖片大小*/
 
-
 /*在每個不同的幣種相同的uniquePrice設定相同的屬性*/
 .uniquePrice {
-	display: flex;
-	/*設定標題排版*/
-	justify-content: space-between;
 
-	/*設定標題排版*/
 	font-size: 1.5rem;
 	/*設定字體大小*/
 	color: black;
-	padding-top:1.5rem;
-	
-
-	
+	padding-top: 1.5rem;
 }
-
-
-
 
 /*設定nav bar右半邊*/
 .rightPartNav {
@@ -116,13 +107,31 @@ body {
 	margin-right: 3rem;
 }
 
-
-@media(min-width:1500px){
-
+/*寬度1650以上設定導覽列左右距離*/
+@media ( min-width :1650px) {
 	.navRWD {
-		margin-left: 10rem;
+		margin-left: 18rem;
+		margin-right: 15rem;
+	}
+}
+
+
+
+
+/*寬度1600以上設定導覽列左右距離*/
+@media ( min-width :1600px) {
+	.navRWD {
+		margin-left: 12rem;
 		margin-right: 10rem;
 	}
+}
+
+@media(max-width:1450px){
+	.navRWD {
+		margin-left: 5rem;
+		margin-right: 5rem;
+	}
+
 }
 
 /*登出按鈕RWD設定*/
@@ -131,26 +140,20 @@ body {
 		height: 10vh;
 		width: 5vw;
 	}
-	
-	
 }
 
-
-@media(max-width:600px){
-	.container{
-		width:100%;
+@media ( max-width :600px) {
+	.container {
+		width: 100%;
 	}
-
-	.container div{
-		font-size:1rem;
+	.container div {
+		font-size: 1rem;
 	}
-	
 	.amount {
-		  width: 100vw;
-		  text-align: center;
+		width: 100vw;
+		text-align: center;
 	}
 }
-
 
 /*在寬度為450時讓導覽列左右沒有距離*/
 @media ( max-width :450px) {
@@ -167,20 +170,15 @@ body {
 		/*把標題字體縮小做RWD*/
 		font-weight: 200;
 	}
-	
-	
 }
 
 /*在螢幕寬度350以下時讓幣價都呈現為螢幕最大寬度，並且把字體縮小*/
 @media ( max-width :350px) {
-	
-	.uniquePrice div  {
+	.uniquePrice div {
 		font-size: 1rem;
-		
 	}
-	
-	.uniquePrice{
-		padding-top:2rem;
+	.uniquePrice {
+		padding-top: 2rem;
 	}
 }
 
@@ -213,205 +211,281 @@ body {
 		font-size: 15px;
 	}
 }
-
 </style>
-  	
-  
+
+
 
 </head>
 
 <body>
-  <!--navbar-->
+	<!--navbar-->
 
-  <nav class="navbar navbar-expand-lg navbar-light  ">
-    <!--Left side navbar-->
-    <div class="container-fluid  fs-5 navRWD ">
-      <a class="navbar-brand text-dark fs-2 fw-bolder" href="#">ZheZhe</a>
-      <button class="navbar-toggler buttonRWD text-dark" type="button" data-bs-toggle="collapse"
-        data-bs-target="#navbarNavDropdown " aria-controls="navbarNavDropdown" aria-expanded="false"
-        aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon "></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNavDropdown">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link active text-dark" aria-current="page" href="./market">Markets</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link text-dark" href="./chart">Chart</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link text-dark" href="./staking">Staking</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link text-dark" href="./transaction">Transaction</a>
-          </li>
+	<nav class="navbar navbar-expand-lg navbar-light  ">
+		<!--Left side navbar-->
+		<div class="container-fluid  fs-5 navRWD ">
+			<a class="navbar-brand text-dark fs-2 fw-bolder" href="#">ZheZhe</a>
+			<button class="navbar-toggler buttonRWD text-dark" type="button"
+				data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown "
+				aria-controls="navbarNavDropdown" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon "></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarNavDropdown">
+				<ul class="navbar-nav">
+					<li class="nav-item"><a class="nav-link active text-dark"
+						aria-current="page" href="./market">Markets</a></li>
+					<li class="nav-item"><a class="nav-link text-dark"
+						href="./chart">Chart</a></li>
+					<li class="nav-item"><a class="nav-link text-dark"
+						href="./staking">Staking</a></li>
+					<li class="nav-item"><a class="nav-link text-dark"
+						href="./transaction">Transaction</a></li>
 
 
-        </ul>
-      </div>
+				</ul>
+			</div>
 
-      <!--rigth side navbar-->
-      <div class="rightPartNav">
-        <i class="bi bi-person-circle text-dark h5 mb-0  d-md-block userIcon" onclick=""></i>
-        <a class="nav-link text-dark" href="#">${ user.username }</a>
-        <div class="logoutButton d-none ">
-          <a href="./logout" >登出</a>
-        </div>
-      </div>
-    </div>
-  </nav>
-  
-
-	
-  
- 
-  
-  <!-- --------------------------------------------- -->
-  <div class=" container">
-  
-  	 <!--錢包餘額-->
-	  <div class="row cryptoBody">
-	    <div class="amount">
-	      <p>總資產</p>
-	      <h2>20.2USDT</h2>
-	      <p class="TWD">≈NT$6.83</p>
-	    </div>
-	  </div>
-  
-  
-  
-	  <div class="row title">
-	    <div class="col">幣種</div>
-	    <div class="col">數量</div>
-	    <div class="col">現價</div>
-	    <div class="col">交易</div>
-	  </div>
-	  <!-- BTC -->
-	  <div class="row uniquePrice BTC">
-	    <div class="col name "><img src="/crypto2/images/btc.png" alt="">BTC</div>
-	    <div class="col number">15</div>
-	    <div class="col rate">45265.1$</div>
-	    <div class="col trans">
-	    	<button>買入</button>
-	    	<button>賣出</button>
-	    </div>
-	    
-	  </div>
-	    <!-- ETH -->
-	  <div class="row uniquePrice">
-	    <div class="col name"><img src="/crypto2/images/eth.png" alt="">ETH</div>
-	    <div class="col number">122</div>
-	    <div class="col rate">2379.27$</div>
-	     <div class="col trans">
-	    	<button>買入</button>
-	    	<button>賣出</button>
-	    </div>
-	  
-	  </div>
-	  
-	    <!-- USDT -->
-	  <div class="row uniquePrice">
-	    <div class="col name"><img src="/crypto2/images/usdt.png" alt="">USDT</div>
-	    <div class="col number">25</div>
-	    <div class="col rate">1.0007$</div>
-	     <div class="col trans">
-	    	<button>買入</button>
-	    	<button>賣出</button>
-	    </div>
-	   
-	  </div>
-	    <!-- SOL -->
-	  <div class="row uniquePrice">
-	    <div class="col name"><img src="/crypto2/images/sol.jpg" alt="">SOL</div>
-	    <div class="col number">12</div>
-	    <div class="col rate">112.357$</div>
-	     <div class="col trans">
-	    	<button>買入</button>
-	    	<button>賣出</button>
-	    </div>
-	   
-	  </div>
-	    <!-- BNB -->
-	  <div class="row uniquePrice">
-	    <div class="col name"><img src="/crypto2/images/bnb.png" alt="">BNB</div>
-	    <div class="col number">12</div>
-	    <div class="col rate">112.357$</div>
-	     <div class="col trans">
-	    	<button>買入</button>
-	    	<button>賣出</button>
-	    </div>
-	  
-	  </div>
-	  
-	    <!-- XRP -->
-	  <div class="row uniquePrice">
-	    <div class="col name"><img src="/crypto2/images/xrp.png" alt="">XRP</div>
-	    <div class="col number">520</div>
-	    <div class="col rate">112.357$</div>
-	     <div class="col trans">
-	    	<button>買入</button>
-	    	<button>賣出</button>
-	    </div>
-	    
-	  </div>
-	    <!-- USDC -->
-	   <div class="row uniquePrice">
-	    <div class="col name"><img src="/crypto2/images/usdc.png" alt="">USDC</div>
-	    <div class="col number">322</div>
-	    <div class="col rate">112.357$</div>
-	     <div class="col trans">
-	    	<button>買入</button>
-	    	<button>賣出</button>
-	    </div>
-	 
-	
-	   </div>
-		  <!-- ADA -->
-	   <div class="row uniquePrice">
-	    <div class="col name"><img src="/crypto2/images/ada.png" alt="">ADA</div>
-	    <div class="col number">147</div>
-	    <div class="col rate">112.357$</div>
-	     <div class="col trans">
-	    	<button>買入</button>
-	    	<button>賣出</button>
-	    </div>
-	   
-	  </div>
-	
-	  	<!-- stETH -->
-		<div class="row uniquePrice">
-		    <div class="col name"><img src="/crypto2/images/steth.png" alt="">stETH</div>
-		    <div class="col number">22</div>
-		    <div class="col rate">112.357$</div>
-		    <div class="col trans">
-		    	<button>買入</button>
-		    	<button>賣出</button>
-	   		</div>
-		
-		
+			<!--rigth side navbar-->
+			<div class="rightPartNav">
+				<i
+					class="bi bi-person-circle text-dark h5 mb-0  d-md-block userIcon"
+					onclick=""></i> <a class="nav-link text-dark" href="#">${ user.username }</a>
+				<div class="logoutButton d-none ">
+					<a href="./logout">登出</a>
+				</div>
+			</div>
 		</div>
-		
-		  <!-- AVAX -->
-		<div class="row uniquePrice">
-		    <div class="col name"><img src="/crypto2/images/avax.png" alt="">AVAX</div>
-			<div class="col number">323</div>
-			<div class="col rate">112.357$</div>
-			<div class="col trans">
-		    	<button>買入</button>
-		    	<button>賣出</button>
-	    	</div>
-		
-		</div>
+	</nav>
 
+
+
+
+
+
+	<!-- --------------------------------------------- -->
+	<div class=" container">
+
+			<!--錢包餘額-->
+			<div class="row cryptoBody">
+				<div class="amount">
+					<p>總資產</p>
+					<h2>20.2USDT</h2>
+					<p class="TWD">≈NT$6.83</p>
+				</div>
+			</div>
+
+			
+			<form class="row table ms-5">
+				<table class="row table">
+					<thead >
+						<tr class="row title">
+							<th class="col ">幣種</th>
+							<th class="col ">數量</th>
+							<th class="col ">限價</th>
+							<th class="col ">交易</th>									
+						</tr>
+					</thead>
+					
+					<tbody>
+					    <tr class="row uniquePrice">
+					    	<td class="col name">
+					    		<img src="/crypto2/images/btc.png">
+					    		<input value="BTC" readonly>
+					    	</td>
+					    	<td class="col amount"><input value="422" readonly></td>	
+					    	<td class="col price"><input value="42325.6" readonly></td>
+					    	<td class="col trans">
+						    	<button>買入</button>
+								<button>賣出</button>
+					    	</td>
+					    </tr>
+					    
+					    <tr class="row uniquePrice">
+					    	<td class="col name">
+					    		<img src="/crypto2/images/eth.png">
+					    		<input value="ETH" readonly>
+					    	</td>
+					    	<td class="col amount"><input value="15" readonly></td>	
+					    	<td class="col price"><input value="2235.6" readonly></td>
+					    	<td class="col tarns">
+						    	<button>買入</button>
+								<button>賣出</button>
+					    	</td>
+					    </tr>
+					    
+					    <tr class="row uniquePrice">
+					    	<td class="col name">
+					    		<img src="/crypto2/images/usdt.png">
+					    		<input value="USDT" readonly>
+					    	</td>
+					    	<td class="col amount"><input value="22" readonly></td>	
+					    	<td class="col price"><input value="1.007" readonly></td>
+					    	<td class="col trans">
+						    	<button>買入</button>
+								<button>賣出</button>
+					    	</td>
+					    </tr>
+					    
+					    <tr class="row uniquePrice">
+					    	<td class="col name">
+					    		<img src="/crypto2/images/bnb.png">
+					    		<input value="BNB" readonly>
+					    	</td>
+					    	<td class="col amount"><input value="5" readonly></td>	
+					    	<td class="col price"><input value="233" readonly></td>
+					    	<td class="col trans">
+						    	<button>買入</button>
+								<button>賣出</button>
+					    	</td>
+					    </tr>
+					    
+					    <tr class="row uniquePrice">
+					    	<td class="col name">
+					    		<img src="/crypto2/images/sol.png">
+					    		<input value="SOL" readonly>
+					    	</td>
+					    	<td class="col amount"><input value="36" readonly></td>	
+					    	<td class="col price"><input value="98.5" readonly></td>
+					    	<td class="col trans">
+						    	<button>買入</button>
+								<button>賣出</button>
+					    	</td>
+					    </tr>
+					    
+					    <tr class="row uniquePrice">
+					    	<td class="col name">
+					    		<img src="/crypto2/images/xrp.png">
+					    		<input value="XRP" readonly>
+					    	</td>
+					    	<td class="col amount"><input value="27.5" readonly></td>	
+					    	<td class="col price"><input value="0.5619" readonly></td>
+					    	<td class="col trans">
+						    	<button>買入</button>
+								<button>賣出</button>
+					    	</td>
+					    </tr>
+					    
+					    <tr class="row uniquePrice">
+					    	<td class="col name">
+					    		<img src="/crypto2/images/usdc.png">
+					    		<input value="USDC" readonly>
+					    	</td>
+					    	<td class="col amount"><input value="0" readonly></td>	
+					    	<td class="col price"><input value="0.9995" readonly></td>
+					    	<td class="col trans">
+						    	<button>買入</button>
+								<button>賣出</button>
+					    	</td>
+					    </tr>
+					    
+					    <tr class="row uniquePrice">
+					    	<td class="col name">
+					    		<img src="/crypto2/images/steth.png">
+					    		<input value="stETH" readonly>
+					    	</td>
+					    	<td class="col amount"><input value="15" readonly></td>	
+					    	<td class="col price"><input value="2283" readonly></td>
+					    	<td class="col trans">
+						    	<button>買入</button>
+								<button>賣出</button>
+					    	</td>
+					    </tr>
+					    
+					    <tr class="row uniquePrice">
+					    	<td class="col name">
+					    		<img src="/crypto2/images/ada.png">
+					    		<input value="ADA" readonly>
+					    	</td>
+					    	<td class="col amount"><input value="0" readonly></td>	
+					    	<td class="col price"><input value="0.5135" readonly></td>
+					    	<td class="col trans">
+						    	<button>買入</button>
+								<button>賣出</button>
+					    	</td>
+					    </tr>
+					    
+					    <tr class="row uniquePrice">
+					    	<td class="col name">
+					    		<img src="/crypto2/images/avax.png">
+					    		<input value="AVAX" readonly>
+					    	</td>
+					    	<td class="col amount"><input value="11" readonly></td>	
+					    	<td class="col price"><input value="33.66" readonly></td>
+					    	<td class="col trans">
+						    	<button>買入</button>
+								<button>賣出</button>
+					    	</td>
+					    </tr>
+					    
+					    
+						
+					</tbody>
+				
+				</table>
+				
+				 
+			
+			
+				
+			
+			
+			</form>
+		
+		
 
 	</div>
+
 </body>
 <script>
- 
+//把WebSocket連線包成一個function
+webSocketConnection();
 
-  
-  /*設定登出按鈕*/
+function webSocketConnection(){
+	$(function() {
+		$.ajax({
+			//利用ajax方式請求資料(在controller也要建立相同網址)
+	        url: 'http://localhost:8080/crypto2/mvc/crypto/send',
+	        success: function ( data ){
+				console.log(data);
+	        }
+	    });
+	});
+	
+	//連線是用websocket建立，相較於一般http，websocket連線可以只建立一次，不用中斷
+	var socket = new WebSocket('ws://localhost:8080/crypto2/mvc/websocket');
+	
+	//連線建立後的訊息(只發一次)
+	socket.onopen = function(event) {
+	    console.log('WebSocket連線已建立');
+	 
+
+	};
+	
+	//只要伺服器端有新的消息，就會傳給客戶端渲染
+	socket.onmessage=function(event){
+			//將資料反序列化
+		    let message = JSON.parse(event.data);
+			let cryptos=message.content;
+			
+	
+			let allTrs=document.querySelectorAll(".uniquePrice");
+
+			allTrs.forEach((tr)=>{
+				console.log(tr)
+			})
+		
+			
+				
+   };
+   //連線關閉時會建立的消息(只有一次)
+	socket.onclose = function() {
+	    console.log('WebSocket連線已關閉');
+	};
+}  
+
+
+
+  /***********************設定登出按鈕*********************************************/
   let test = document.querySelector(".userIcon");
   let test1 = document.querySelector(".logoutButton");
   test.addEventListener("click", (e) => {

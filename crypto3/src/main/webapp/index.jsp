@@ -32,7 +32,14 @@ body {
 .slog {
 	font-size: 5rem;
 }
-
+.fivecrypto{
+	margin-left:1rem;
+	img{
+	  margin-top:0.5rem;
+	  width:25px;
+	  height:25px;
+	}
+}
 /*把內容設定最高低高度為100vh*/
 /*set min-height as 100vh*/
 .content {
@@ -56,17 +63,13 @@ body {
 	border-radius: 15px;
 }
 
-/*設定五檔加密或幣圖片高度寬度*/
-div.cryptoprice p img {
-	width: 2rem;
-	height: 2rem;
-}
+
 
 /*五檔加密或幣單獨設定*/
 .fivecrypto {
 	margin-top: 0.5rem;	
 	font-weight: bold;
-	font-size:2rem;
+	font-size:1.5rem;
 }
 
 /*設定距離比特幣減半日期*/
@@ -140,15 +143,32 @@ div.cryptoprice p img {
 	cursor: pointer;
 }
 
-/*讓導覽列左右各有3個字的距離*/
-.navRWD {
-	margin-left: 5rem;
-	margin-right: 5rem'
-}
+
 /*讓導覽列按鈕在RWD出現之後可以變換顏色*/
 .navbar-toggler {
 	background-color: #D9D9D9;
 }
+
+
+/*寬度1650以上設定導覽列左右距離*/
+@media ( min-width :1650px) {
+	.navRWD {
+		margin-left: 18rem;
+		margin-right: 15rem;
+	}
+}
+
+
+
+
+/*寬度1600以上設定導覽列左右距離*/
+@media ( min-width :1600px) {
+	.navRWD {
+		margin-left: 12rem;
+		margin-right: 8rem;
+	}
+}
+
 
 /*在寬度800以上把幣價背景調成30vh*/
 @media ( min-height :800px) {
@@ -157,25 +177,16 @@ div.cryptoprice p img {
 	}
 }
 
-/*寬度1600以上設定導覽列左右距離*/
 
-@media ( min-width :1700px) {
+
+
+@media(max-width:1450px){
 	.navRWD {
-		margin-left: 18rem;
-		margin-right: 18rem;
+		margin-left: 5rem;
+		margin-right: 5rem;
 	}
+
 }
-
-
-@media ( min-width :1600px) {
-	.navRWD {
-		margin-left: 15rem;
-		margin-right: 10rem;
-	}
-}
-
-
-
 
 /*高度在900以上時設定上面距離*/
 @media ( min-height :900px) {
@@ -186,8 +197,8 @@ div.cryptoprice p img {
 	
 }
 
-/*在寬度900以下時設定slogn寬度為螢幕寬度100，且離左邊有7個字的距離*/
-@media ( max-width : 900px) {
+/*在寬度1000以下時設定slogn寬度為螢幕寬度100，且離左邊有7個字的距離*/
+@media ( max-width : 1000px) {
 	.slog {
 		width: 100vw;
 		margin-left: 7rem;
@@ -334,39 +345,55 @@ div.cryptoprice p img {
 				<!--current price and top five hotest crypto(display:column)-->
 				<div class="cryptoprice">
 				
-					<div class=" container">
+					<div class=" container ">
 						  <!-- 第一個 -->
 						  <div class="row fivecrypto">
-						    <div class="col cryptoName">名稱</div>
-						    <div class="col cryptoPrice">價格</div>
-						    <div class="col cryptoRate">漲跌</div>
+						    <div class="col cryptoName d-flex  ">
+						    	<img src="/crypto2/images/btc.png">
+						    	<p>BTC</p>
+						    </div>
+						    <div class="col cryptoPrice">46325.2</div>
+						    <div class="col cryptoRate" style="color:green">+2.64%</div>
 						  </div>
 					  		<!-- 第二個 -->
 						  <div class="row fivecrypto">
-						    <div class="col cryptoName">名稱</div>
-						    <div class="col cryptoPrice">價格</div>
-						    <div class="col cryptoRate">漲跌</div>
+						    <div class="col cryptoName d-flex ">
+						    	<img src="/crypto2/images/eth.png">
+						    	<p>ETH</p>
+						    </div>
+						    <div class="col cryptoPrice ">2270.72</div>
+						    <div class="col cryptoRate" style="color:green">+0.27%</div>
 						  </div>
 						  
 						  <!-- 第三個 -->
 						  <div class="row fivecrypto">
-						    <div class="col cryptoName">名稱</div>
-						    <div class="col cryptoPrice">價格</div>
-						    <div class="col cryptoRate">漲跌</div>
+						    <div class="col cryptoName d-flex  ">
+						    	<img src="/crypto2/images/usdt.png">
+						    	<p>USDT</p>
+						    </div>
+						    <div class="col cryptoPrice me-1">1.008</div>
+						    <div class="col cryptoRate" style="color:red">-0.01%</div>
 						  </div>
 						  
 						  <!-- 第四個 -->
 						  <div class="row fivecrypto">
-						    <div class="col cryptoName">名稱</div>
-						    <div class="col cryptoPrice">價格</div>
-						    <div class="col cryptoRate">漲跌</div>
+						    <div class="col cryptoName d-flex  ">
+						    	<img src="/crypto2/images/bnb.png">
+						    	<p>BNB</p>
+						    </div>
+						    <div class="col cryptoPrice">299.2</div>
+						    <div class="col cryptoRate" style="color:red">-0.73%</div>
 						  </div>
 						  
 						  <!-- 第五個 -->
 						  <div class="row fivecrypto">
-						    <div class="col cryptoName">名稱</div>
-						    <div class="col cryptoPrice">價格</div>
-						    <div class="col cryptoRate">漲跌</div>
+						    <div class="col cryptoName d-flex  ">
+						    	<img src="/crypto2/images/sol.png">
+						    	<p>SOL</p>
+						    </div>
+						  
+						    <div class="col cryptoPrice">98.424</div>
+						    <div class="col cryptoRate " style="color:green">4.51%</div>
 						  </div>
 						  
 					 </div>
@@ -426,24 +453,48 @@ div.cryptoprice p img {
 			//將資料反序列化
 			let message = JSON.parse(event.data);
 			let cryptos = message.content;
-			
+			console.log(cryptos)
 			let allDivTags=document.querySelectorAll(".fivecrypto");
 			let count=0;
 			allDivTags.forEach((div)=>{
 				//找到貨幣名稱
-				if( typeof cryptos[count].cName!="undefined"){
-					div.querySelector(".cryptoName").innerText=cryptos[count].cName;
+				if( typeof cryptos[count].cName!="undefined"&&cryptos.length==5){
+					let name=cryptos[count].cName;
+					let nameDiv=div.querySelector(".cryptoName");
+					if(nameDiv.querySelector("p")===null){
+						let imgTag=document.createElement("img");
+						imgTag.src="/crypto2/images/"+name.toLowerCase()+".png";
+						let pTag=document.createElement("p");
+						pTag.innerText=cryptos[count].cName;
+						nameDiv.appendChild(imgTag);
+						nameDiv.appendChild(pTag);
+						
+					}else{
+						nameDiv.querySelector("p").innerText=cryptos[count].cName;
+						nameDiv.querySelector("img").src="/crypto2/images/"+name.toLowerCase()+".png";
+					}
+					
 				}
 				
 				//找到貨幣價格
 				
-				if( typeof cryptos[count].price!="undefined"){
+				if( typeof cryptos[count].price!="undefined"&&cryptos.length==5){
 					div.querySelector(".cryptoPrice").innerText=cryptos[count].price;
 				}
 				
 				//找到貨幣漲跌幅
-				if( typeof cryptos[count].rate!="undefined"){
-					div.querySelector(".cryptoRate").innerText=cryptos[count].rate;
+				if( typeof cryptos[count].rate!="undefined"&&cryptos.length==5){
+					
+					let rate=cryptos[count].rate;
+					
+			
+					if(rate>=0){
+						div.querySelector(".cryptoRate").innerText="+"+cryptos[count].rate+"%";
+						div.querySelector(".cryptoRate").style.color="green";
+					}else{
+						div.querySelector(".cryptoRate").innerText=cryptos[count].rate+"%";
+						div.querySelector(".cryptoRate").style.color="red";
+					}
 				}
 				
 				count++;
