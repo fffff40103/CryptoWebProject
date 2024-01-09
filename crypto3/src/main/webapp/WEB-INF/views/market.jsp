@@ -19,10 +19,6 @@
 <script
 	src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 
-
-
-
-
 <style>
 /*   Css RWD排版規則，由大排到小，同屬性的話會單獨排，如果只有單一屬性會在最下面    */
 	  
@@ -288,7 +284,7 @@ body {
 	    <div class="col">市值</div>
 	  </div>
 	  <!-- BTC -->
-	  <div class="row uniquePrice BTC">
+	  <div class="row uniquePrice ">
 	    <div class="col cName d-flex "></div>
 	    <div class="col price"></div>
 	    <div class="col rate  "></div>
