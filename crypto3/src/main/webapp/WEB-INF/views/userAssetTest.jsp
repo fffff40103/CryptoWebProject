@@ -322,11 +322,9 @@ input {
 				</thead>
 
 				<tbody>
-					
 					<tr class="row uniquePrice">
-						<td class="col name d-flex">
-							 <img src="/crypto2/images/btc.png">
-							 <input value="BTC" readonly>
+						<td class="col name d-flex"><img
+							src="/crypto2/images/btc.png"> <input value="BTC" readonly>
 						</td>
 						<td class="col amount"><input value="422" readonly></td>
 						<td class="col price"><input value="42325.6" readonly
@@ -336,7 +334,6 @@ input {
 							<button>賣出</button>
 						</td>
 					</tr>
-					
 
 					<tr class="row uniquePrice">
 						<td class="col name d-flex"><img

@@ -29,6 +29,12 @@ body {
 /**********************左半邊*************************************/
 /*設定slogn的font-size成5rem*/
 /*set font-size 5 times than default size */
+.navbar-brand {
+
+    margin-left: 1rem;
+
+}
+
 .slog {
 	font-size: 5rem;
 }
@@ -161,11 +167,11 @@ body {
 
 
 
-/*寬度1600以上設定導覽列左右距離*/
+/*寬度1600以上設定導覽列左右距離學校電腦*/
 @media ( min-width :1600px) {
 	.navRWD {
-		margin-left: 12rem;
-		margin-right: 8rem;
+		margin-left: 18rem;
+		margin-right: 15rem;
 	}
 }
 
@@ -246,11 +252,35 @@ body {
 	}
 }
 
+@media(max-width:390px){
+	.fivecrypto{
+		font-size:1rem;
+	}
+	
+	.fivecrypto{
+		img{
+		
+			margin-top:0rem;
+		}
+	}
+}
+
 /*在寬度為320時讓導覽列的button右邊有3個字的距離*/
 @media ( max-width :320px) {
 	.buttonRWD {
 		margin-right: 3rem;
 	}
+	
+	.fivecrypto{
+		width:100vw;
+		
+	}
+	
+	.row {
+     --bs-gutter-x: 0; 
+ 
+   }
+	
 }
 
 /*在寬度為300時讓導覽列的右半邊部分沒有距離*/
@@ -258,6 +288,8 @@ body {
 	.navRWD {
 		margin-left: 0rem;
 	}
+	
+	
 }
 </style>
 
@@ -458,7 +490,7 @@ body {
 			let count=0;
 			allDivTags.forEach((div)=>{
 				//找到貨幣名稱
-				if( typeof cryptos[count].cName!="undefined"&&cryptos.length==5){
+				if( cryptos[count].cNumber!=null&&cryptos.length==5){
 					let name=cryptos[count].cName;
 					let nameDiv=div.querySelector(".cryptoName");
 					if(nameDiv.querySelector("p")===null){
@@ -478,12 +510,12 @@ body {
 				
 				//找到貨幣價格
 				
-				if( typeof cryptos[count].price!="undefined"&&cryptos.length==5){
+				if( cryptos[count].cNumber!=null&&cryptos.length==5){
 					div.querySelector(".cryptoPrice").innerText=cryptos[count].price;
 				}
 				
 				//找到貨幣漲跌幅
-				if( typeof cryptos[count].rate!="undefined"&&cryptos.length==5){
+				if( cryptos[count].cNumber!=null&&cryptos.length==5){
 					
 					let rate=cryptos[count].rate;
 					

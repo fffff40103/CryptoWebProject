@@ -36,8 +36,13 @@ body {
 	
 }
 
+/*設定標題列的排版*/
 
+.navbar-brand {
 
+    margin-left: 1rem;
+
+}
 /*黑色被景色的框框以及標題*/
 .title {
 	background-color:black;
@@ -55,11 +60,6 @@ body {
 }
 
 
-.price p{
-	text-align:right;
-}
-/*設定市場價格幣種圖片大小*/
-
 
 /*在每個不同的幣種相同的uniquePrice設定相同的屬性*/
 .uniquePrice {
@@ -76,6 +76,7 @@ body {
 	
 }
 
+/*設定價格旁邊的圖片*/
 .uniquePrice{
 
 	img{
@@ -86,9 +87,7 @@ body {
 }
 
 
-.price p{
-	margin-top:1.5rem;
-}
+
 
 /*設定nav bar右半邊*/
 .rightPartNav {
@@ -231,6 +230,10 @@ body {
 	.buttonRWD {
 		margin-right: 3rem;
 	}
+	/*在寬度為320時讓錶覽列往左邊靠*/
+	.navRWD {
+		margin-left: 0rem;
+	}
 }
 
 @media ( max-width :330px) {
@@ -239,12 +242,7 @@ body {
 	}
 }
 
-/*在寬度為300時讓導覽列的右半邊部分沒有距離*/
-@media ( max-width :300px) {
-	.navRWD {
-		margin-left: 0rem;
-	}
-}
+
 
 /*在螢幕250以下時讓標題高度為11vh並且讓user字體變小*/
 @media ( max-width :250px) {
@@ -426,7 +424,7 @@ body {
 						//得到每個貨幣的名稱、價錢、漲跌幅、市值
 						
 						/*名字*/
-						if( typeof cryptos[count].pName!="undefined"&&cryptos.length==10){
+						if(cryptos.length==10){
 							let name=cryptos[count].pName;
 							let nameDiv=div.querySelector(".cName");
 							if(nameDiv.querySelector("p")===null){
@@ -447,15 +445,15 @@ body {
 						
 						
 						/*價格*/
-						if(typeof cryptos[count].pPrice!="undefined"&&cryptos.length==10){
+						if(cryptos.length==10){
 							div.querySelector(".price").innerText="$"+cryptos[count].pPrice;
 						}
 						
 						
-						let price=cryptos[count].pPrice+"$";
+						
 						
 						/*漲幅*/
-						if( typeof cryptos[count].pRate!="undefined"&&cryptos.length==10){
+						if( cryptos.length==10){
 							
 							let rate=cryptos[count].pRate;
 							
@@ -471,7 +469,7 @@ body {
 						
 						/*市值*/
 						
-						if(typeof cryptos[count].pCap!="undefined"&&cryptos.length==10){
+						if(cryptos.length==10){
 							
 							
 							div.querySelector(".cap").innerText=cryptos[count].pCap;
