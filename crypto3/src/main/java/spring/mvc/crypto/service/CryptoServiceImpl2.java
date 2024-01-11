@@ -35,28 +35,28 @@ public class CryptoServiceImpl2 implements CryptoService {
 			//每一個tr標籤都代表一個加密貨幣資訊，底下有很多td標籤就是詳細的加密貨幣資訊
 			int count=1;
 			for(Element trTag:trTags) {
-				System.out.println(count);
+			
 				CrawlerCurrency newCrypto=new CrawlerCurrency();
 				Elements tds=trTag.select("td");
 				//分別拿到每個貨幣的名稱、價格、市值、24小時漲幅
 				String name=tds.select(".js-currency-symbol").text();
 				newCrypto.setpName(name);
-				System.out.println(name);
+				
 				
 				Float price=Float.parseFloat(tds.select(".js-currency-price").text().replaceAll("[\\,]",""));
 				newCrypto.setpPrice(price);
-				System.out.println(price+"$");
+			
 				
 				String value=tds.select(".js-market-cap").text();
 				newCrypto.setpCap(value);
-				System.out.println(value);
+				
 				
 				Float rate=Float.parseFloat(tds.select(".js-currency-change-24h").text().substring(0,tds.select(".js-currency-change-24h").text().length()-1));
 				newCrypto.setpRate(rate);
-				System.out.println(rate+"%");
+				
 				
 				cryptos.add(newCrypto);
-				System.out.println("--------------------");
+			
 				count++;				
 			}							
 			return cryptos;	
@@ -88,22 +88,22 @@ public class CryptoServiceImpl2 implements CryptoService {
 				//分別拿到每個貨幣的名稱、價格、市值、24小時漲幅
 				String name=tds.select(".js-currency-symbol").text();
 				newCrypto.setcName(name);
-				System.out.println(name);
+				
 				
 				Float price=Float.parseFloat(tds.select(".js-currency-price").text().replaceAll("[\\,]",""));
 				newCrypto.setPrice(price);
-				System.out.println(price+"$");
+			
 				
 				String value=tds.select(".js-market-cap").text();
 				newCrypto.setCap(value);
-				System.out.println(value);
+				
 				
 				Float rate=Float.parseFloat(tds.select(".js-currency-change-24h").text().substring(0,tds.select(".js-currency-change-24h").text().length()-1));
 				newCrypto.setRate(rate);
-				System.out.println(rate+"%");
+				
 				
 				cryptos.add(newCrypto);
-				System.out.println("--------------------");
+				
 				count++;
 				cryptoNumber++;
 				if(count>10) {

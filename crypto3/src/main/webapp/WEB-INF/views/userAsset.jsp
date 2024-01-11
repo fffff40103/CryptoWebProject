@@ -57,6 +57,9 @@ table, tr, td, th, tbody {
 	margin: 0;
 }
 
+
+
+
 /************test**********************/
 .balance {
 	background-color: #f6f6f6;
@@ -100,6 +103,8 @@ table, tr, td, th, tbody {
 	color: black;
 }
 
+
+
 /*讓導覽列左右各有3個字的距離*/
 .navRWD {
 	margin-left: 3rem;
@@ -111,6 +116,14 @@ input {
 	height: 2rem;
 }
 
+form{
+	margin-top:1rem;
+}
+
+.row {
+    --bs-gutter-x: 0rem;
+  
+}
 /*寬度1600以上設定導覽列左右距離*/
 @media ( min-width :1600px) {
 	.navRWD {
@@ -155,7 +168,7 @@ input {
 		width: 100%;
 	}
 	.container div {
-		font-size: 1rem;
+		font-size: 1.5rem;
 	}
 	.balance {
 		width: 100vw;
@@ -184,17 +197,20 @@ input {
 /*在寬度為400時讓導覽列左右沒有距離*/
 @media ( max-width :400px) {
 	.title{
-		font-size:1rem;
+		width:100vw;
+		margin-left:1rem;
 	}
 }
 
 /*在寬度在365以下時把標題背景寬度設定為視窗最大寬度*/
 @media ( max-width :365px) {
+	
 	.title {
 		width: 80vw;
 		
 		/*把標題字體縮小做RWD*/
-		font-weight: 200;
+		
+		font-weight: bold;
 	}
 	
 	
@@ -235,9 +251,18 @@ input {
 }
 
 /*在螢幕250以下時讓標題高度為11vh並且讓user字體變小*/
-@media ( max-width :250px) {
+@media ( max-width :260px) {
+	.container div{
+		font-size:1rem;
+	}
+	
+	.uniquePrice{
+		padding-top:0rem;
+		margin-top:0rem;
+	}
 	.title {
 		height: 11vh;
+		margin-left:0rem;
 	}
 	.rightPartNav {
 		font-size: 15px;
@@ -289,189 +314,28 @@ input {
 		</div>
 	</nav>
 
-
-
-
-
-
-	<!-- --------------------------------------------- -->
-	<div class=" container">
-
-		<!--錢包餘額-->
-		<div class="row cryptoBody">
-			<div class="balance">
-				<p>總資產</p>
-				<h2>20.2USDT</h2>
-				<p class="TWD">≈NT$6.83</p>
+		<div class="container">
+			<!--錢包餘額-->
+			<div class="row cryptoBody">
+				<div class="balance ">
+					<p>總資產</p>
+					<h2>20.2USDT</h2>
+					<p class="TWD">≈NT$6.83</p>
+				</div>
 			</div>
+			
+			<div class="row ">
+				<div class="title">
+					<p class="col">名稱</p>
+					<p class="col">數量</p>
+					<p class="col priceTitle">價格</p>
+					<p class="col transTitle">交易</p>
+				</div>
+			</div>
+		  
+		  
 		</div>
 
-
-		<form class="row table ms-5">
-
-
-
-			<table class="row table">
-				<thead>
-					<tr class="row title">
-						<th class="col ">幣種</th>
-						<th class="col ">數量</th>
-						<th class="col ">限價</th>
-						<th class="col ">交易</th>
-					</tr>
-				</thead>
-
-				<tbody>
-					
-					<tr class="row uniquePrice">
-						<td class="col name d-flex">
-							 <img src="/crypto2/images/btc.png">
-							 <input value="BTC" readonly>
-						</td>
-						<td class="col amount"><input value="422" readonly></td>
-						<td class="col price"><input value="42325.6" readonly
-							style="color: green"></td>
-						<td class="col trans">
-							<button>買入</button>
-							<button>賣出</button>
-						</td>
-					</tr>
-					
-
-					<tr class="row uniquePrice">
-						<td class="col name d-flex"><img
-							src="/crypto2/images/eth.png"> <input value="ETH" readonly>
-						</td>
-						<td class="col amount"><input value="15" readonly></td>
-						<td class="col price"><input value="2235.6" readonly
-							style="color: red"></td>
-						<td class="col tarns">
-							<button>買入</button>
-							<button>賣出</button>
-						</td>
-					</tr>
-
-					<tr class="row uniquePrice">
-						<td class="col name d-flex"><img
-							src="/crypto2/images/usdt.png"> <input value="USDT "
-							readonly></td>
-						<td class="col amount"><input value="22" readonly></td>
-						<td class="col price"><input value="1.007" readonly
-							style="color: green"></td>
-						<td class="col trans">
-							<button>買入</button>
-							<button>賣出</button>
-						</td>
-					</tr>
-
-					<tr class="row uniquePrice">
-						<td class="col name d-flex"><img
-							src="/crypto2/images/bnb.png"> <input value="BNB" readonly>
-						</td>
-						<td class="col amount"><input value="5" readonly></td>
-						<td class="col price"><input value="233" readonly
-							style="color: red"></td>
-						<td class="col trans">
-							<button>買入</button>
-							<button>賣出</button>
-						</td>
-					</tr>
-
-					<tr class="row uniquePrice">
-						<td class="col name d-flex"><img
-							src="/crypto2/images/sol.png"> <input value="SOL" readonly>
-						</td>
-						<td class="col amount"><input value="36" readonly></td>
-						<td class="col price"><input value="98.5" readonly
-							style="color: red"></td>
-						<td class="col trans">
-							<button>買入</button>
-							<button>賣出</button>
-						</td>
-					</tr>
-
-					<tr class="row uniquePrice ">
-						<td class="col name d-flex"><img
-							src="/crypto2/images/xrp.png"> <input value="XRP" readonly>
-						</td>
-						<td class="col amount"><input value="27.5" readonly></td>
-						<td class="col price"><input value="0.5619" readonly
-							style="color: green"></td>
-						<td class="col trans">
-							<button>買入</button>
-							<button>賣出</button>
-						</td>
-					</tr>
-
-					<tr class="row uniquePrice">
-						<td class="col name d-flex"><img
-							src="/crypto2/images/usdc.png"> <input value="USDC"
-							readonly></td>
-						<td class="col amount"><input value="0" readonly></td>
-						<td class="col price"><input value="0.9995" readonly
-							style="color: red"></td>
-						<td class="col trans">
-							<button>買入</button>
-							<button>賣出</button>
-						</td>
-					</tr>
-
-					<tr class="row uniquePrice">
-						<td class="col name d-flex"><img
-							src="/crypto2/images/steth.png"> <input value="stETH"
-							readonly></td>
-						<td class="col amount"><input value="15" readonly></td>
-						<td class="col price"><input value="2283" readonly
-							style="color: green"></td>
-						<td class="col trans">
-							<button>買入</button>
-							<button>賣出</button>
-						</td>
-					</tr>
-
-					<tr class="row uniquePrice">
-						<td class="col name d-flex"><img
-							src="/crypto2/images/ada.png"> <input value="ADA" readonly>
-						</td>
-						<td class="col amount"><input value="0" readonly></td>
-						<td class="col price"><input value="0.5135" readonly
-							style="color: red"></td>
-						<td class="col trans">
-							<button>買入</button>
-							<button>賣出</button>
-						</td>
-					</tr>
-
-					<tr class="row uniquePrice">
-						<td class="col name d-flex"><img
-							src="/crypto2/images/avax.png"> <input value="AVAX"
-							readonly></td>
-						<td class="col amount"><input value="11" readonly></td>
-						<td class="col price"><input value="33.66" readonly
-							style="color: green"></td>
-						<td class="col trans">
-							<button>買入</button>
-							<button>賣出</button>
-						</td>
-					</tr>
-
-
-
-				</tbody>
-
-			</table>
-
-
-
-
-
-
-
-		</form>
-
-
-
-	</div>
 
 </body>
 <script>
@@ -506,63 +370,126 @@ function webSocketConnection(){
 			let cryptos=message.content;
 			
 			console.log(cryptos)
-	
-			let allTrs=document.querySelectorAll(".uniquePrice");
-			let count=0;
-			allTrs.forEach((tr)=>{
-				
-				if( cryptos.length==10){
-					/*名字*/
-					let name=cryptos[count].pName;
-					if(tr.querySelector("img")===null){
-						let tdTag=tr.querySelector("name");
-						let imgTag=document.createElement("img");
-						imgTag.src="/crypto2/images/"+name.toLowerCase()+".png";
-						
-						let inputTag=document.createElement("input");
-						inputTag.value=name;
-						inputTag.readOnly=true;
-						
-						tdTag.appendChild(imgTag);
-						tdTag.append(inputTag);
-					}else{
-						let tdTag=tr.querySelector(".name");
-						let imgTag=tdTag.querySelector("img");
-					
-						let inputTag=tr.querySelector("input");
-						
-						imgTag.src="/crypto2/images/"+name.toLowerCase()+".png";
-						inputTag.value=name;
-					}
-					
-					/*限價*/
-					let price="$"+cryptos[count].pPrice
-					let rate=cryptos[count].pRate;
-					let tdTag=tr.querySelector(".price");
-					if(tdTag.querySelector("input")===null){
-						inputTag=document.createElement("input");
-						inputTag.value=price;
-						inputTag.readOnly=true;
-						if(rate>=0){
-							inputTag.style="color:green";
-						}else{
-							inputTag.style="color:red"
-						}
-					}else{
-						inputTag=tdTag.querySelector("input");
-						inputTag.value=price;
-						if(rate>=0){
-							inputTag.style="color:green";
-						}else{
-							inputTag.style="color:red"
-						}
-					}
-					
-					
-				}
-				count++
-			})
 		
+		    if(cryptos[0].pNumber!=null){
+		    	let container=document.querySelector(".container")
+		    	cryptos.forEach((crypto)=>{
+		    		if(document.getElementById(crypto.pName)===null){
+		    		
+		    			//表單
+		    			let form=document.createElement("form");
+			    		//form.action="./test";
+			    		form.method="post";
+			    		form.id=crypto.pName;
+			    		
+			    		//每一個row
+			    		let divRow=document.createElement("div")
+			    		divRow.classList.add("row");
+			    		divRow.classList.add("uniquePrice")
+			    		
+			    		//每一個row中的input(名稱)、圖片
+			    		let nameCol=document.createElement("div");
+			    		nameCol.classList.add("col");
+			    		nameCol.classList.add("name")
+			    		nameCol.classList.add("d-flex")
+			    		let imgTag=document.createElement("img");
+			    		imgTag.src="/crypto2/images/"+crypto.pName.toLowerCase()+".png";
+			    		let nameInput=document.createElement("input");
+			    		nameInput.value=crypto.pName;
+			    		nameInput.type="text"
+			    		nameInput.readOnly=true;
+			    		nameInput.id="cryptoName";
+			    		nameInput.name="cryptoName";
+			    		nameCol.appendChild(imgTag);
+			    		nameCol.appendChild(nameInput);
+			    		
+			    		divRow.appendChild(nameCol);
+			    		//每一個row中的數量
+			    		let amountCol=document.createElement("div");
+			    		amountCol.classList.add("col");
+			    		let amountInput=document.createElement("input");
+			    		amountInput.value=25;
+			    		amountInput.readOnly=true;
+			    		amountInput.type="number";
+			    		amountInput.id="cryptoAmount";
+			    		amountInput.name="cryptoAmount";
+			    		amountCol.appendChild(amountInput);
+			    		divRow.appendChild(amountCol);
+			    		//每一個row中的input(價格)
+			    		let priceCol=document.createElement("div");
+			    		priceCol.classList.add("col");
+			    		priceCol.classList.add("price")
+			    		let priceInput=document.createElement("input");
+			    		priceInput.value="$"+crypto.pPrice;
+			    		priceInput.readOnly=true;
+			    		priceInput.type="text";
+			    		priceInput.id="cryptoPrice";
+			    		priceInput.name="cryptoPrice";
+			    		if(crypto.pRate>=0){
+			    			priceInput.style.color="green";
+			    		}else{
+			    			priceInput.style.color="red";
+			    		}
+			    		priceCol.appendChild(priceInput);
+			    		divRow.appendChild(priceCol);
+			    		//每一個row中的botton
+			    		
+			    		
+			    		let buttonCol=document.createElement("div");
+			    		buttonCol.classList.add("col");
+			    		buttonCol.classList.add("trans");
+			    		//設定買入功能
+			    		let buttonBuy=document.createElement("button");
+			    		buttonBuy.textContent="買入"
+			    		buttonBuy.addEventListener("click",function(event){
+			    			let buttonBuyElement=event.target;
+			    			let parentElement = buttonBuyElement.parentNode;
+			    			let formTag=parentElement.parentNode.parentNode
+			    			let formAttr=formTag["id"];
+			    			setFormAction('./test',formAttr);
+			    		})
+			    		buttonCol.appendChild(buttonBuy);
+			    		
+			    		//設定賣出功能
+			    		let buttonSell=document.createElement("button");
+			    		
+			    		buttonSell.textContent="賣出"
+			    		
+			    	
+			    		buttonSell.addEventListener("click", function(event) {
+			    			   let buttonSellElement = event.target;
+			    			   let parentElement = buttonSellElement.parentNode;
+			    			   let formTag=parentElement.parentNode.parentNode
+			    			   let formAttr=formTag["id"];
+			    			   
+			    			   setFormAction('./test2',formAttr);
+			    		});
+			    		//把button按鈕加入form
+			    		buttonCol.appendChild(buttonSell);
+			    		
+			    		
+			    		divRow.appendChild(buttonCol);
+			    		
+			    		form.appendChild(divRow);
+			    		container.appendChild(form);
+		    		}else{
+		    			let formTag=document.getElementById(crypto.pName);
+		    			console.log(formTag)
+		    			let nameInput=formTag.querySelector(".name").querySelector("input");
+		    			nameInput.value=crypto.pName;
+		    			
+		    			let priceInput=formTag.querySelector(".price").querySelector("input");
+		    			priceInput.value="$"+crypto.pPrice;
+		    			if(crypto.pRate>=0){
+		    				priceInput.style.color="green";
+		    			}else{
+		    				priceInput.style.color="red";
+		    			}
+		    			
+		    		}
+		    					    	
+			    })
+		    }
 			
 				
    };
@@ -570,8 +497,16 @@ function webSocketConnection(){
 	socket.onclose = function() {
 	    console.log('WebSocket連線已關閉');
 	};
-}  
-
+	
+}
+	
+	
+	//為不同的按鈕設定不同form的action
+	function setFormAction(action,formAttr) {
+		
+	    // 設置表單的 action 屬性
+	    document.getElementById(formAttr).action = action
+	}
 
 
   /***********************設定登出按鈕*********************************************/
@@ -580,6 +515,9 @@ function webSocketConnection(){
   test.addEventListener("click", (e) => {
     test1.classList.toggle("d-none");
   })
+  
+  
+ 
 </script>
 
 </html>

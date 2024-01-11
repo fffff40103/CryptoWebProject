@@ -305,8 +305,26 @@ input {
 				<p class="TWD">≈NT$6.83</p>
 			</div>
 		</div>
-
-
+		<!-- TEST****************************** -->
+		<form method="post" action="./test">
+			<table>
+				<tr>
+					<td>
+						<input type="text" value=5 id="test" name="test">
+					</td>
+					<td>
+						<input type="text" value=6 id="test1" name="test1">
+					</td>
+					<td>
+					<button type=submit>提交</button>
+					</td>
+				</tr>
+			
+			</table>		
+			
+		
+		</form>
+		<!-- TEST****************************** -->
 		<form class="row table ms-5">
 
 
@@ -322,18 +340,21 @@ input {
 				</thead>
 
 				<tbody>
+					
 					<tr class="row uniquePrice">
-						<td class="col name d-flex"><img
-							src="/crypto2/images/btc.png"> <input value="BTC" readonly>
+						<td class="col name d-flex">
+							 <img src="/crypto2/images/btc.png">
+							 <input value="BTC" readonly >
 						</td>
 						<td class="col amount"><input value="422" readonly></td>
 						<td class="col price"><input value="42325.6" readonly
 							style="color: green"></td>
 						<td class="col trans">
-							<button>買入</button>
+							<button >買入</button>
 							<button>賣出</button>
 						</td>
 					</tr>
+					
 
 					<tr class="row uniquePrice">
 						<td class="col name d-flex"><img

@@ -43,8 +43,35 @@ public class CryptoController {
 		return "login";
 	}
 	
+	
+	@PostMapping("/test")
+	@ResponseBody
+	public void test(@RequestParam("cryptoName") String test1,
+			@RequestParam("cryptoAmount") Float test2,
+			@RequestParam("cryptoPrice") String test3)
+			 {
+			System.out.println(test1);
+			System.out.println(test2);
+			System.out.println(test3);
+		
+	}
+	
+	@PostMapping("/test2")
+	@ResponseBody
+	public void test2(@RequestParam("cryptoName") String test1,
+			@RequestParam("cryptoAmount") Float test2,
+			@RequestParam("cryptoPrice") String test3)
+			 {
+			System.out.println(test1);
+			System.out.println(test2);
+			System.out.println(test3);
+		
+	}
+	
+	
 	//接收及驗證帳號密碼
 	@PostMapping("/login")
+	
 	public String login(@RequestParam("username") String username,
 						@RequestParam("password") String password,
 						HttpSession session,Model model
