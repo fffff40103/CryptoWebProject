@@ -59,7 +59,7 @@ public class CryptoController {
 		//檢查有無足夠usdt可以購買加密貨幣
 		List<UserAsset> userAssets=dao.findAssetsByUserId(currentUser.getUserId());
 		
-		 Float usdt=userAssets.stream().filter(userAsset->userAsset.getcName().equals("USDT"))
+		Float usdt=userAssets.stream().filter(userAsset->userAsset.getcName().equals("USDT"))
 		.map(UserAsset::getAccBalance).findFirst().orElse(0.0f);
 		if(usdt<=0) {
 			System.out.println("餘額不足");
