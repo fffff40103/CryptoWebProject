@@ -5,29 +5,67 @@ import java.util.Date;
 public class Account {
 	
 	private Integer accId;//帳戶id(主鍵值)
-	private Integer userId;//用戶id
-	private Date creationTime;//帳戶創建間
+	private Integer cryptoNumber;//帳戶對應貨幣
+
 	
 	//關聯欄位
-	private User user;
+	private CryptoCurrency crypto;
 	
-	//建立空建構子
+	//無參數建構子
 	public Account() {
 		
-	}
+	};
 	
-	public Account(Integer accId, Integer userId, Date creationTime) {
+	
+
+    public Account(Integer accId, Integer cryptoNumber) {
+		super();
 		this.accId = accId;
-		this.userId = userId;
-		this.creationTime = creationTime;
-		
+		this.cryptoNumber = cryptoNumber;
 	}
 
-	public Account(Integer accId, Integer userId, Date creationTime, User user) {
+
+
+	public Account(Integer accId, Integer cryptoNumber, CryptoCurrency crypto) {
+		super();
 		this.accId = accId;
-		this.userId = userId;
-		this.creationTime = creationTime;
-		this.user = user;
+		this.cryptoNumber = cryptoNumber;
+		this.crypto = crypto;
 	}
+
+
+
+	//Getter  and Setter
+	public Integer getAccId() {
+		return accId;
+	}
+
+
+	public void setAccId(Integer accId) {
+		this.accId = accId;
+	}
+
+
+	public Integer getCryptoNumber() {
+		return cryptoNumber;
+	}
+
+
+	public void setCryptoNumber(Integer cryptoNumber) {
+		this.cryptoNumber = cryptoNumber;
+	}
+
+
+	public CryptoCurrency getCrypto() {
+		return crypto;
+	}
+
+
+	public void setCrypto(CryptoCurrency crypto) {
+		this.crypto = crypto;
+	}
+	
+	
+	
 	
 }

@@ -12,9 +12,11 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import spring.mvc.crypto.model.entity.Account;
 import spring.mvc.crypto.model.entity.CrawlerCurrency;
 import spring.mvc.crypto.model.entity.CryptoCurrency;
 import spring.mvc.crypto.model.entity.User;
+import spring.mvc.crypto.model.entity.UserAsset;
 
 @Repository
 public class CryptoDaoMySQL implements CryptoDao {
@@ -113,6 +115,19 @@ public class CryptoDaoMySQL implements CryptoDao {
 		}
 	}
 	
+	// 5.根據貨幣名稱尋找該貨幣
+	@Override
+	public Optional<CryptoCurrency> findCryptoByCryptoName(String cName) {
+		String sql="select cNumber,cName,price,rate,cap from cryptoInfo where cName=?";
+		try {
+			CryptoCurrency crypto=jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(CryptoCurrency.class), cName);
+			return Optional.ofNullable(crypto);
+		}catch (EmptyResultDataAccessException e) {
+			return Optional.empty();
+		}
+		
+	}
+	
 	//5.批量插入最新爬取的10隻加密貨幣
 	@Override
 	public int[] insertCryptos(List<CrawlerCurrency> cryptos) {
@@ -146,6 +161,37 @@ public class CryptoDaoMySQL implements CryptoDao {
 		}
 		return result;
 	}
+    
+	//7.助教測試
+	@Override
+	public List<CryptoCurrency> findCryptosByUserId(Integer userId) {
+		
+		String sql="SELECT \r\n"
+				+ "    cryptoinfo.cNumber, cryptoinfo.cName, cryptoinfo.price, cryptoinfo.rate, cryptoinfo.cap\r\n"
+				+ "FROM user_ref_account\r\n"
+				+ "JOIN account ON user_ref_account.accId = account.accId\r\n"
+				+ "JOIN cryptoinfo ON account.cryptoNumber = cryptoinfo.cNumber\r\n"
+				+ "WHERE user_ref_account.userId = ?";
+		
+		return jdbcTemplate.query(sql,new BeanPropertyRowMapper<>(CryptoCurrency.class),userId);
+	}
+
+	//  9.根據使用者id尋找他現有的資產以及餘額
+	@Override
+	public List<UserAsset> findAssetsByUserId(Integer userId) {
+		String sql="SELECT userId,cryptoinfo.cName,accBalance\r\n"
+				+ "From user_ref_account \r\n"
+				+ "Join account on user_ref_account.accId=account.accId\r\n"
+				+ "Join cryptoinfo on account.cryptoNumber=cryptoinfo.cNumber\r\n"
+				+ "where userId=?;\r\n";
+		return jdbcTemplate.query(sql,new BeanPropertyRowMapper<>(UserAsset.class),userId );		
+	}
+
+	
+
+	
+
+	
 
 	
 	

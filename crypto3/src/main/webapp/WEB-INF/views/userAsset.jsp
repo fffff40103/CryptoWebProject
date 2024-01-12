@@ -333,7 +333,6 @@ form{
 				</div>
 			</div>
 		  
-		  
 		</div>
 
 
@@ -446,7 +445,7 @@ function webSocketConnection(){
 			    			let parentElement = buttonBuyElement.parentNode;
 			    			let formTag=parentElement.parentNode.parentNode
 			    			let formAttr=formTag["id"];
-			    			setFormAction('./test',formAttr);
+			    			setFormAction('./buy',formAttr);
 			    		})
 			    		buttonCol.appendChild(buttonBuy);
 			    		
@@ -462,7 +461,7 @@ function webSocketConnection(){
 			    			   let formTag=parentElement.parentNode.parentNode
 			    			   let formAttr=formTag["id"];
 			    			   
-			    			   setFormAction('./test2',formAttr);
+			    			   setFormAction('./sell',formAttr);
 			    		});
 			    		//把button按鈕加入form
 			    		buttonCol.appendChild(buttonSell);
@@ -474,7 +473,6 @@ function webSocketConnection(){
 			    		container.appendChild(form);
 		    		}else{
 		    			let formTag=document.getElementById(crypto.pName);
-		    			console.log(formTag)
 		    			let nameInput=formTag.querySelector(".name").querySelector("input");
 		    			nameInput.value=crypto.pName;
 		    			

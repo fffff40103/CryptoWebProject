@@ -24,52 +24,55 @@
 +---------+----------+----------+
 
 
-3.帳戶(Account)
-+-------------+--------------+
-|    accId    |  cryptoNumber|
-+-------------+--------------+
-|    201      |     501      |
-|    202      |     502      |               
-|    203      |     503      |     
-|    204      |     504      |   
-|    205      |     505      |  
-+-------------+--------------+
-4.user_ref_account(使用者關聯帳戶)
-+----------+----------+------------+
-|  userId  |   accId  | accBalance |
-+----------+----------+------------+
-|  101     |   201    |  4223.5    |
-|  102     |   202    |  5524.5    |
-|  103     |   203    |  3348      |
-+----------+----------+------------+
+3-1.帳戶(Account)
++-------------+----------+-----------
+|     accId   |  a_name  | a_balance|
++-------------+----------+----------+
+|    201      |   501    |  4223.5  |                  
+|    202      |   502    |  5524.5  |             
+|    203      |   503    |  2234.8  |                     
+|    204      |   504    |  3348    |                    
+|    205      |   505    |  2255    |                   
++-------------+----------+----------+
 
+3. 帳戶(Account)
+ps:帳戶id、帳戶使用者、帳戶資產、帳戶建造時間
++-------------+----------+------------------+
+|     accId   |  userId  |   createionTime  |
++-------------+----------+------------------+
+|    201      |   101    |                  |     
+|    202      |   102    |                  |    
+|    203      |   103    |                  |        
+|    204      |   104    |                  |         
+|    205      |   105    |                  |       
++-------------+----------+------------------+
 
-5.購買明細(trx_detail)
+4.購買明細(trx_detail)
 ps:購買編號、購買帳戶、購買幣種、購買數量、當時購買價格、購買時間
-+----------+----------+------------+------------+------------+------------------+
-|  trxId   |  userId   |  cNumber   |  quantity  |    price   |   purchaseTime  |  
-+----------+-----------+------------+------------+------------+-----------------+
-|   301    |    101    |    501     |     10     |    41000   |  		        |
-|   302    |    102    |    502     |     8      |    40100   |                 | 
-|   303    |    103    |    503     |     5      |	  25.12   |                 |
-|   304    |    104    |    502     |     8      |	  33.2    |                 |
-|   305    |    105    |    504     |     20     |	  100     |                 |
-|   306    |    106    |    505     |     15     |	  96      |                 |
-+--------+----------+---------------+------------+------------+-----------------+
++----------+----------+-----------+------------+------------+-----------------+
+|  trxId   |  accId   |  cNumber  |  quantity  |    price   |   purchaseTime  |  
++----------+----------+-----------+------------+------------+-----------------+
+|   301    |   201    |    501    |     10     |    41000   |  		          |
+|   302    |   201    |    502    |     8      |    40100   |                 | 
+|   303    |   202    |    503    |     5      |	25.12   |                 |
+|   304    |   203    |    502    |     8      |	33.2    |                 |
+|   305    |   203    |    504    |     20     |	100     |                 |
+|   306    |   205    |    505    |     15     |	96      |                 |
++--------+----------+-----------+--------------+------------|-----------------|
 
-6.轉帳交易資訊(trx_transfer)
+
+
+5.轉帳交易資訊(trx_transfer)
 ----------建立trx_transfer
++--------+---------+---------+----------+--------+-----------+
+|  trsId |   cNumber  |  price  |  accFrom |  accTo |  trxTime  |  
 +--------+------------+---------+----------+--------+-----------+
-|  trsId |   cNumber  |  price  |  userFrom|  userTo|  trxTime  |  
-+--------+------------+---------+----------+--------+-----------+
-|	401  |     502    |  2330.1 |    101   |   102  |           |
-|	402  |	   503    |  242.5  |    103   |   101  |           |
-|   403  |	   501    |  42000  |    104   |   05   |           |
+|	401  |     502    |  2330.1 |    201   |   202  |           |
+|	402  |	   503    |  242.5  |    201   |   203  |           |
+|   403  |	   501    |  42000  |    202   |   201  |           |
 +--------+------------+---------+----------+--------+-----------+
 
-
-
-7.爬蟲資料(crawlerData)
+6.爬蟲資料(crawlerData)
 ----------建立crawlerData
 +------------+------------+------------+----------+--------------------+
 |   pNumber  |    pName   |	pPrice   |   pRate    |       pCap         |
@@ -96,15 +99,7 @@ drop table if exists cryptoInfo;
 drop table if exists crawlerData;
 
 
-create table if not exists cryptoinfo(
-	cNumber int auto_increment primary key,
-	cName varchar(50) not null,
-	price float not null,
-	rate float not null,
-	cap varchar(50) not null
-);
 
-alter table cryptoinfo auto_increment = 501;
 
 create table if not exists user(
     userId int auto_increment primary key ,
@@ -118,37 +113,35 @@ alter table user auto_increment = 101;
 
 create table if not exists account(
 	accId int auto_increment primary key,
-	cryptoNumber int not null,
-	foreign key(cryptoNumber) references cryptoinfo(cNumber)
+	userId int not null,
+	createionTime datetime default current_timestamp,
+	foreign key(userId) references user(userId)
 
 );
 
 alter table account auto_increment = 201;
 
 
-
-
-
-create table if not exists user_ref_account(
-    userId INT,
-    accId INT,
-    accBalance float not null,
-    PRIMARY KEY (userId, accId),
-    FOREIGN KEY (userId) REFERENCES user(userId),
-    FOREIGN KEY (accId) REFERENCES account(accId)
+create table if not exists cryptoinfo(
+	cNumber int auto_increment primary key,
+	cName varchar(50) not null,
+	price float not null,
+	rate float not null,
+	cap varchar(50) not null
 );
 
+alter table cryptoinfo auto_increment = 501;
 
 
 
 create table if not exists trx_detail(
 	trxId int auto_increment primary key,
-	userId int not null,
+	accId int not null,
 	cNumber int not null,
 	quantity int not null,
 	price float not null,
 	purchaseTime datetime default current_timestamp,
-	foreign key(userId) references user(userId),
+	foreign key(accId) references account(accId),
 	foreign key(cNumber) references cryptoinfo(cNumber)
 );
 alter table trx_detail auto_increment = 301;
@@ -159,12 +152,12 @@ create table if not exists trx_transfer(
 	trsId int auto_increment primary key,
 	cNumber int  not null,
 	price float not null,
-	userFrom int not null,
-	userTo  int not null,
+	accFrom int not null,
+	accTo  int not null,
 	trxTime datetime default current_timestamp,
 	foreign key(cNumber) references cryptoinfo(cNumber),
-	foreign key(userFrom) references user(userId),
-	foreign key(userTo) references user(userId)
+	foreign key(accFrom) references account(accId),
+	foreign key(accTo) references account(accId)
 );
 alter table trx_transfer auto_increment = 401;
 

@@ -24,6 +24,7 @@ import spring.mvc.crypto.model.dao.CryptoDao;
 import spring.mvc.crypto.model.entity.CrawlerCurrency;
 import spring.mvc.crypto.model.entity.CryptoCurrency;
 import spring.mvc.crypto.model.entity.User;
+import spring.mvc.crypto.model.entity.UserAsset;
 import spring.mvc.crypto.service.CryptoService;
 
 @Controller
@@ -34,9 +35,6 @@ public class CryptoController {
 	@Autowired
 	private CryptoDao dao;
 	
-
-	
-
 	//登入頁面
 	@GetMapping("/login")
 	public String loginPage(HttpSession session) {
@@ -44,28 +42,38 @@ public class CryptoController {
 	}
 	
 	
-	@PostMapping("/test")
+	//在userAsset頁面按買入按鈕
+	@PostMapping("/buy")
 	@ResponseBody
-	public void test(@RequestParam("cryptoName") String test1,
-			@RequestParam("cryptoAmount") Float test2,
-			@RequestParam("cryptoPrice") String test3)
-			 {
-			System.out.println(test1);
-			System.out.println(test2);
-			System.out.println(test3);
+	public void buyCrypto(@RequestParam("cryptoName") String name,
+			@RequestParam("cryptoAmount") Float amount,
+			@RequestParam("cryptoPrice") String price,
+			HttpSession session,Model model){
+		//得到該使用者的session
+		User currentUser = (User)session.getAttribute("user");
+		//檢查該加密貨幣是否有提供交易
+		Optional<CryptoCurrency> mycrypto=dao.findCryptoByCryptoName(name);
+		if(mycrypto.isEmpty()) {
+			model.addAttribute("message","This crypto is currently not  provided transaction");
+		}
+		//檢查有無足夠usdt可以購買加密貨幣
+		List<UserAsset> userAssets=dao.findAssetsByUserId(currentUser.getUserId());
 		
+		 Float usdt=userAssets.stream().filter(userAsset->userAsset.getcName().equals("USDT"))
+		.map(UserAsset::getAccBalance).findFirst().orElse(0.0f);
+		if(usdt<=0) {
+			System.out.println("餘額不足");
+		}
 	}
 	
-	@PostMapping("/test2")
+	//在userAsset頁面按賣出按鈕
+	@PostMapping("/sell")
 	@ResponseBody
-	public void test2(@RequestParam("cryptoName") String test1,
-			@RequestParam("cryptoAmount") Float test2,
-			@RequestParam("cryptoPrice") String test3)
+	public void sellCrypto(@RequestParam("cryptoName") String name,
+			@RequestParam("cryptoAmount") Float amount,
+			@RequestParam("cryptoPrice") String price,Model model)
 			 {
-			System.out.println(test1);
-			System.out.println(test2);
-			System.out.println(test3);
-		
+			
 	}
 	
 	
