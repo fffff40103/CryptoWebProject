@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -57,9 +58,6 @@ table, tr, td, th, tbody {
 	margin: 0;
 }
 
-
-
-
 /************test**********************/
 .balance {
 	background-color: #f6f6f6;
@@ -103,8 +101,6 @@ table, tr, td, th, tbody {
 	color: black;
 }
 
-
-
 /*讓導覽列左右各有3個字的距離*/
 .navRWD {
 	margin-left: 3rem;
@@ -116,13 +112,12 @@ input {
 	height: 2rem;
 }
 
-form{
-	margin-top:1rem;
+form {
+	margin-top: 1rem;
 }
 
 .row {
-    --bs-gutter-x: 0rem;
-  
+	--bs-gutter-x: 0rem;
 }
 /*寬度1600以上設定導覽列左右距離*/
 @media ( min-width :1600px) {
@@ -193,27 +188,21 @@ form{
 	}
 }
 
-
 /*在寬度為400時讓導覽列左右沒有距離*/
 @media ( max-width :400px) {
-	.title{
-		width:100vw;
-		margin-left:1rem;
+	.title {
+		width: 100vw;
+		margin-left: 1rem;
 	}
 }
 
 /*在寬度在365以下時把標題背景寬度設定為視窗最大寬度*/
 @media ( max-width :365px) {
-	
 	.title {
 		width: 80vw;
-		
 		/*把標題字體縮小做RWD*/
-		
 		font-weight: bold;
 	}
-	
-	
 	.uniquePrice {
 		margin-top: 3rem;
 	}
@@ -224,7 +213,6 @@ form{
 	.uniquePrice div {
 		font-size: 1rem;
 	}
-	
 	.cryptoprice {
 		width: 100vw;
 	}
@@ -252,17 +240,16 @@ form{
 
 /*在螢幕250以下時讓標題高度為11vh並且讓user字體變小*/
 @media ( max-width :260px) {
-	.container div{
-		font-size:1rem;
+	.container div {
+		font-size: 1rem;
 	}
-	
-	.uniquePrice{
-		padding-top:0rem;
-		margin-top:0rem;
+	.uniquePrice {
+		padding-top: 0rem;
+		margin-top: 0rem;
 	}
 	.title {
 		height: 11vh;
-		margin-left:0rem;
+		margin-left: 0rem;
 	}
 	.rightPartNav {
 		font-size: 15px;
@@ -276,7 +263,6 @@ form{
 
 <body>
 	<!--navbar-->
-
 	<nav class="navbar navbar-expand-lg navbar-light  ">
 		<!--Left side navbar-->
 		<div class="container-fluid  fs-5 navRWD ">
@@ -313,34 +299,61 @@ form{
 			</div>
 		</div>
 	</nav>
-
-		<div class="container">
-			<!--錢包餘額-->
-			<div class="row cryptoBody">
-				<div class="balance ">
-					<p>總資產</p>
-					<h2>20.2USDT</h2>
-					<p class="TWD">≈NT$6.83</p>
-				</div>
+	<div class="container">
+		<!--錢包餘額-->
+		<div class="row cryptoBody">
+			<div class="balance ">
+				<p>總資產</p>
+				<c:forEach var="cryptoType" items="${userAssets }">
+					<c:if test="${cryptoType.getcName() eq 'USDT' }">
+					<h2>${cryptoType.getAccBalance() }<span class="fw-bold"> USDT</span></h2>
+					<p class="TWD">≈${cryptoType.getAccBalance()*32 }TWD</p>
+					</c:if>
+				</c:forEach>			
 			</div>
-			
-			<div class="row ">
-				<div class="title">
-					<p class="col">名稱</p>
-					<p class="col">數量</p>
-					<p class="col priceTitle">價格</p>
-					<p class="col transTitle">交易</p>
-				</div>
-			</div>
-		  
 		</div>
+		
+		<div class="row ">
+			<div class="title">
+				<p class="col">名稱</p>
+				<p class="col">數量</p>
+				<p class="col priceTitle">價格</p>
+				<p class="col transTitle">交易</p>
+			</div>
+		</div>
+		
+		
+		
+	
+	</div>
 
 
 </body>
 <script>
-//把WebSocket連線包成一個function
-webSocketConnection();
+let cryptoString="${userAssets}"
+//刪除最外層的方括號
+cryptoString = cryptoString.slice(1, -1);
 
+//使用逗號分隔
+var cryptoArray = cryptoString.split(", ");
+
+//創建空的鍵值對物件
+var cryptoKeyValue = {};
+//將每個加密貨幣字串轉換為鍵值對
+cryptoArray.forEach(function(crypto) {
+ var parts = crypto.split(":"); // 根據冒號分隔'
+
+ var key = parts[0].trim(); // 去除空格
+ console.log(key)
+ var value = parseFloat(parts[1].trim()); // 將值轉換為浮點數
+ cryptoKeyValue[key] = value; // 將鍵值對添加到物件中
+});
+
+//現在 cryptoKeyValue 是包含每個加密貨幣的鍵值對物件
+console.log(cryptoKeyValue);
+
+//把WebSocket連線包成一個function
+webSocketConnection()
 function webSocketConnection(){
 	$(function() {
 		$.ajax({
@@ -406,8 +419,15 @@ function webSocketConnection(){
 			    		//每一個row中的數量
 			    		let amountCol=document.createElement("div");
 			    		amountCol.classList.add("col");
+			    		amountCol.classList.add("amount");
 			    		let amountInput=document.createElement("input");
-			    		amountInput.value=25;
+			    		//loop這位使用者的資產
+			    		for(let object in cryptoKeyValue){
+			    			if(crypto.pName==object){
+			    				amountInput.value=cryptoKeyValue[object]
+			    			}
+			    		}
+			    		
 			    		amountInput.readOnly=true;
 			    		amountInput.type="number";
 			    		amountInput.id="cryptoAmount";
@@ -472,10 +492,26 @@ function webSocketConnection(){
 			    		form.appendChild(divRow);
 			    		container.appendChild(form);
 		    		}else{
+		    			//這裡是處理如果已經有出現了就只要抓舊資料修改不用再創造新標籤
+		    			//貨幣名稱
 		    			let formTag=document.getElementById(crypto.pName);
 		    			let nameInput=formTag.querySelector(".name").querySelector("input");
 		    			nameInput.value=crypto.pName;
 		    			
+		    			//貨幣圖片
+		    			let imgTag=formTag.querySelector("img")
+		    			imgTag.src="/crypto2/images/"+crypto.pName.toLowerCase()+".png";
+		    			
+		    			//貨幣數量
+		    			let amountTag=formTag.querySelector(".amount")
+		    			let amountInputTag=amountTag.querySelector("input");
+		    			for(let object in cryptoKeyValue){
+			    			if(crypto.pName==object){
+			    				amountInput.value=cryptoKeyValue[object]
+			    			}
+			    		}
+		    			
+		    			//貨幣價格
 		    			let priceInput=formTag.querySelector(".price").querySelector("input");
 		    			priceInput.value="$"+crypto.pPrice;
 		    			if(crypto.pRate>=0){
@@ -488,7 +524,6 @@ function webSocketConnection(){
 		    					    	
 			    })
 		    }
-			
 				
    };
    //連線關閉時會建立的消息(只有一次)

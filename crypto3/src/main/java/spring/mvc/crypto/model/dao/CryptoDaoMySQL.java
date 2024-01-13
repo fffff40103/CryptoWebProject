@@ -37,7 +37,8 @@ public class CryptoDaoMySQL implements CryptoDao {
 	@Override
 	public void addUser(User user) {
 		String sql = "insert into user(username, password) values(?, ?)";
-		jdbcTemplate.update(sql, user.getUsername(), user.getPassword());
+		int rowcount=jdbcTemplate.update(sql, user.getUsername(), user.getPassword());
+		
 
 	}
 

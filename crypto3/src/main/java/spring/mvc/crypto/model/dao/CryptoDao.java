@@ -42,7 +42,6 @@ public interface CryptoDao {
 //  5.根據貨幣名稱尋找該貨幣
 	Optional<CryptoCurrency> findCryptoByCryptoName(String cName);
 	
-	
 //  6.插入批量加密貨幣資訊
 	public int[] insertCryptos(List<CrawlerCurrency> cryptos);
 	
@@ -52,6 +51,8 @@ public interface CryptoDao {
 //  8.根據使用者id找尋他的現有資產
 	public List<CryptoCurrency> findCryptosByUserId(Integer userId);
 
-//  9.根據使用者id尋找他現有的資產以及餘額
+//  9.根據使用者id尋找他現有的資產以及餘額	
 	public List<UserAsset> findAssetsByUserId(Integer userId);
+	
+//  10.根據使用者id在該用戶新增時增加資產
 }

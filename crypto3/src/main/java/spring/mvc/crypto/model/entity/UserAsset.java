@@ -34,6 +34,6 @@ public class UserAsset {
 	
 	@Override
 	public String toString() {
-		return "UserAsset [userId=" + userId + ", cName=" + cName + ", accBalance=" + accBalance + "]";
+		return getcName()+":"+getAccBalance();
 	}
 }
