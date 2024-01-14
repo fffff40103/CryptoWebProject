@@ -106,11 +106,12 @@ public class CryptoController {
 				if(password.equals(password2)) {
 					model.addAttribute("message","✔️Register successfully");
 					User newUser=new User();
-			
-				
 					newUser.setPassword(password);
 					newUser.setUsername(username);
-					dao.addUser(newUser);
+					//生成新使用者後會自動得到該使用者的id
+					Integer userId=(Integer)dao.addUser(newUser);
+					//幫使用者開設每個幣的帳戶，並且給他入金1000Usdt
+					dao.addAssetsByNewUserId(userId);
 					try {
 						Thread.sleep(5000);
 						return "register";

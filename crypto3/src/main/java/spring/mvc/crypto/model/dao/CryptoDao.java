@@ -15,7 +15,7 @@ public interface CryptoDao {
 	List<User> findAllUsers();
 	
 //	2. 新增使用者
-	void addUser(User user);
+	int addUser(User user);
 	
 //	3. 修改密碼
 	Boolean updateUserPassword(Integer userId, String newPassword);
@@ -54,5 +54,6 @@ public interface CryptoDao {
 //  9.根據使用者id尋找他現有的資產以及餘額	
 	public List<UserAsset> findAssetsByUserId(Integer userId);
 	
-//  10.根據使用者id在該用戶新增時增加資產
+//  10.根據使用者id在該user新創帳號時新增資產
+	public int[] addAssetsByNewUserId(Integer userId);
 }

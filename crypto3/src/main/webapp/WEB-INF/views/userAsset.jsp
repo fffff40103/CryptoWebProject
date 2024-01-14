@@ -8,16 +8,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>User</title>
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css"
-	rel="stylesheet">
-<link rel="stylesheet"
-	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-<script
-	src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+<!-- 使用 Bootstrap 5.x -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css">
+
+
+
 <style>
+
 
 /*   Css RWD排版規則，由大排到小，同屬性的話會單獨排，如果只有單一屬性會在最下面    */
 * {
@@ -262,6 +259,41 @@ form {
 </head>
 
 <body>
+	<h2>Buy Form</h2>
+    
+    <!-- 表单 -->
+    <form id="buyForm">
+        <div class="form-group">
+            <label for="itemName">Item Name:</label>
+            <input type="text" class="form-control" id="itemName" name="itemName">
+        </div>
+        
+        <!-- 点击按钮触发JavaScript函数 -->
+        <button type="button" class="btn btn-primary" onclick="buyButtonClicked()">Buy</button>
+    </form>
+
+    <!-- 模态框 -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Purchase Confirmation</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- 显示购买信息的地方 -->
+                    <p id="purchaseInfo"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 	<!--navbar-->
 	<nav class="navbar navbar-expand-lg navbar-light  ">
 		<!--Left side navbar-->
@@ -283,8 +315,6 @@ form {
 						href="./staking">Staking</a></li>
 					<li class="nav-item"><a class="nav-link text-dark"
 						href="./transaction">Transaction</a></li>
-
-
 				</ul>
 			</div>
 
@@ -299,7 +329,12 @@ form {
 			</div>
 		</div>
 	</nav>
+	 
+	
 	<div class="container">
+		
+	
+	
 		<!--錢包餘額-->
 		<div class="row cryptoBody">
 			<div class="balance ">
@@ -321,15 +356,29 @@ form {
 				<p class="col transTitle">交易</p>
 			</div>
 		</div>
-		
-		
-		
-	
+				
 	</div>
-
-
+	
 </body>
+
+<!-- 引入Bootstrap 5.0和Popper.js的JavaScript文件 -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 <script>
+
+
+
+function buyButtonClicked() {
+    // 获取输入框的值
+    var itemName = document.getElementById("itemName").value;
+    
+    // 将值填充到模态框中
+    document.getElementById("purchaseInfo").innerHTML = "You are about to purchase: " + itemName;
+
+    // 显示模态框
+    $('#myModal').modal('show');
+}
+
 let cryptoString="${userAssets}"
 //刪除最外層的方括號
 cryptoString = cryptoString.slice(1, -1);
@@ -460,6 +509,8 @@ function webSocketConnection(){
 			    		//設定買入功能
 			    		let buttonBuy=document.createElement("button");
 			    		buttonBuy.textContent="買入"
+			    		buttonBuy.classList.add("buyButton");
+			    		
 			    		buttonBuy.addEventListener("click",function(event){
 			    			let buttonBuyElement=event.target;
 			    			let parentElement = buttonBuyElement.parentNode;
@@ -467,13 +518,16 @@ function webSocketConnection(){
 			    			let formAttr=formTag["id"];
 			    			setFormAction('./buy',formAttr);
 			    		})
+			    		
+			    		
+			    		
 			    		buttonCol.appendChild(buttonBuy);
 			    		
 			    		//設定賣出功能
 			    		let buttonSell=document.createElement("button");
 			    		
 			    		buttonSell.textContent="賣出"
-			    		
+			    		buttonSell.classList.add("sellButton")
 			    	
 			    		buttonSell.addEventListener("click", function(event) {
 			    			   let buttonSellElement = event.target;
@@ -507,7 +561,7 @@ function webSocketConnection(){
 		    			let amountInputTag=amountTag.querySelector("input");
 		    			for(let object in cryptoKeyValue){
 			    			if(crypto.pName==object){
-			    				amountInput.value=cryptoKeyValue[object]
+			    				amountInputTag.value=cryptoKeyValue[object]
 			    			}
 			    		}
 		    			
@@ -520,6 +574,14 @@ function webSocketConnection(){
 		    				priceInput.style.color="red";
 		    			}
 		    			
+		    			//貨幣買入按鈕
+		    			let buttonBuy=formTag.querySelector(".buyButton")
+		    			console.log(buttonBuy);
+		    			//貨幣賣出按鍵
+		    			let buttonSell=formTag.querySelector(".sellButton")
+		    			console.log(buttonSell)
+		    			
+		    	
 		    		}
 		    					    	
 			    })

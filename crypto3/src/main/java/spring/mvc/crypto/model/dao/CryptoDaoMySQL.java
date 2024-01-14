@@ -2,6 +2,7 @@ package spring.mvc.crypto.model.dao;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,6 +11,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 
 import spring.mvc.crypto.model.entity.Account;
@@ -17,6 +19,7 @@ import spring.mvc.crypto.model.entity.CrawlerCurrency;
 import spring.mvc.crypto.model.entity.CryptoCurrency;
 import spring.mvc.crypto.model.entity.User;
 import spring.mvc.crypto.model.entity.UserAsset;
+import spring.mvc.crypto.model.entity.UserRefAccount;
 
 @Repository
 public class CryptoDaoMySQL implements CryptoDao {
@@ -35,11 +38,20 @@ public class CryptoDaoMySQL implements CryptoDao {
 
 	// 2. 新增使用者
 	@Override
-	public void addUser(User user) {
+	public int addUser(User user) {
 		String sql = "insert into user(username, password) values(?, ?)";
-		int rowcount=jdbcTemplate.update(sql, user.getUsername(), user.getPassword());
+		//生成keyHoder儲存創造使用者後生成的主鍵
+		GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
+		//因為語法複雜所以使用PreparedStatament
+		jdbcTemplate.update(connection -> {
+			//Statement.RETURN_GENERATED_KEYS 就是告訴sql說執行完要回傳主鍵
+            PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, user.getUsername());
+            ps.setString(2, user.getPassword());
+            return ps;
+        }, keyHolder);//keyHolder就是要儲存回傳主見的地方
 		
-
+		return keyHolder.getKey().intValue();
 	}
 
 	// 3. 修改密碼
@@ -186,6 +198,30 @@ public class CryptoDaoMySQL implements CryptoDao {
 				+ "Join cryptoinfo on account.cryptoNumber=cryptoinfo.cNumber\r\n"
 				+ "where userId=?;\r\n";
 		return jdbcTemplate.query(sql,new BeanPropertyRowMapper<>(UserAsset.class),userId );		
+	}
+	
+	
+	//  10.根據使用者id在該user新創帳號時新增資產
+	@Override
+	public int[] addAssetsByNewUserId(Integer userId) {
+		String sql="INSERT INTO user_ref_account (userId,accId,accBalance) values(?,?,?)";
+		List<UserRefAccount> refAccounts=UserRefAccount.refAccounts;
+
+		return jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
+		    @Override
+		    public void setValues(PreparedStatement ps, int i) throws SQLException {
+		        UserRefAccount userRefAccount = refAccounts.get(i);
+		        ps.setInt(1, userId);
+		        ps.setInt(2, userRefAccount.getAccId());
+		        ps.setFloat(3, userRefAccount.getAccBalance());
+		        System.out.println("userId:"+userId+"AccountId:"+userRefAccount.getAccId()+"Balance"+userRefAccount.getAccBalance());
+		    }
+
+		    @Override
+		    public int getBatchSize() {
+		        return refAccounts.size();
+		    }
+		});
 	}
 
 	
