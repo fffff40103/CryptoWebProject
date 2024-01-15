@@ -9,12 +9,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>User</title>
 <!-- 使用 Bootstrap 5.x -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css">
-
-
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
 <style>
-
 
 /*   Css RWD排版規則，由大排到小，同屬性的話會單獨排，如果只有單一屬性會在最下面    */
 * {
@@ -259,41 +259,7 @@ form {
 </head>
 
 <body>
-	<h2>Buy Form</h2>
-    
-    <!-- 表单 -->
-    <form id="buyForm">
-        <div class="form-group">
-            <label for="itemName">Item Name:</label>
-            <input type="text" class="form-control" id="itemName" name="itemName">
-        </div>
-        
-        <!-- 点击按钮触发JavaScript函数 -->
-        <button type="button" class="btn btn-primary" onclick="buyButtonClicked()">Buy</button>
-    </form>
-
-    <!-- 模态框 -->
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Purchase Confirmation</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <!-- 显示购买信息的地方 -->
-                    <p id="purchaseInfo"></p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
+    <h1>${resultMessage }</h1>
 	<!--navbar-->
 	<nav class="navbar navbar-expand-lg navbar-light  ">
 		<!--Left side navbar-->
@@ -329,25 +295,25 @@ form {
 			</div>
 		</div>
 	</nav>
-	 
-	
+
+
 	<div class="container">
-		
-	
-	
+
 		<!--錢包餘額-->
 		<div class="row cryptoBody">
 			<div class="balance ">
 				<p>總資產</p>
 				<c:forEach var="cryptoType" items="${userAssets }">
 					<c:if test="${cryptoType.getcName() eq 'USDT' }">
-					<h2>${cryptoType.getAccBalance() }<span class="fw-bold"> USDT</span></h2>
-					<p class="TWD">≈${cryptoType.getAccBalance()*32 }TWD</p>
+						<h2>${cryptoType.getAccBalance() }<span class="fw-bold">
+								USDT</span>
+						</h2>
+						<p class="TWD">≈${cryptoType.getAccBalance()*32 }TWD</p>
 					</c:if>
-				</c:forEach>			
+				</c:forEach>
 			</div>
 		</div>
-		
+
 		<div class="row ">
 			<div class="title">
 				<p class="col">名稱</p>
@@ -356,28 +322,162 @@ form {
 				<p class="col transTitle">交易</p>
 			</div>
 		</div>
-				
+
 	</div>
-	
+
+	<!-- 模态框 -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Purchase
+						Confirmation</h5>
+				</div>
+				<form class="confirmForm">
+					<div class="modal-body">
+						<!-- 显示购买信息的地方 -->
+						<p id="purchaseInfo"></p>
+						<p id="purchaseInfo2"></p>
+						<input class="modalNameInput" type="text" value="" name="cryptoName" id="cryptoName" readonly="" hidden>
+						<input class="modalPriceInput" type="text" value="" name="cryptoPrice" id="cryptoPrice" readonly="" hidden>
+						<input class="modalAmountInput" type="number" name="cryptoAmount" id="cryptoAmount " placeHolder='請填入數量' required >
+					</div>
+				
+				
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-secondary modalButtontrans"
+							data-dismiss="modal">Buy</button>
+						<button type="submit" class="btn btn-secondary modalCancelButton"
+							data-dismiss="modal" >取消</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
 </body>
 
 <!-- 引入Bootstrap 5.0和Popper.js的JavaScript文件 -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 <script>
 
+/*設定彈跳框買入賣出彈跳框*/
+function buyButtonClicked(nameCrypto,priceCrypto) {
+  
+    //動態設定表單裡面的按鈕案買入案件就變成確認買入
+    let formTag=document.querySelector(".confirmForm");
 
-
-function buyButtonClicked() {
-    // 获取输入框的值
-    var itemName = document.getElementById("itemName").value;
-    
     // 将值填充到模态框中
-    document.getElementById("purchaseInfo").innerHTML = "You are about to purchase: " + itemName;
+    document.getElementById("purchaseInfo").innerHTML = "The cryptoName: " + nameCrypto;
+    document.getElementById("purchaseInfo2").innerHTML = "The price: " + priceCrypto;
+    //test***************************************************
+    //動態設定隱藏表單的value
+    let nameInput=formTag.querySelector(".modalNameInput");
+    nameInput.value=nameCrypto
+    
+    //動態設定隱藏表單的value
+    let priceInput=formTag.querySelector(".modalPriceInput");
+    priceInput.value=priceCrypto;
+    
+   	
+    formTag.addEventListener("submit", function (event) {
+        //*********************************************************
+        //發起ajax請求
+        // 显示模态框
+        $('#myModal').modal('show');
+      //動態拿到amount
+        let amountInput=formTag.querySelector(".modalAmountInput");
+        amountInput=amountInput.value;
+        alert(amountInput)
+        
+        let xhr = new XMLHttpRequest();
+        xhr.open("POST", "./buy", true);
+        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+     	// 构建需要发送的数据
+        let data = {
+            // 你的购买数据
+            "cryptoName": nameCrypto,
+            "cryptoPrice":priceCrypto,
+            "cryptoAmount":amountInput
+        };
+        console.log(data);
+     	// 将数据转为 JSON 字符串
+        let jsonData = JSON.stringify(data);
+        xhr.send(jsonData);
+     	//*********************************************************
 
+      
+    });
+    
+    $('#myModal').modal('show');
+
+
+    
+
+    
+    
+    //動態設定按鈕(買入、賣出)
+   	let modalFooter=document.querySelector(".modal-footer")
+   	let modalButtontrans=modalFooter.querySelector(".modalButtontrans")
+   	modalButtontrans.innerHTML="買入";
+    
+
+ 	
+   	//把彈跳框取消
+   	let modalCancel=document.querySelector(".modalCancelButton");
+   	modalCancel.addEventListener("click",function(event){
+   		event.preventDefault();
+   		$('#myModal').modal('hide');
+   		
+   	});
+   
+    
+}
+/*設定彈跳框賣出賣出彈跳框*/
+function sellButtonClicked(nameCrypto,priceCrypto) {
+	  
+
+	 // 将值填充到模态框中
+    document.getElementById("purchaseInfo").innerHTML = "The cryptoName: " + nameCrypto;
+    document.getElementById("purchaseInfo2").innerHTML = "The price: " + priceCrypto;
+    
+  	//動態設定表單裡面的按鈕按賣出按鍵就變成賣出
+    let formTag=document.querySelector(".confirmForm");
+    formTag.action="./sell";
+    formTag.method="post";
+    //動態設定隱藏表單的value
+    let nameInput=formTag.querySelector(".modalNameInput");
+    nameInput.value=nameCrypto
+    
+    //動態設定隱藏表單的value
+    let priceInput=formTag.querySelector(".modalPriceInput");
+    priceInput.value=priceCrypto;
+    
+  	//動態設定按鈕(買入、賣出)
+    let modalFooter=document.querySelector(".modal-footer")
+   	let modalButtontrans=modalFooter.querySelector(".modalButtontrans")
+   	modalButtontrans.innerHTML="賣出";
+    
+  	//把彈跳框取消
+    let modalCancel=document.querySelector(".modalCancelButton");
+   	modalCancel.addEventListener("click",function(event){
+   		event.preventDefault();
+   		$('#myModal').modal('hide');
+   		
+   	});
+    
     // 显示模态框
     $('#myModal').modal('show');
 }
+
+
+
+
+
 
 let cryptoString="${userAssets}"
 //刪除最外層的方括號
@@ -431,7 +531,7 @@ function webSocketConnection(){
 			let cryptos=message.content;
 			
 			console.log(cryptos)
-		
+			//判斷如何讀取以及怎麼讀取資料
 		    if(cryptos[0].pNumber!=null){
 		    	let container=document.querySelector(".container")
 		    	cryptos.forEach((crypto)=>{
@@ -439,8 +539,6 @@ function webSocketConnection(){
 		    		
 		    			//表單
 		    			let form=document.createElement("form");
-			    		//form.action="./test";
-			    		form.method="post";
 			    		form.id=crypto.pName;
 			    		
 			    		//每一個row
@@ -511,16 +609,21 @@ function webSocketConnection(){
 			    		buttonBuy.textContent="買入"
 			    		buttonBuy.classList.add("buyButton");
 			    		
+			    		/*設定按下買入按鈕時觸發的function*/
 			    		buttonBuy.addEventListener("click",function(event){
-			    			let buttonBuyElement=event.target;
-			    			let parentElement = buttonBuyElement.parentNode;
-			    			let formTag=parentElement.parentNode.parentNode
-			    			let formAttr=formTag["id"];
-			    			setFormAction('./buy',formAttr);
-			    		})
-			    		
-			    		
-			    		
+			    			event.preventDefault()
+			    			let parentTag=event.target.parentElement.parentElement
+			    		    let nameTag=parentTag.querySelector(".name");
+			    			let nameInput=nameTag.querySelector("input").value;
+			    			
+			    			
+			    			let priceTag=parentTag.querySelector(".price");
+			    			let priceInput=priceTag.querySelector("input").value;
+			    			
+			    			buyButtonClicked(nameInput,priceInput);
+			    				    			
+			    		});
+	
 			    		buttonCol.appendChild(buttonBuy);
 			    		
 			    		//設定賣出功能
@@ -529,14 +632,24 @@ function webSocketConnection(){
 			    		buttonSell.textContent="賣出"
 			    		buttonSell.classList.add("sellButton")
 			    	
-			    		buttonSell.addEventListener("click", function(event) {
-			    			   let buttonSellElement = event.target;
-			    			   let parentElement = buttonSellElement.parentNode;
-			    			   let formTag=parentElement.parentNode.parentNode
-			    			   let formAttr=formTag["id"];
-			    			   
-			    			   setFormAction('./sell',formAttr);
+			    		
+			    		/*設定按下賣出按鈕時觸發的function*/
+			    		buttonSell.addEventListener("click",function(event){
+			    			event.preventDefault()
+			    			let parentTag=event.target.parentElement.parentElement
+			    		    let nameTag=parentTag.querySelector(".name");
+			    			let nameInput=nameTag.querySelector("input").value;
+			    			
+			    			
+			    			let priceTag=parentTag.querySelector(".price");
+			    			let priceInput=priceTag.querySelector("input").value;
+			    			
+			    			sellButtonClicked(nameInput,priceInput);
+			    				
 			    		});
+			    		
+			    		
+			    		
 			    		//把button按鈕加入form
 			    		buttonCol.appendChild(buttonSell);
 			    		
@@ -576,10 +689,10 @@ function webSocketConnection(){
 		    			
 		    			//貨幣買入按鈕
 		    			let buttonBuy=formTag.querySelector(".buyButton")
-		    			console.log(buttonBuy);
+		    		
 		    			//貨幣賣出按鍵
 		    			let buttonSell=formTag.querySelector(".sellButton")
-		    			console.log(buttonSell)
+		    	
 		    			
 		    	
 		    		}
@@ -612,6 +725,7 @@ function webSocketConnection(){
   })
   
   
+
  
 </script>
 

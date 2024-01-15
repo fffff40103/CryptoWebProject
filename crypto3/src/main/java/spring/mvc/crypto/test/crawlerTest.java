@@ -5,7 +5,26 @@ import java.io.IOException;
 
 import spring.mvc.crypto.service.CryptoServiceImpl2;
 
-//測試程式
+/**
+KeyHolder keyHolder = new GeneratedKeyHolder();
+
+int affectedRows = jdbcTemplate.update(connection -> {
+    PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+    ps.setInt(1, tran.getTranNo());
+    ps.setString(2, tran.getDepartureStation());
+    ps.setString(3, tran.getArrivalStation());
+    ps.setString(4, tran.getDate());
+    ps.setString(5, tran.getDepartureTime());
+    ps.setString(6, tran.getArrivalTime());
+    return ps;
+}, keyHolder);
+
+if (keyHolder.getKey() != null) {
+	 tran.setTranId(keyHolder.getKey().intValue());
+}
+
+return affectedRows;
+**/
 
 public class crawlerTest {
 	public static void main(String[] args) {

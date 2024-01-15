@@ -90,10 +90,12 @@ ps:購買編號、購買帳戶、購買幣種、購買數量、當時購買價�
 -- 授權資料表
 drop table if exists trx_detail;
 drop table if exists trx_transfer;
-drop table if exists account;
-drop table if exists user;
-drop table if exists cryptoInfo;
 drop table if exists crawlerData;
+drop table if exists user_ref_account;
+drop table if exists account;
+drop table if exists cryptoInfo;
+drop table if exists user;
+
 
 
 create table if not exists cryptoinfo(

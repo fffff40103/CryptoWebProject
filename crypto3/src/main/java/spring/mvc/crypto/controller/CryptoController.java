@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import spring.mvc.crypto.model.dao.CryptoDao;
 import spring.mvc.crypto.model.entity.CrawlerCurrency;
 import spring.mvc.crypto.model.entity.CryptoCurrency;
+import spring.mvc.crypto.model.entity.PurchaseData;
 import spring.mvc.crypto.model.entity.User;
 import spring.mvc.crypto.model.entity.UserAsset;
 import spring.mvc.crypto.service.CryptoService;
@@ -58,7 +60,6 @@ public class CryptoController {
 				session.setAttribute("user", user);
 				//登入成功後查找user的資產，並且傳給前端渲染
 				List<UserAsset> userAssets=dao.findAssetsByUserId(user.getUserId());
-				System.out.println(userAssets);
 				model.addAttribute("userAssets", userAssets);
 				return "userAsset";
 			} else {
@@ -158,34 +159,62 @@ public class CryptoController {
 	public String market() {
 		return "market";
 	}
+	
+	 // 处理购买请求的方法
+    @PostMapping("/buy")
+    @ResponseBody
+    public String buyCrypto(@RequestBody PurchaseData data, HttpSession session) {
+    	if (session.getAttribute("user") == null) {
+    		
+    		 return "{\"status\": \"error\", \"message\": \"User not logged in\"}";
+           
+        }
+    	User user=(User)session.getAttribute("user");
+    	System.out.println(user);
+        // 处理购买逻辑
+    	System.out.println(data);
+        // 返回响应，可以是 JSON 字符串或其他格式
+        return "{\"status\": \"success\"}";
+    	
+    }
 
-	// 在userAsset頁面按買入按鈕
+	/** 在userAsset頁面按買入按鈕
 	@PostMapping("/buy")
-	@ResponseBody
-	public void buyCrypto(@RequestParam("cryptoName") String name,
-			@RequestParam("cryptoPrice") String price, HttpSession session, Model model) {
+	public String buyCrypto(@RequestParam("cryptoName") String name,
+			@RequestParam("cryptoPrice") String stringPrice, 
+			@RequestParam("cryptoAmount") Float amount,
+			HttpSession session, Model model) {
+		//處理價格，把她從String變成Float
+		Float floatPrice=Float.parseFloat(stringPrice.substring(1,stringPrice.length()-1));   
 		// 得到該使用者的session
 		User currentUser = (User) session.getAttribute("user");
 		// 檢查該加密貨幣是否有提供交易
 		Optional<CryptoCurrency> mycrypto = dao.findCryptoByCryptoName(name);
 		if (mycrypto.isEmpty()) {
-			model.addAttribute("message", "This crypto is currently not  provided transaction");
+			model.addAttribute("resultMessage", "This crypto is currently not  provided transaction");
+			return "userAsset";
 		}
-		// 檢查有無足夠usdt可以購買加密貨幣
-		List<UserAsset> userAssets = dao.findAssetsByUserId(currentUser.getUserId());
-		
+		// 檢查有無足夠usdt可以購買加密貨幣，如果夠的話就扣款回傳購買成功，不夠的話就回傳餘額不足
+		List<UserAsset> userAssets = dao.findAssetsByUserId(currentUser.getUserId());		
 		Float usdt = userAssets.stream().filter(userAsset -> userAsset.getcName().equals("USDT"))
-				.map(UserAsset::getAccBalance).findFirst().orElse(0.0f);
-		if (usdt <= 0) {
-			System.out.println("餘額不足");
+				.map(UserAsset::getAccBalance).findFirst().orElse(0.0f);	
+		//算出使用者購買貨幣的總價
+		Float totalAmount=floatPrice*amount;
+		if (usdt <= totalAmount) {
+			model.addAttribute("resultMessage","餘額不足，購買失敗");
+			 return "redirect:./userAsset";
 		}
+		model.addAttribute("resultMessage","購買成功!");
+		return "userAsset";
 	}
-
+    **/
 	// 在userAsset頁面按賣出按鈕
 	@PostMapping("/sell")
 	@ResponseBody
-	public void sellCrypto(@RequestParam("cryptoName") String name, @RequestParam("cryptoAmount") Float amount,
-			@RequestParam("cryptoPrice") String price, Model model) {
+	public void sellCrypto(@RequestParam("cryptoName") String name,
+			@RequestParam("cryptoPrice") String price, 
+			@RequestParam("cryptoAmount") String amount,
+			Model model) {
 
 	}
 
