@@ -127,7 +127,7 @@
     <!-- 定義攔截器 Bean -->
     <bean id="LoginInterceptor" class="spring.mvc.crypto.interceptor.LoginInterceptor"/>
 
-    <!-- 配置攔截器 -->
+    <!-- 配置攔截器  -->
     <mvc:interceptors>
         <mvc:interceptor>
             <mvc:mapping path="/crypto/**"/>
@@ -138,6 +138,7 @@
             <mvc:exclude-mapping path="/crypto/send"/>
             <mvc:exclude-mapping path="/crypto/getCryptoInfo"/>
             
+            
             <!-- 
             <mvc:exclude-mapping path="/group_buy/login_backend"/>
             <mvc:exclude-mapping path="/group_buy/login/*"/>
@@ -145,4 +146,5 @@
             <bean class="spring.mvc.crypto.interceptor.LoginInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>
+   
 </beans>

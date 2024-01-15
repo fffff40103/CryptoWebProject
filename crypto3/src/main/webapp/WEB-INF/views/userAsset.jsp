@@ -259,7 +259,8 @@ form {
 </head>
 
 <body>
-    <h1>${resultMessage }</h1>
+    <h1>${userAssets }</h1>
+    
 	<!--navbar-->
 	<nav class="navbar navbar-expand-lg navbar-light  ">
 		<!--Left side navbar-->
@@ -346,6 +347,7 @@ form {
 				
 				
 					<div class="modal-footer">
+						<h1>${resultMessage }</h1>
 						<button type="submit" class="btn btn-secondary modalButtontrans"
 							data-dismiss="modal">Buy</button>
 						<button type="submit" class="btn btn-secondary modalCancelButton"
@@ -368,13 +370,14 @@ form {
 /*設定彈跳框買入賣出彈跳框*/
 function buyButtonClicked(nameCrypto,priceCrypto) {
   
-    //動態設定表單裡面的按鈕案買入案件就變成確認買入
-    let formTag=document.querySelector(".confirmForm");
-
-    // 将值填充到模态框中
+	// 将值填充到模态框中
     document.getElementById("purchaseInfo").innerHTML = "The cryptoName: " + nameCrypto;
     document.getElementById("purchaseInfo2").innerHTML = "The price: " + priceCrypto;
-    //test***************************************************
+    
+  	//動態設定表單裡面的按鈕按賣出按鍵就變成賣出
+    let formTag=document.querySelector(".confirmForm");
+    formTag.action="./buy";
+    formTag.method="post";
     //動態設定隱藏表單的value
     let nameInput=formTag.querySelector(".modalNameInput");
     nameInput.value=nameCrypto
@@ -383,57 +386,21 @@ function buyButtonClicked(nameCrypto,priceCrypto) {
     let priceInput=formTag.querySelector(".modalPriceInput");
     priceInput.value=priceCrypto;
     
-   	
-    formTag.addEventListener("submit", function (event) {
-        //*********************************************************
-        //發起ajax請求
-        // 显示模态框
-        $('#myModal').modal('show');
-      //動態拿到amount
-        let amountInput=formTag.querySelector(".modalAmountInput");
-        amountInput=amountInput.value;
-        alert(amountInput)
-        
-        let xhr = new XMLHttpRequest();
-        xhr.open("POST", "./buy", true);
-        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-     	// 构建需要发送的数据
-        let data = {
-            // 你的购买数据
-            "cryptoName": nameCrypto,
-            "cryptoPrice":priceCrypto,
-            "cryptoAmount":amountInput
-        };
-        console.log(data);
-     	// 将数据转为 JSON 字符串
-        let jsonData = JSON.stringify(data);
-        xhr.send(jsonData);
-     	//*********************************************************
-
-      
-    });
-    
-    $('#myModal').modal('show');
-
-
-    
-
-    
-    
-    //動態設定按鈕(買入、賣出)
-   	let modalFooter=document.querySelector(".modal-footer")
+  	//動態設定按鈕(買入、賣出)
+    let modalFooter=document.querySelector(".modal-footer")
    	let modalButtontrans=modalFooter.querySelector(".modalButtontrans")
    	modalButtontrans.innerHTML="買入";
     
-
- 	
-   	//把彈跳框取消
-   	let modalCancel=document.querySelector(".modalCancelButton");
+  	//把彈跳框取消
+    let modalCancel=document.querySelector(".modalCancelButton");
    	modalCancel.addEventListener("click",function(event){
    		event.preventDefault();
    		$('#myModal').modal('hide');
    		
    	});
+    
+    // 显示模态框
+    $('#myModal').modal('show');
    
     
 }
@@ -480,9 +447,10 @@ function sellButtonClicked(nameCrypto,priceCrypto) {
 
 
 let cryptoString="${userAssets}"
+console.log(cryptoString)
 //刪除最外層的方括號
 cryptoString = cryptoString.slice(1, -1);
-
+console.log(cryptoString)
 //使用逗號分隔
 var cryptoArray = cryptoString.split(", ");
 

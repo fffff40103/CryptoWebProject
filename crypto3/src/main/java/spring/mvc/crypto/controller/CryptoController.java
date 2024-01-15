@@ -160,7 +160,7 @@ public class CryptoController {
 		return "market";
 	}
 	
-	 // 处理购买请求的方法
+	 /** 
     @PostMapping("/buy")
     @ResponseBody
     public String buyCrypto(@RequestBody PurchaseData data, HttpSession session) {
@@ -177,8 +177,8 @@ public class CryptoController {
         return "{\"status\": \"success\"}";
     	
     }
+	**/
 
-	/** 在userAsset頁面按買入按鈕
 	@PostMapping("/buy")
 	public String buyCrypto(@RequestParam("cryptoName") String name,
 			@RequestParam("cryptoPrice") String stringPrice, 
@@ -201,13 +201,14 @@ public class CryptoController {
 		//算出使用者購買貨幣的總價
 		Float totalAmount=floatPrice*amount;
 		if (usdt <= totalAmount) {
+			model.addAttribute("userAssets", userAssets);
 			model.addAttribute("resultMessage","餘額不足，購買失敗");
-			 return "redirect:./userAsset";
+			return "userAsset";
 		}
 		model.addAttribute("resultMessage","購買成功!");
 		return "userAsset";
 	}
-    **/
+    
 	// 在userAsset頁面按賣出按鈕
 	@PostMapping("/sell")
 	@ResponseBody
