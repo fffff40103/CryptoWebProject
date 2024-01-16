@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,9 +23,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import spring.mvc.crypto.model.dao.CryptoDao;
+import spring.mvc.crypto.model.entity.Account;
 import spring.mvc.crypto.model.entity.CrawlerCurrency;
 import spring.mvc.crypto.model.entity.CryptoCurrency;
 import spring.mvc.crypto.model.entity.PurchaseData;
+import spring.mvc.crypto.model.entity.TransactionDetail;
 import spring.mvc.crypto.model.entity.User;
 import spring.mvc.crypto.model.entity.UserAsset;
 import spring.mvc.crypto.service.CryptoService;
@@ -160,37 +163,35 @@ public class CryptoController {
 		return "market";
 	}
 	
-	 /** 
-    @PostMapping("/buy")
-    @ResponseBody
-    public String buyCrypto(@RequestBody PurchaseData data, HttpSession session) {
-    	if (session.getAttribute("user") == null) {
-    		
-    		 return "{\"status\": \"error\", \"message\": \"User not logged in\"}";
-           
-        }
-    	User user=(User)session.getAttribute("user");
-    	System.out.println(user);
-        // 处理购买逻辑
-    	System.out.println(data);
-        // 返回响应，可以是 JSON 字符串或其他格式
-        return "{\"status\": \"success\"}";
-    	
-    }
-	**/
-
+	// 交易明細葉面
+	@GetMapping("/userDetail")
+	public String userDetail(Model model,HttpSession session) {
+		//得到User
+		User currentUser=(User)session.getAttribute("user");
+		List<TransactionDetail> details=dao.findDetailByUserId(currentUser.getUserId());
+		model.addAttribute("details",details);
+		return "userDetail";
+	}
+	
+	@Transactional
 	@PostMapping("/buy")
 	public String buyCrypto(@RequestParam("cryptoName") String name,
 			@RequestParam("cryptoPrice") String stringPrice, 
 			@RequestParam("cryptoAmount") Float amount,
 			HttpSession session, Model model) {
+		//處理價格型態
+		String noDollarString=stringPrice.substring(1,stringPrice.length()-1);
+		if(!noDollarString.contains(".")) {
+			noDollarString+=".00";
+		}
 		//處理價格，把她從String變成Float
-		Float floatPrice=Float.parseFloat(stringPrice.substring(1,stringPrice.length()-1));   
+		Float floatPrice=Float.parseFloat(noDollarString); 
 		// 得到該使用者的session
 		User currentUser = (User) session.getAttribute("user");
 		// 檢查該加密貨幣是否有提供交易
 		Optional<CryptoCurrency> mycrypto = dao.findCryptoByCryptoName(name);
 		if (mycrypto.isEmpty()) {
+			
 			model.addAttribute("resultMessage", "This crypto is currently not  provided transaction");
 			return "userAsset";
 		}
@@ -200,11 +201,34 @@ public class CryptoController {
 				.map(UserAsset::getAccBalance).findFirst().orElse(0.0f);	
 		//算出使用者購買貨幣的總價
 		Float totalAmount=floatPrice*amount;
+		//如果餘額不足就顯示購買失敗
 		if (usdt <= totalAmount) {
 			model.addAttribute("userAssets", userAssets);
 			model.addAttribute("resultMessage","餘額不足，購買失敗");
 			return "userAsset";
 		}
+		//扣除購買貨幣價格剩下的貨幣
+		usdt=usdt-totalAmount;
+		//先找到該貨幣對應帳戶
+		Account account=dao.findAccountByCryptoName(name);
+		//得到該使用者美金(usdt)帳戶
+		Account usdtAccount=dao.findAccountByCryptoName("USDT");
+		//購買貨幣
+		dao.buyCrypto(amount,currentUser.getUserId() ,account.getAccId());
+		//扣款購買金額後的帳戶
+		dao.deductUSDT(usdt,currentUser.getUserId() ,usdtAccount.getAccId());
+		//加入購買明細
+		TransactionDetail detail=new TransactionDetail();
+		detail.setUserId(currentUser.getUserId());
+		detail.setcNumber(account.getCryptoNumber());
+		detail.setQuantity(amount);
+		detail.setPrice(floatPrice);
+		detail.setStatusId(1);
+		dao.addTransactionDetail(detail);
+		//購買貨幣以及扣款後更新資訊
+		userAssets=dao.findAssetsByUserId(currentUser.getUserId());
+		//購買成功!
+		model.addAttribute("userAssets", userAssets);
 		model.addAttribute("resultMessage","購買成功!");
 		return "userAsset";
 	}

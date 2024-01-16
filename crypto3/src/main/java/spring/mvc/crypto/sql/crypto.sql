@@ -141,7 +141,10 @@ create table if not exists user_ref_account(
 );
 
 
-
+create table if not exists status_detail(
+	statusId int primary key,
+    statusFor varchar(50) not null
+);
 
 create table if not exists trx_detail(
 	trxId int auto_increment primary key,
@@ -149,11 +152,14 @@ create table if not exists trx_detail(
 	cNumber int not null,
 	quantity int not null,
 	price float not null,
+    statusId int not null,
 	purchaseTime datetime default current_timestamp,
 	foreign key(userId) references user(userId),
-	foreign key(cNumber) references cryptoinfo(cNumber)
+	foreign key(cNumber) references cryptoinfo(cNumber),
+    foreign key(statusId) references status_detail(statusId)
 );
 alter table trx_detail auto_increment = 301;
+
 
 
 

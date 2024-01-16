@@ -259,8 +259,6 @@ form {
 </head>
 
 <body>
-    <h1>${userAssets }</h1>
-    
 	<!--navbar-->
 	<nav class="navbar navbar-expand-lg navbar-light  ">
 		<!--Left side navbar-->
@@ -282,6 +280,8 @@ form {
 						href="./staking">Staking</a></li>
 					<li class="nav-item"><a class="nav-link text-dark"
 						href="./transaction">Transaction</a></li>
+					<li class="nav-item"><a class="nav-link text-dark"
+						href="./userDetail">Detail</a></li>
 				</ul>
 			</div>
 
@@ -347,7 +347,6 @@ form {
 				
 				
 					<div class="modal-footer">
-						<h1>${resultMessage }</h1>
 						<button type="submit" class="btn btn-secondary modalButtontrans"
 							data-dismiss="modal">Buy</button>
 						<button type="submit" class="btn btn-secondary modalCancelButton"
@@ -366,7 +365,8 @@ form {
 <script
 	src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 <script>
-
+//顯示購買結果
+showMessage();
 /*設定彈跳框買入賣出彈跳框*/
 function buyButtonClicked(nameCrypto,priceCrypto) {
   
@@ -378,6 +378,7 @@ function buyButtonClicked(nameCrypto,priceCrypto) {
     let formTag=document.querySelector(".confirmForm");
     formTag.action="./buy";
     formTag.method="post";
+    
     //動態設定隱藏表單的value
     let nameInput=formTag.querySelector(".modalNameInput");
     nameInput.value=nameCrypto
@@ -401,9 +402,10 @@ function buyButtonClicked(nameCrypto,priceCrypto) {
     
     // 显示模态框
     $('#myModal').modal('show');
-   
+    
     
 }
+
 /*設定彈跳框賣出賣出彈跳框*/
 function sellButtonClicked(nameCrypto,priceCrypto) {
 	  
@@ -441,11 +443,24 @@ function sellButtonClicked(nameCrypto,priceCrypto) {
     $('#myModal').modal('show');
 }
 
+//設定顯示購買結果
+function showMessage(){
+	let Message="${resultMessage}";
+	if(Message=="餘額不足，購買失敗"){
+		alert("餘額不足，購買失敗")
+		return;
+	}
+	if(Message=="購買成功!"){
+		alert("購買成功!");
+		return;
+	}
+	
+}
 
 
 
 
-
+//******處理使用者資產字串********
 let cryptoString="${userAssets}"
 console.log(cryptoString)
 //刪除最外層的方括號
@@ -466,10 +481,7 @@ cryptoArray.forEach(function(crypto) {
  cryptoKeyValue[key] = value; // 將鍵值對添加到物件中
 });
 
-//現在 cryptoKeyValue 是包含每個加密貨幣的鍵值對物件
-console.log(cryptoKeyValue);
-
-//把WebSocket連線包成一個function
+//**********把WebSocket連線包成一個function
 webSocketConnection()
 function webSocketConnection(){
 	$(function() {
@@ -661,8 +673,7 @@ function webSocketConnection(){
 		    			//貨幣賣出按鍵
 		    			let buttonSell=formTag.querySelector(".sellButton")
 		    	
-		    			
-		    	
+		    				    	
 		    		}
 		    					    	
 			    })

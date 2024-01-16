@@ -17,6 +17,8 @@ import org.springframework.stereotype.Repository;
 import spring.mvc.crypto.model.entity.Account;
 import spring.mvc.crypto.model.entity.CrawlerCurrency;
 import spring.mvc.crypto.model.entity.CryptoCurrency;
+import spring.mvc.crypto.model.entity.StatusDetail;
+import spring.mvc.crypto.model.entity.TransactionDetail;
 import spring.mvc.crypto.model.entity.User;
 import spring.mvc.crypto.model.entity.UserAsset;
 import spring.mvc.crypto.model.entity.UserRefAccount;
@@ -174,22 +176,19 @@ public class CryptoDaoMySQL implements CryptoDao {
 		}
 		return result;
 	}
-    
-	//7.助教測試
+	
+	//	7.根據貨幣名稱查找帳戶ID
 	@Override
-	public List<CryptoCurrency> findCryptosByUserId(Integer userId) {
+	public Account findAccountByCryptoName(String cName) {
+		String sql="select a.accId,a.cryptoNumber from account a \r\n"
+				+ "join cryptoInfo c on c.cNumber=a.cryptoNumber\r\n"
+				+ "where c.cName=?";
+		return jdbcTemplate.queryForObject(sql,new BeanPropertyRowMapper<>(Account.class),cName);
 		
-		String sql="SELECT \r\n"
-				+ "    cryptoinfo.cNumber, cryptoinfo.cName, cryptoinfo.price, cryptoinfo.rate, cryptoinfo.cap\r\n"
-				+ "FROM user_ref_account\r\n"
-				+ "JOIN account ON user_ref_account.accId = account.accId\r\n"
-				+ "JOIN cryptoinfo ON account.cryptoNumber = cryptoinfo.cNumber\r\n"
-				+ "WHERE user_ref_account.userId = ?";
-		
-		return jdbcTemplate.query(sql,new BeanPropertyRowMapper<>(CryptoCurrency.class),userId);
 	}
 
-	//  9.根據使用者id尋找他現有的資產以及餘額
+
+	//  8.根據使用者id尋找他現有的資產以及餘額
 	@Override
 	public List<UserAsset> findAssetsByUserId(Integer userId) {
 		String sql="SELECT userId,cryptoinfo.cName,accBalance\r\n"
@@ -201,7 +200,7 @@ public class CryptoDaoMySQL implements CryptoDao {
 	}
 	
 	
-	//  10.根據使用者id在該user新創帳號時新增資產
+	//  9.根據使用者id在該user新創帳號時新增資產
 	@Override
 	public int[] addAssetsByNewUserId(Integer userId) {
 		String sql="INSERT INTO user_ref_account (userId,accId,accBalance) values(?,?,?)";
@@ -214,7 +213,7 @@ public class CryptoDaoMySQL implements CryptoDao {
 		        ps.setInt(1, userId);
 		        ps.setInt(2, userRefAccount.getAccId());
 		        ps.setFloat(3, userRefAccount.getAccBalance());
-		        System.out.println("userId:"+userId+"AccountId:"+userRefAccount.getAccId()+"Balance"+userRefAccount.getAccBalance());
+		  
 		    }
 
 		    @Override
@@ -224,17 +223,63 @@ public class CryptoDaoMySQL implements CryptoDao {
 		});
 	}
 
+	//10.根據使用者id在使用者購買成功時增加資產	
+	@Override
+	public boolean buyCrypto(Float accBalance,Integer userId,Integer accId) {
+		String sql="update user_ref_account set accBalance=accBalance+? where userId=? AND accId=?";
+		return jdbcTemplate.update(sql,accBalance,userId,accId)>1;
+	}
 	
+	//11.購買成功時扣除usdt
+	@Override
+	public boolean deductUSDT(Float balance, Integer userId, Integer accId) {
+		String sql="update user_ref_account set accBalance=? where userId=? AND accId=?";
+		return jdbcTemplate.update(sql,balance,userId,accId)>1;
+	}
+	
+	//  12.將此筆交易加入交易明細
+	@Override
+	public boolean addTransactionDetail(TransactionDetail detail) {
+		String sql="insert into trx_detail(userId,cNumber,quantity,price) values(?,?,?,?)";
+		return jdbcTemplate.update(sql,detail.getUserId(),detail.getcNumber(),detail.getQuantity(),detail.getPrice())>0;
+	}
 
+	// 13.利用userId得到此筆紀錄
+	@Override
+	public List<TransactionDetail> findDetailByUserId(Integer userId) {
+		String sql="select trxId,userId,cNumber,quantity,price,purchaseTime from trx_detail where userId=?";
+		
+		 List<TransactionDetail> details=jdbcTemplate.query(sql,new BeanPropertyRowMapper<>(TransactionDetail.class),userId);
+		 details.forEach(this::enrichDetailInDetail);
+		 return details;
+	}
 	
+	@Override
+	public Optional<StatusDetail> findStatusById(Integer statusId) {
+		try {
+			String sql="select statusId,statusFor from status_detail where statusId=?";
+			StatusDetail statusDetail=jdbcTemplate.queryForObject(sql,new BeanPropertyRowMapper<>(StatusDetail.class),statusId );
+			return Optional.ofNullable(statusDetail);
+		}catch (EmptyResultDataAccessException e) {
+			return Optional.empty();
+		}
+		
+		
+	
+	}
+	
+	public void enrichDetailInDetail(TransactionDetail detail) {
+		//注入CryptoCurrency資訊
+		findCryptoByCryptoId(detail.getcNumber()).ifPresent(detail::setCryptoInfo);
+		
+		//注入user資訊
+		findUserById(detail.getUserId()).ifPresent(detail::setUser);
+		
+		//注入status
+		
+		findStatusById(detail.getStatusId()).ifPresent(detail::setStatusDetail);
+	}
 
-	
-
-	
-	
-	
-	
-	
 	
 	
 }

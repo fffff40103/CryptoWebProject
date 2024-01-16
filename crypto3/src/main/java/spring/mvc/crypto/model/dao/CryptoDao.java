@@ -6,6 +6,8 @@ import java.util.Optional;
 import spring.mvc.crypto.model.entity.Account;
 import spring.mvc.crypto.model.entity.CrawlerCurrency;
 import spring.mvc.crypto.model.entity.CryptoCurrency;
+import spring.mvc.crypto.model.entity.StatusDetail;
+import spring.mvc.crypto.model.entity.TransactionDetail;
 import spring.mvc.crypto.model.entity.User;
 import spring.mvc.crypto.model.entity.UserAsset;
 
@@ -42,18 +44,42 @@ public interface CryptoDao {
 //  5.根據貨幣名稱尋找該貨幣
 	Optional<CryptoCurrency> findCryptoByCryptoName(String cName);
 	
-//  6.插入批量加密貨幣資訊
+//	6.根據貨幣名稱查找帳戶ID
+	public Account findAccountByCryptoName(String cName);
+  
+//	7.插入批量加密貨幣資訊
 	public int[] insertCryptos(List<CrawlerCurrency> cryptos);
 	
-//  7.更新既有的5隻最熱門加密貨幣的資訊
+//  8.更新既有的5隻最熱門加密貨幣的資訊
 	public int updateTopFiveCryptos(List<CryptoCurrency> cryptos);
 	
-//  8.根據使用者id找尋他的現有資產
-	public List<CryptoCurrency> findCryptosByUserId(Integer userId);
 
 //  9.根據使用者id尋找他現有的資產以及餘額	
 	public List<UserAsset> findAssetsByUserId(Integer userId);
 	
 //  10.根據使用者id在該user新創帳號時新增資產
 	public int[] addAssetsByNewUserId(Integer userId);
+	
+//  11.根據使用者id在使用者購買成功時增加資產	
+	
+	public boolean buyCrypto(Float accBalance,Integer userId,Integer accId);
+//  12.根據使用者id在使用者重新購買加密貨幣後扣除usdt
+	
+	public boolean deductUSDT(Float balance, Integer userId, Integer accId);
+	
+
+	
+
+	
+// 明細-detail
+	
+//  將交易加入交易明細	
+	public boolean addTransactionDetail(TransactionDetail  detail);
+
+//  根據使用者id尋找交易明細
+	public  List<TransactionDetail> findDetailByUserId(Integer userId);
+//  根據狀態id狀態明細
+	
+	public Optional<StatusDetail> findStatusById(Integer statusId);
+	
 }
