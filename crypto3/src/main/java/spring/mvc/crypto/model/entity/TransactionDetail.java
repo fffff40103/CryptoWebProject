@@ -113,8 +113,6 @@ public class TransactionDetail {
 	public void setStatusId(Integer statusId) {
 		this.statusId = statusId;
 	}
-	
-	
 
 	public StatusDetail getStatusDetail() {
 		return statusDetail;
@@ -123,11 +121,12 @@ public class TransactionDetail {
 	public void setStatusDetail(StatusDetail statusDetail) {
 		this.statusDetail = statusDetail;
 	}
+	
+	
 
-	@Override
-	public String toString() {
-		return "交易序號:"+trxId+"使用者id:"+userId+"貨幣編號:"+cNumber+"購買數量:"+quantity+"購買價格:"+price+"購滿時間"+purchaseTime;
-	};
+	
+
+	
 	
 	
 }

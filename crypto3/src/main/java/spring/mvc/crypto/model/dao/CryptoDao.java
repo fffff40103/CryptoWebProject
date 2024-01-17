@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import spring.mvc.crypto.model.entity.Account;
+import spring.mvc.crypto.model.entity.CompareData;
 import spring.mvc.crypto.model.entity.CrawlerCurrency;
 import spring.mvc.crypto.model.entity.CryptoCurrency;
 import spring.mvc.crypto.model.entity.StatusDetail;
@@ -32,53 +33,66 @@ public interface CryptoDao {
 //	1.查詢所有貨幣(多筆)
 	List<CrawlerCurrency> findLatestCryptos();
 	
-//  2.查詢最熱門的5隻貨幣
+//  2.查詢第倒數10隻加密貨幣的前10隻
+	List<CompareData> findPrecedingLastTenData();
+	
+//  3.查詢最熱門的5隻貨幣
 	List<CryptoCurrency> findTopFiveRanking();
 	
-//  3.新增貨幣
+	
+//  4.新增貨幣
 	void addCrypto(CryptoCurrency crypto);
 	
-//  4.根據貨幣編號尋找該貨幣
+
+	
+//  5.根據貨幣編號尋找該貨幣
 	Optional<CryptoCurrency> findCryptoByCryptoId(Integer cNumber);
 	
-//  5.根據貨幣名稱尋找該貨幣
+//  6.根據貨幣名稱尋找該貨幣
 	Optional<CryptoCurrency> findCryptoByCryptoName(String cName);
 	
-//	6.根據貨幣名稱查找帳戶ID
+//	7.根據貨幣名稱查找帳戶ID
 	public Account findAccountByCryptoName(String cName);
   
-//	7.插入批量加密貨幣資訊
+//	8.插入批量加密貨幣資訊
 	public int[] insertCryptos(List<CrawlerCurrency> cryptos);
 	
-//  8.更新既有的5隻最熱門加密貨幣的資訊
+	//插入批量比較資訊
+	public int[] insertCompareCryptos(List<CompareData> compareCryptos);
+
+	
+//  9.更新既有的5隻最熱門加密貨幣的資訊
 	public int updateTopFiveCryptos(List<CryptoCurrency> cryptos);
 	
 
-//  9.根據使用者id尋找他現有的資產以及餘額	
+//  10.根據使用者id尋找他現有的資產以及餘額	
 	public List<UserAsset> findAssetsByUserId(Integer userId);
 	
-//  10.根據使用者id在該user新創帳號時新增資產
+//  11.根據使用者id在該user新創帳號時新增資產
 	public int[] addAssetsByNewUserId(Integer userId);
 	
-//  11.根據使用者id在使用者購買成功時增加資產	
-	
+//  12.根據使用者id在使用者購買成功時增加資產	
 	public boolean buyCrypto(Float accBalance,Integer userId,Integer accId);
-//  12.根據使用者id在使用者重新購買加密貨幣後扣除usdt
+
+//  13.根據使用者id在使用者出售成功時扣除資產		
 	
+	public boolean sellCrypto(Float accBalance,Integer userId,Integer accId);
+
+//  14.根據使用者id在使用者購買加密貨幣後扣除usdt
 	public boolean deductUSDT(Float balance, Integer userId, Integer accId);
-	
 
+//  15.根據使用者id在使用者售出加密貨幣後增加usdt
+	public boolean addUSDT(Float balance, Integer userId, Integer accId);
 	
-
-	
+		
 // 明細-detail
 	
-//  將交易加入交易明細	
+//  1.將交易加入交易明細	
 	public boolean addTransactionDetail(TransactionDetail  detail);
 
-//  根據使用者id尋找交易明細
+//  2.根據使用者id尋找交易明細
 	public  List<TransactionDetail> findDetailByUserId(Integer userId);
-//  根據狀態id狀態明細
+//  3.根據狀態id狀態明細
 	
 	public Optional<StatusDetail> findStatusById(Integer statusId);
 	

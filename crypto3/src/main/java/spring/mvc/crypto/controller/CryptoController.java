@@ -26,7 +26,7 @@ import spring.mvc.crypto.model.dao.CryptoDao;
 import spring.mvc.crypto.model.entity.Account;
 import spring.mvc.crypto.model.entity.CrawlerCurrency;
 import spring.mvc.crypto.model.entity.CryptoCurrency;
-import spring.mvc.crypto.model.entity.PurchaseData;
+import spring.mvc.crypto.model.entity.StatusDetail;
 import spring.mvc.crypto.model.entity.TransactionDetail;
 import spring.mvc.crypto.model.entity.User;
 import spring.mvc.crypto.model.entity.UserAsset;
@@ -224,6 +224,7 @@ public class CryptoController {
 		detail.setQuantity(amount);
 		detail.setPrice(floatPrice);
 		detail.setStatusId(1);
+		
 		dao.addTransactionDetail(detail);
 		//購買貨幣以及扣款後更新資訊
 		userAssets=dao.findAssetsByUserId(currentUser.getUserId());
@@ -234,13 +235,64 @@ public class CryptoController {
 	}
     
 	// 在userAsset頁面按賣出按鈕
-	@PostMapping("/sell")
-	@ResponseBody
-	public void sellCrypto(@RequestParam("cryptoName") String name,
-			@RequestParam("cryptoPrice") String price, 
-			@RequestParam("cryptoAmount") String amount,
-			Model model) {
 
+	@PostMapping("/sell")
+
+	public String sellCrypto(@RequestParam("cryptoName") String name,
+			@RequestParam("cryptoPrice") String stringPrice, 
+			@RequestParam("cryptoAmount") Float amount,
+			Model model,HttpSession session) {
+		        //處理價格型態
+				String noDollarString=stringPrice.substring(1,stringPrice.length()-1);
+				if(!noDollarString.contains(".")) {
+					noDollarString+=".00";
+				}
+				//處理價格，把她從String變成Float
+				Float floatPrice=Float.parseFloat(noDollarString); 
+				// 得到該使用者的session
+				User currentUser = (User) session.getAttribute("user");
+				// 檢查該加密貨幣是否有提供交易
+				Optional<CryptoCurrency> mycrypto = dao.findCryptoByCryptoName(name);
+				if (mycrypto.isEmpty()) {
+					
+					model.addAttribute("resultMessage", "This crypto is currently not  provided transaction");
+					return "userAsset";
+				}
+				// 檢查有無足夠的特定貨幣可以售出，如果夠的話就扣款回傳購買成功，不夠的話就回傳餘額不足
+				List<UserAsset> userAssets = dao.findAssetsByUserId(currentUser.getUserId());		
+				Float usdt = userAssets.stream().filter(userAsset -> userAsset.getcName().equals("USDT"))
+						.map(UserAsset::getAccBalance).findFirst().orElse(0.0f);	
+				//特定的帳戶餘額
+				Float sellCrypto = userAssets.stream().filter(userAsset -> userAsset.getcName().equals(name))
+						.map(UserAsset::getAccBalance).findFirst().orElse(0.0f);	
+				//如果餘額不足就顯示購買失敗
+				if (sellCrypto < amount) {
+					model.addAttribute("userAssets", userAssets);
+					model.addAttribute("resultMessage","餘額不足，售出失敗");
+					return "userAsset";
+				}
+				//扣除購買貨幣價格剩下的貨幣
+				Float sellCryptoAmount=sellCrypto-amount;			
+				Account sellCryptoAccount=dao.findAccountByCryptoName(name);
+				dao.sellCrypto(sellCryptoAmount,currentUser.getUserId(),sellCryptoAccount.getAccId());
+				//轉換回去的usdt
+				Account usdtAccount=dao.findAccountByCryptoName("USDT");
+				Float totalUsdt=(amount*floatPrice)+usdt;
+				dao.addUSDT(totalUsdt, currentUser.getUserId(),usdtAccount.getAccId());
+				//加入購買明細
+				TransactionDetail detail=new TransactionDetail();
+				detail.setUserId(currentUser.getUserId());
+				detail.setcNumber(sellCryptoAccount.getCryptoNumber());
+				detail.setQuantity(amount);
+				detail.setPrice(floatPrice);
+				detail.setStatusId(2);	
+				//更新資料
+				dao.addTransactionDetail(detail);
+				userAssets=dao.findAssetsByUserId(currentUser.getUserId());
+				//購買成功!
+				model.addAttribute("userAssets", userAssets);
+				model.addAttribute("resultMessage","售出成功!");
+				return "userAsset";
 	}
 
 	// 定期去網站爬最新資料，把最新資料更新到資料庫

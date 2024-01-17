@@ -414,11 +414,11 @@ body {
 					//將資料反序列化
 				    let message = JSON.parse(event.data);
 					let cryptos=message.content;
-					
-			
+					console.log(cryptos);
 					let allDivs=document.querySelectorAll(".uniquePrice");
 					let count=0;
-				
+					
+					
 					allDivs.forEach((div)=>{
 						
 						//得到每個貨幣的名稱、價錢、漲跌幅、市值
@@ -475,7 +475,7 @@ body {
 							div.querySelector(".cap").innerText=cryptos[count].pCap;
 						}
 						
-						let cap=cryptos[count].pCap;
+						//let cap=cryptos[count].pCap;
 						
 						count++;
 				

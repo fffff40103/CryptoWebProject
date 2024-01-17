@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import spring.mvc.crypto.model.dao.CryptoDao;
 import spring.mvc.crypto.model.entity.CrawlerCurrency;
 import spring.mvc.crypto.model.entity.CryptoCurrency;
+import spring.mvc.crypto.model.entity.CompareData;
 import spring.mvc.crypto.service.CryptoService;
 import spring.mvc.crypto.service.WebSocketService;
 
@@ -36,10 +37,22 @@ public class CryptoDataScheduler {
     }
     
     @Scheduled(fixedRate=5000)
+	public void crawlCompareCrypto()throws IOException{
+		List<CompareData> cryptoCurrencies=cryptoService.crawlerCompareData();
+		cryptoDaoMySql.insertCompareCryptos(cryptoCurrencies);
+}
+    
+    
+    @Scheduled(fixedRate=5000)
     	public void crawlTopFiveCrypto()throws IOException{
     		List<CryptoCurrency> cryptoCurrencies=cryptoService.crawlerRanking();
     		cryptoDaoMySql.updateTopFiveCryptos(cryptoCurrencies);
     }
+    
+    
+    
+    
+    
     
 	
 	

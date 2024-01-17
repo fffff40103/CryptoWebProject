@@ -455,6 +455,18 @@ function showMessage(){
 		return;
 	}
 	
+	if(Message=="餘額不足，售出失敗"){
+		alert("餘額不足，售出失敗");
+		return;
+	}
+	
+	
+	if(Message=="售出成功!"){
+		alert("售出成功!");
+		return;
+	}
+	
+	
 }
 
 

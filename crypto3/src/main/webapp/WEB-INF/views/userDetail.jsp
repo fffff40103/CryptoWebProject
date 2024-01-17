@@ -33,7 +33,6 @@
 									<td>${ detail.getCryptoInfo().getcName() }</td>
 									<td>${ detail.getQuantity() }</td>
                                     <td>${ detail.getPrice() }</td>
-                                    <td>${ detail.getPrice() }</td>
                                     <td>${ detail.getStatusDetail().getStatusFor() }</td>
 									<td>${ detail.getPurchaseTime() }</td>	
 										

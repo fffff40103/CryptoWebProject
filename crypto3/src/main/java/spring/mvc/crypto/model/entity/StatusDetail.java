@@ -28,7 +28,11 @@ public class StatusDetail {
 
 	public void setStatusFor(String statusFor) {
 		this.statusFor = statusFor;
-	};
+	}
+
+	
+
+	
 	
 	
 }

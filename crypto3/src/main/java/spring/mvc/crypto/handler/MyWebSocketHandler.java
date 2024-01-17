@@ -22,6 +22,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import spring.mvc.crypto.model.dao.CryptoDao;
+import spring.mvc.crypto.model.entity.CompareData;
 import spring.mvc.crypto.model.entity.CrawlerCurrency;
 import spring.mvc.crypto.model.entity.CryptoCurrency;
 import spring.mvc.crypto.service.CryptoService;
@@ -118,6 +119,7 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
 
 		List<CrawlerCurrency> cryptoCurrencies = cryptoDaoMysql.findLatestCryptos();
 		List<CryptoCurrency> cryptoRanking = cryptoDaoMysql.findTopFiveRanking();
+		List<CompareData> cryptoCompareData=cryptoDaoMysql.findPrecedingLastTenData();
 		for (WebSocketSession session : sessions) {
 
 			if (session.isOpen()) {
@@ -134,7 +136,12 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
 				cryptoObject.add(Prop.CONTENT.getName(), gson.toJsonTree(cryptoCurrencies));
 				logger.info("Server sends: {}", cryptoObject);
 				session.sendMessage(new TextMessage(gson.toJson(cryptoObject)));
-
+				
+				JsonObject compareObject=new JsonObject();
+				compareObject.addProperty(Prop.TYPE.getName(),"compare");
+				compareObject.add(Prop.CONTENT.getName(), gson.toJsonTree(cryptoCompareData));
+				logger.info("Server sends: {}", compareObject);
+				session.sendMessage(new TextMessage(gson.toJson(compareObject)));
 			}
 		}
 		return "嗨";

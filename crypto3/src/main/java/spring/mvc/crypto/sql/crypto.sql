@@ -91,11 +91,12 @@ ps:購買編號、購買帳戶、購買幣種、購買數量、當時購買價�
 drop table if exists trx_detail;
 drop table if exists trx_transfer;
 drop table if exists crawlerData;
+drop table if exists compareData;
 drop table if exists user_ref_account;
+drop table if exists user;
 drop table if exists account;
 drop table if exists cryptoInfo;
-drop table if exists user;
-
+drop table if exists status_detail;
 
 
 create table if not exists cryptoinfo(
@@ -183,4 +184,53 @@ create table if not exists crawlerData(
 	pRate float not null,
 	pCap varchar(50) not null
 
-)
+);
+
+create table if not exists compareData(
+	compareNumber int auto_increment primary key,
+	compareName varchar(50) not null,
+	comparePrice float not null,
+	compareRate float not null,
+	compareCap varchar(50) not null
+
+);
+
+
+
+
+insert into user(userName,password)
+values("abc123","pass123"),
+("abc456","pass456");
+
+insert into cryptoinfo(cName,price,rate,cap)
+values("BTC",42325.2,2.6,"42b"),
+("BTC",42325.2,2.6,"42b"),
+("BTC",42325.2,2.6,"42b"),
+("BTC",42325.2,2.6,"42b"),
+("BTC",42325.2,2.6,"42b"),
+("BTC",42325.2,2.6,"42b"),
+("BTC",42325.2,2.6,"42b"),
+("BTC",42325.2,2.6,"42b"),
+("BTC",42325.2,2.6,"42b"),
+("BTC",42325.2,2.6,"42b");
+
+
+insert into account (cryptoNumber)
+values(501),
+(502),(503),(504),(505),(506),(507),(508),(509),(510);
+
+INSERT INTO user_ref_account(userId,accId,accBalance)
+values(101,201,1010),
+(101,202,102),
+(101,203,101),
+(101,204,0),
+(101,205,0),
+(101,206,0),
+(101,207,22),
+(101,208,0),
+(101,209,0),
+(101,210,0);
+
+insert into status_detail(statusId,statusFor)
+values(1,"買入"),
+(2,"賣出");
