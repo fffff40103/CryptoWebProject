@@ -394,7 +394,7 @@ body {
 					//利用ajax方式請求資料(在controller也要建立相同網址)
 			        url: 'http://localhost:8080/crypto2/mvc/crypto/send',
 			        success: function ( data ){
-						console.log(data);
+					
 			        }
 			    });
 			});
@@ -414,9 +414,29 @@ body {
 					//將資料反序列化
 				    let message = JSON.parse(event.data);
 					let cryptos=message.content;
-					console.log(cryptos);
+	
 					let allDivs=document.querySelectorAll(".uniquePrice");
 					let count=0;
+					
+					
+					let array=[];
+					if(message.type=="compare"){
+						message.content.forEach((test)=>{
+							array.push(test.pPrice)
+							
+						})
+						
+					}
+					
+					let array2=[]
+					if(message.type=="cryptos"){
+						message.content.forEach((test1)=>{
+							array2.push(test1.pPrice)
+							
+						})
+					}
+					
+					
 					
 					
 					allDivs.forEach((div)=>{
@@ -424,7 +444,7 @@ body {
 						//得到每個貨幣的名稱、價錢、漲跌幅、市值
 						
 						/*名字*/
-						if(cryptos.length==10){
+						if(cryptos[0].pName!=null){
 							let name=cryptos[count].pName;
 							let nameDiv=div.querySelector(".cName");
 							if(nameDiv.querySelector("p")===null){
@@ -445,15 +465,29 @@ body {
 						
 						
 						/*價格*/
-						if(cryptos.length==10){
+												
+						if(cryptos[0].pPrice!=null){
 							div.querySelector(".price").innerText="$"+cryptos[count].pPrice;
+							let price=cryptos[count].pPrice;
+							
+							if(array2.length>1){
+								console.log(array2)
+							}
+							
+							if(array.length>1){
+								console.log(array);
+								console.log(array2)
+							}
+							
+													 
 						}
 						
 						
+					
 						
 						
 						/*漲幅*/
-						if( cryptos.length==10){
+						if( cryptos[0].pRate!=null){
 							
 							let rate=cryptos[count].pRate;
 							
@@ -469,7 +503,7 @@ body {
 						
 						/*市值*/
 						
-						if(cryptos.length==10){
+						if(cryptos[0].pCap!=null){
 							
 							
 							div.querySelector(".cap").innerText=cryptos[count].pCap;

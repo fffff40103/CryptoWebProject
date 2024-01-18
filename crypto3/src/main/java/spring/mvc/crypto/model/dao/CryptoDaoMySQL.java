@@ -113,6 +113,15 @@ public class CryptoDaoMySQL implements CryptoDao {
 		return jdbcTemplate.query(sql,new BeanPropertyRowMapper<>(CompareData.class) );
 	}
 	
+	
+	@Override
+	public List<CrawlerCurrency> findPrecedingLastTenData2() {
+		String sql="(SELECT * FROM crypto.crawlerdata\r\n"
+				+ "order by pNumber desc\r\n"
+				+ "limit 10 offset 20) order by pNumber";
+		return jdbcTemplate.query(sql,new BeanPropertyRowMapper<>(CrawlerCurrency.class) );
+	}
+	
 	//3.查詢最熱門的5隻貨幣
 	@Override
 	public List<CryptoCurrency> findTopFiveRanking() {

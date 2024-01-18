@@ -116,20 +116,15 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
 
 	@Scheduled(fixedRate = 6000) // 每10秒從資料庫撈出來最新的10筆資料
 	public String sendPeriodicMessages() throws IOException {
-
+		
 		List<CrawlerCurrency> cryptoCurrencies = cryptoDaoMysql.findLatestCryptos();
-		List<CryptoCurrency> cryptoRanking = cryptoDaoMysql.findTopFiveRanking();
-		List<CompareData> cryptoCompareData=cryptoDaoMysql.findPrecedingLastTenData();
+		List<CrawlerCurrency> compareCurrencies = cryptoDaoMysql.findPrecedingLastTenData2();
+		
 		for (WebSocketSession session : sessions) {
 
 			if (session.isOpen()) {
 			
 				/*會傳兩種資料，websocket連線網頁依據條件決定接收哪筆資料*/
-				JsonObject rankingObject = new JsonObject();
-				rankingObject.addProperty(Prop.TYPE.getName(), "ranking");
-				rankingObject.add(Prop.CONTENT.getName(), gson.toJsonTree(cryptoRanking));
-				logger.info("Server sends: {}", rankingObject);
-				session.sendMessage(new TextMessage(gson.toJson(rankingObject)));
 
 				JsonObject cryptoObject = new JsonObject();
 				cryptoObject.addProperty(Prop.TYPE.getName(), "cryptos");
@@ -139,7 +134,7 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
 				
 				JsonObject compareObject=new JsonObject();
 				compareObject.addProperty(Prop.TYPE.getName(),"compare");
-				compareObject.add(Prop.CONTENT.getName(), gson.toJsonTree(cryptoCompareData));
+				compareObject.add(Prop.CONTENT.getName(), gson.toJsonTree(compareCurrencies));
 				logger.info("Server sends: {}", compareObject);
 				session.sendMessage(new TextMessage(gson.toJson(compareObject)));
 			}
