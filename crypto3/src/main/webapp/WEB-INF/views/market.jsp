@@ -394,7 +394,7 @@ body {
 					//利用ajax方式請求資料(在controller也要建立相同網址)
 			        url: 'http://localhost:8080/crypto2/mvc/crypto/send',
 			        success: function ( data ){
-						console.log(data);
+					
 			        }
 			    });
 			});
@@ -414,10 +414,31 @@ body {
 					//將資料反序列化
 				    let message = JSON.parse(event.data);
 					let cryptos=message.content;
+	
 					let allDivs=document.querySelectorAll(".uniquePrice");
 					let count=0;
 					
-					console.log(cryptos)
+					
+					let array=[];
+					if(message.type=="compare"){
+						message.content.forEach((test)=>{
+							array.push(test.pPrice)
+							
+						})
+						
+					}
+					
+					let array2=[]
+					if(message.type=="cryptos"){
+						message.content.forEach((test1)=>{
+							array2.push(test1.pPrice)
+							
+						})
+					}
+					
+					
+					
+					
 					allDivs.forEach((div)=>{
 						
 						//得到每個貨幣的名稱、價錢、漲跌幅、市值
@@ -444,11 +465,25 @@ body {
 						
 						
 						/*價格*/
+												
 						if(cryptos[0].pPrice!=null){
 							div.querySelector(".price").innerText="$"+cryptos[count].pPrice;
+							let price=cryptos[count].pPrice;
+							
+							if(array2.length>1){
+								console.log(array2)
+							}
+							
+							if(array.length>1){
+								console.log(array);
+								console.log(array2)
+							}
+							
+													 
 						}
 						
 						
+					
 						
 						
 						/*漲幅*/

@@ -458,7 +458,7 @@ body {
 <script>
 	
 	//把WebSocket連線包成一個function
-	//webSocketConnection();
+	webSocketConnection();
 
 	function webSocketConnection() {
 		$(function() {
@@ -485,24 +485,25 @@ body {
 			//將資料反序列化
 			let message = JSON.parse(event.data);
 			let cryptos = message.content;
-			console.log(cryptos)
 			let allDivTags=document.querySelectorAll(".fivecrypto");
 			let count=0;
+			
+			
 			allDivTags.forEach((div)=>{
 				//找到貨幣名稱
-				if( cryptos[count].cNumber!=null&&cryptos.length==5){
-					let name=cryptos[count].cName;
+				if( cryptos[count].pNumber!=null){
+					let name=cryptos[count].pName;
 					let nameDiv=div.querySelector(".cryptoName");
 					if(nameDiv.querySelector("p")===null){
 						let imgTag=document.createElement("img");
 						imgTag.src="/crypto2/images/"+name.toLowerCase()+".png";
 						let pTag=document.createElement("p");
-						pTag.innerText=cryptos[count].cName;
+						pTag.innerText=cryptos[count].pName;
 						nameDiv.appendChild(imgTag);
 						nameDiv.appendChild(pTag);
 						
 					}else{
-						nameDiv.querySelector("p").innerText=cryptos[count].cName;
+						nameDiv.querySelector("p").innerText=cryptos[count].pName;
 						nameDiv.querySelector("img").src="/crypto2/images/"+name.toLowerCase()+".png";
 					}
 					
@@ -510,21 +511,22 @@ body {
 				
 				//找到貨幣價格
 				
-				if( cryptos[count].cNumber!=null&&cryptos.length==5){
-					div.querySelector(".cryptoPrice").innerText=cryptos[count].price;
+				if( cryptos[count].pNumber!=null){
+					
+					div.querySelector(".cryptoPrice").innerText=cryptos[count].pPrice;
 				}
 				
 				//找到貨幣漲跌幅
-				if( cryptos[count].cNumber!=null&&cryptos.length==5){
+				if( cryptos[count].pNumber!=null){
 					
-					let rate=cryptos[count].rate;
+					let rate=cryptos[count].pRate;
 					
 			
 					if(rate>=0){
-						div.querySelector(".cryptoRate").innerText="+"+cryptos[count].rate+"%";
+						div.querySelector(".cryptoRate").innerText="+"+cryptos[count].pRate+"%";
 						div.querySelector(".cryptoRate").style.color="green";
 					}else{
-						div.querySelector(".cryptoRate").innerText=cryptos[count].rate+"%";
+						div.querySelector(".cryptoRate").innerText=cryptos[count].pRate+"%";
 						div.querySelector(".cryptoRate").style.color="red";
 					}
 				}

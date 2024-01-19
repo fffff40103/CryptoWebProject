@@ -36,6 +36,8 @@ public interface CryptoDao {
 //  2.查詢第倒數10隻加密貨幣的前10隻
 	List<CompareData> findPrecedingLastTenData();
 	
+	List<CrawlerCurrency> findPrecedingLastTenData2();
+	
 //  3.查詢最熱門的5隻貨幣
 	List<CryptoCurrency> findTopFiveRanking();
 	
