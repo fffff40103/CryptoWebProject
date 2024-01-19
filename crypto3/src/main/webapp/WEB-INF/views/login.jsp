@@ -67,13 +67,16 @@
         }
         
         /*設定密碼旁邊小眼睛*/
-        .password img{
+        .password .eyesImg{
             position: absolute;
-            top: 50%;
+            top:18%;
             left:82%;
             transform: translateY(-50%);
             padding: 0 16px;
             cursor: pointer;
+        }
+        .codeImg{
+        	width:10rem;
         }
         /*沒有密碼排版設定*/
         .noaccount{
@@ -81,8 +84,8 @@
             justify-content: space-evenly;
             
         }
-
-		
+        
+        
 		
         /*在寬度340以下時把form裡面的input寬度都顯示為視窗寬度100*/
        @media(max-width:340px){
@@ -150,12 +153,16 @@
 			<div class="password">
 				<input class="inputpassword formRWD" name="password" id="password"
 					type="password" placeholder="Password" autocomplete="off">
-				<img src="/crypto2/images/notseen.svg " alt="">
+				<img class="eyesImg" src="/crypto2/images/notseen.svg " alt="">
+				<br>
+				<input type="text" id="code" name="code" placeholder="Code"> 
+				<br>
+				<img class="codeImg" src="./getcode" alt="Verification code" >
 			</div>
 
 			<!--login按鈕-->
 			<br>
-			<button class="loginbutton formRWD" type="submit">Login</button>
+			<button class="loginbutton formRWD" type="submit" >Login</button>
 			<br>
 			<button class="logingoogle formRWD" type="submit">Login with
 				Google</button>

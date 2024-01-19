@@ -275,13 +275,14 @@ form {
 					<li class="nav-item"><a class="nav-link active text-dark"
 						aria-current="page" href="./market">Markets</a></li>
 					<li class="nav-item"><a class="nav-link text-dark"
-						href="./chart">Chart</a></li>
-					<li class="nav-item"><a class="nav-link text-dark"
 						href="./staking">Staking</a></li>
 					<li class="nav-item"><a class="nav-link text-dark"
 						href="./transaction">Transaction</a></li>
 					<li class="nav-item"><a class="nav-link text-dark"
 						href="./userDetail">Detail</a></li>
+						
+					<li class="nav-item"><a class="nav-link text-dark"
+						href="./userProfile">Profile</a></li>
 				</ul>
 			</div>
 
@@ -317,10 +318,10 @@ form {
 
 		<div class="row ">
 			<div class="title">
-				<p class="col">名稱</p>
-				<p class="col">數量</p>
-				<p class="col priceTitle">價格</p>
-				<p class="col transTitle">交易</p>
+				<p class="col">Name</p>
+				<p class="col">balance</p>
+				<p class="col priceTitle">Price</p>
+				<p class="col transTitle">Transaction</p>
 			</div>
 		</div>
 
@@ -520,7 +521,7 @@ function webSocketConnection(){
 	socket.onmessage=function(event){
 			//將資料反序列化
 		    let message = JSON.parse(event.data);
-			let cryptos=message.content;
+			let cryptos=message.cryptos.content;
 			
 			console.log(cryptos)
 			//判斷如何讀取以及怎麼讀取資料

@@ -14,7 +14,7 @@ import spring.mvc.crypto.model.entity.CrawlerCurrency;
 import spring.mvc.crypto.model.entity.CryptoCurrency;
 import spring.mvc.crypto.model.entity.CompareData;
 import spring.mvc.crypto.service.CryptoService;
-import spring.mvc.crypto.service.WebSocketService;
+
 
 //這個排程任務使用了 @Scheduled 標註，
 //每5分鐘執行一次，爬蟲加密貨幣數據並通過 WebSocket 傳送給前端

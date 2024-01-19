@@ -137,6 +137,7 @@
             <mvc:exclude-mapping path="/crypto/register"/>
             <mvc:exclude-mapping path="/crypto/send"/>
             <mvc:exclude-mapping path="/crypto/getCryptoInfo"/>
+            <mvc:exclude-mapping path="/crypto/getcode"/>
             
             
             <!-- 

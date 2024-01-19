@@ -1,9 +1,15 @@
 package spring.mvc.crypto.controller;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -31,6 +37,7 @@ import spring.mvc.crypto.model.entity.TransactionDetail;
 import spring.mvc.crypto.model.entity.User;
 import spring.mvc.crypto.model.entity.UserAsset;
 import spring.mvc.crypto.service.CryptoService;
+import spring.mvc.crypto.service.SendingEmailService;
 
 @Controller
 @RequestMapping("/crypto")
@@ -39,7 +46,56 @@ public class CryptoController {
 	// 連接CryptoDaoMySQL類別
 	@Autowired
 	private CryptoDao dao;
-
+	
+	
+	@Autowired
+	private  SendingEmailService emailService;
+	
+	@GetMapping("/getcode")
+	private void getCodeImage(HttpSession session, HttpServletResponse response) throws IOException {
+		// 產生一個驗證碼 code
+		Random random = new Random();
+		String code1 = String.format("%c", (char)(random.nextInt(122-65+1) + 65));
+		String code2 = String.format("%c", (char)(random.nextInt(122-65+1) + 65));
+		String code3 = String.format("%c", (char)(random.nextInt(122-65+1) + 65));
+		String code4 = String.format("%c", (char)(random.nextInt(122-65+1) + 65));
+		
+		String code  = code1+code2+code3+code4;
+		session.setAttribute("code", code);
+		
+		// Java 2D 產生圖檔
+		// 1. 建立圖像暫存區
+		BufferedImage img = new BufferedImage(80, 30, BufferedImage.TYPE_INT_BGR);
+		// 2. 建立畫布
+		Graphics g = img.getGraphics();
+		// 3. 設定顏色
+		g.setColor(Color.YELLOW);
+		// 4. 塗滿背景
+		g.fillRect(0, 0, 80, 30);
+		// 5. 設定顏色
+		g.setColor(Color.BLACK);
+		// 6. 設定自型
+		g.setFont(new Font("新細明體", Font.PLAIN, 30));
+		// 7. 繪字串
+		g.drawString(code, 10, 23); // code, x, y
+		// 8. 干擾線
+		g.setColor(Color.RED);
+		for(int i=0;i<5;i++) {
+			int x1 = random.nextInt(80);
+			int y1 = random.nextInt(30);
+			int x2 = random.nextInt(80);
+			int y2 = random.nextInt(30);
+			g.drawLine(x1, y1, x2, y2);
+		}
+		
+		// 設定回應類型
+		response.setContentType("image/png");
+		
+		// 將影像串流回寫給 client
+		ImageIO.write(img, "PNG", response.getOutputStream());
+	}
+	
+	
 	// 登入頁面
 	@GetMapping("/login")
 	public String loginPage(HttpSession session) {
@@ -50,7 +106,10 @@ public class CryptoController {
 	@PostMapping("/login")
 
 	public String login(@RequestParam("username") String username, @RequestParam("password") String password,
+			@RequestParam("code") String code,
 			HttpSession session, Model model) {
+		//先看驗證碼對或錯，如果錯就不放行，如果隊就放行
+		
 		//先查找有無該位使用者，如果沒有就不放行
 		Optional<User> userOpt = dao.findUserByUsername(username);
 		if (userOpt.isPresent()) {
@@ -79,6 +138,7 @@ public class CryptoController {
 		}
 	}
 
+	
 	// 登出
 	@GetMapping("/logout")
 	public String logout(HttpSession session) {
@@ -93,7 +153,7 @@ public class CryptoController {
 		return "register";
 	}
 
-	//收到註冊資料
+	    //收到註冊資料
 		@PostMapping("/register")
 		public String register(@RequestParam("username") String username,
 							   @RequestParam("password") String password,
@@ -108,6 +168,11 @@ public class CryptoController {
 			}else {
 				//註冊成功!重導到login頁面
 				if(password.equals(password2)) {
+					if(!username.endsWith("@gmail.com")) {
+						model.addAttribute("message","Please enter valid email");
+						return "register";
+					}
+					emailService.sendIngEmail(username);
 					model.addAttribute("message","✔️Register successfully");
 					User newUser=new User();
 					newUser.setPassword(password);
@@ -163,7 +228,14 @@ public class CryptoController {
 		return "market";
 	}
 	
-	// 交易明細葉面
+	@GetMapping("/userProfile")
+	public String userProfile(Model model,HttpSession session) {
+		User currentUser=(User)session.getAttribute("user");
+		model.addAttribute("userName",currentUser.getUsername());
+		return "userProfile";
+	}
+	
+	// 交易明細頁面
 	@GetMapping("/userDetail")
 	public String userDetail(Model model,HttpSession session) {
 		//得到User
@@ -295,12 +367,6 @@ public class CryptoController {
 				return "userAsset";
 	}
 
-	// 定期去網站爬最新資料，把最新資料更新到資料庫
-	@GetMapping("/getCryptoInfo")
-	public String getCryptoData(Model model) throws IOException {
-		List<CrawlerCurrency> cryptoCurrencies = dao.findLatestCryptos();
-		model.addAttribute("cryptoCurrencies", cryptoCurrencies);
-		return "market";
-	}
+	
 
 }

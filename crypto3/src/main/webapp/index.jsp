@@ -484,14 +484,15 @@ body {
 		socket.onmessage = function(event) {
 			//將資料反序列化
 			let message = JSON.parse(event.data);
-			let cryptos = message.content;
+			let cryptos=message.cryptos.content;
+			console.log(cryptos)
 			let allDivTags=document.querySelectorAll(".fivecrypto");
 			let count=0;
 			
 			
 			allDivTags.forEach((div)=>{
 				//找到貨幣名稱
-				if( cryptos[count].pNumber!=null){
+				if( cryptos[0].pNumber!=null){
 					let name=cryptos[count].pName;
 					let nameDiv=div.querySelector(".cryptoName");
 					if(nameDiv.querySelector("p")===null){
@@ -511,13 +512,13 @@ body {
 				
 				//找到貨幣價格
 				
-				if( cryptos[count].pNumber!=null){
+				if( cryptos[0].pNumber!=null){
 					
 					div.querySelector(".cryptoPrice").innerText=cryptos[count].pPrice;
 				}
 				
 				//找到貨幣漲跌幅
-				if( cryptos[count].pNumber!=null){
+				if( cryptos[0].pNumber!=null){
 					
 					let rate=cryptos[count].pRate;
 					

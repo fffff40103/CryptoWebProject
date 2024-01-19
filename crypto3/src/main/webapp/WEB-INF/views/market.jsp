@@ -32,7 +32,7 @@
 
 /*把背景顏色設定成:#181a20*/
 body {
-	background-color: #181a20;
+	background-color: "white";
 	
 }
 
@@ -70,7 +70,7 @@ body {
 	/*設定標題排版*/
 	font-size: 1.5rem;
 	/*設定字體大小*/
-	color: white;
+	color: black;
 	padding-top:1rem;
 
 	
@@ -126,7 +126,7 @@ body {
 @media ( min-width :1650px) {
 	.navRWD {
 		margin-left: 18rem;
-		margin-right: 15rem;
+		margin-right: 18rem;
 	}
 }
 
@@ -136,8 +136,8 @@ body {
 /*寬度1600以上設定導覽列左右距離*/
 @media ( min-width :1600px) {
 	.navRWD {
-		margin-left: 12rem;
-		margin-right: 12rem;
+		margin-left: 18rem;
+		margin-right: 18rem;
 	}
 }
 
@@ -263,8 +263,8 @@ body {
 	<nav class="navbar navbar-expand-lg navbar-light  ">
 		<!--Left side navbar-->
 		<div class="container-fluid  fs-5 navRWD ">
-			<a class="navbar-brand text-light fs-2 fw-bolder" href="#">ZheZhe</a>
-			<button class="navbar-toggler buttonRWD text-light" type="button"
+			<a class="navbar-brand text-dark fs-2 fw-bolder" href="#">ZheZhe</a>
+			<button class="navbar-toggler buttonRWD text-dark" type="button"
 				data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown "
 				aria-controls="navbarNavDropdown" aria-expanded="false"
 				aria-label="Toggle navigation">
@@ -272,11 +272,11 @@ body {
 			</button>
 			<div class="collapse navbar-collapse" id="navbarNavDropdown">
 				<ul class="navbar-nav">
-					<li class="nav-item"><a class="nav-link active text-light"
+					<li class="nav-item"><a class="nav-link active text-dark"
 						aria-current="page" href="./market">Markets</a></li>
-					<li class="nav-item"><a class="nav-link text-light"
+					<li class="nav-item"><a class="nav-link text-dark"
 						href="./chart">Chart</a></li>
-					<li class="nav-item"><a class="nav-link text-light"
+					<li class="nav-item"><a class="nav-link text-dark"
 						href="./staking">Staking</a></li>
 
 
@@ -285,9 +285,9 @@ body {
 
 			<!--rigth side navbar-->
 			<div class="rightPartNav">
-				<a class="nav-link text-light" href="./userAsset">Assets</a> <i
-					class="bi bi-person-circle text-light h5 mb-0  d-md-block userIcon"
-					onclick="./login"></i> <a class="nav-link text-light"
+				<a class="nav-link text-dark" href="./userAsset">Assets</a> <i
+					class="bi bi-person-circle text-dark h5 mb-0  d-md-block userIcon"
+					onclick="./login"></i> <a class="nav-link text-dark"
 					href="./userAsset">username</a>
 			</div>
 		</div>
@@ -296,10 +296,10 @@ body {
 	<!--Crpto行情以及標題內容(新版)-->
 	<div class=" container  containerContent">
 	  <div class="row title">
-	    <div class="col">名稱</div>
-	    <div class="col">價格</div>
-	    <div class="col ">漲跌</div>
-	    <div class="col">市值</div>
+	    <div class="col">Name</div>
+	    <div class="col">Price</div>
+	    <div class="col ">Rate</div>
+	    <div class="col">Cap</div>
 	  </div>
 	  <!-- BTC -->
 	  <div class="row uniquePrice ">
@@ -385,6 +385,10 @@ body {
 </body>
 <script>
 
+function resetColor() {
+	pricePart.style.backgroundColor = '#181a20';
+}
+
 //把WebSocket連線包成一個function
 		webSocketConnection();
 		
@@ -413,36 +417,25 @@ body {
 			socket.onmessage=function(event){
 					//將資料反序列化
 				    let message = JSON.parse(event.data);
-					let cryptos=message.content;
-	
+				    let cryptos= message.cryptos.content;
+				    let compare= message.compare.content;
+				    
+				    console.log(cryptos)
+				    console.log(compare)
+					
 					let allDivs=document.querySelectorAll(".uniquePrice");
 					let count=0;
 					
+					let loop=true;
 					
-					let array=[];
-					if(message.type=="compare"){
-						message.content.forEach((test)=>{
-							array.push(test.pPrice)
-							
-						})
-						
-					}
-					
-					let array2=[]
-					if(message.type=="cryptos"){
-						message.content.forEach((test1)=>{
-							array2.push(test1.pPrice)
-							
-						})
-					}
-					
-					
-					
-					
+					let compareArray=[];
+					compare.forEach((test)=>{
+						compareArray.push(test.comparePrice);
+					})
+					//console.log('3.',compareArray);
+
 					allDivs.forEach((div)=>{
-						
 						//得到每個貨幣的名稱、價錢、漲跌幅、市值
-						
 						/*名字*/
 						if(cryptos[0].pName!=null){
 							let name=cryptos[count].pName;
@@ -465,33 +458,38 @@ body {
 						
 						
 						/*價格*/
-												
-						if(cryptos[0].pPrice!=null){
-							div.querySelector(".price").innerText="$"+cryptos[count].pPrice;
-							let price=cryptos[count].pPrice;
+						
+						let price;
+						if(cryptos[0].pPrice!=null&&compare[0].comparePrice!=null){
+							//找尋當前標籤
+							let pricePart=div.querySelector(".price")														
+							price=cryptos[count].pPrice;
+							rate=cryptos[count].pRate;
+							//找尋要被比較的價格
+							priceCompare=compare[count].comparePrice;
 							
-							if(array2.length>1){
-								console.log(array2)
+							//如果當前價格與被比較價格不一樣，就會閃一下顏色(大於0綠色，小於0紅色)
+							if(price!=priceCompare){
+								if(rate<0){
+									pricePart.style.background="#fcdede";
+								}else{
+									pricePart.style.background="#c2f2c2"
+								}
+								
+								setTimeout(function() {
+									pricePart.style.background = "white";
+							    }, 2000);
+							}else{
+								
 							}
-							
-							if(array.length>1){
-								console.log(array);
-								console.log(array2)
-							}
-							
-													 
+							pricePart.innerText="$"+cryptos[count].pPrice;						
+												   							 
 						}
-						
-						
-					
 						
 						
 						/*漲幅*/
 						if( cryptos[0].pRate!=null){
-							
 							let rate=cryptos[count].pRate;
-							
-					
 							if(rate>=0){
 								div.querySelector(".rate").innerText="+"+cryptos[count].pRate+"%";
 								div.querySelector(".rate").style.color="green";
@@ -502,18 +500,14 @@ body {
 						}
 						
 						/*市值*/
-						
 						if(cryptos[0].pCap!=null){
-							
-							
 							div.querySelector(".cap").innerText=cryptos[count].pCap;
 						}
 						
 						//let cap=cryptos[count].pCap;
-						
 						count++;
 				
-					})
+					});
 						
 		   };
 		   //連線關閉時會建立的消息(只有一次)
