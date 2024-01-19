@@ -116,32 +116,30 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
 
 	@Scheduled(fixedRate = 6000) // 每10秒從資料庫撈出來最新的10筆資料
 	public String sendPeriodicMessages() throws IOException {
-
+		System.out.println("連線個數:" + sessions.size());
 		List<CrawlerCurrency> cryptoCurrencies = cryptoDaoMysql.findLatestCryptos();
 		List<CryptoCurrency> cryptoRanking = cryptoDaoMysql.findTopFiveRanking();
 		List<CompareData> cryptoCompareData=cryptoDaoMysql.findPrecedingLastTenData();
 		for (WebSocketSession session : sessions) {
-
 			if (session.isOpen()) {
-			
 				/*會傳兩種資料，websocket連線網頁依據條件決定接收哪筆資料*/
-				JsonObject rankingObject = new JsonObject();
-				rankingObject.addProperty(Prop.TYPE.getName(), "ranking");
-				rankingObject.add(Prop.CONTENT.getName(), gson.toJsonTree(cryptoRanking));
-				logger.info("Server sends: {}", rankingObject);
-				session.sendMessage(new TextMessage(gson.toJson(rankingObject)));
-
+				JsonObject compareObject=new JsonObject();
+				compareObject.addProperty(Prop.TYPE.getName(),"compare");
+				compareObject.add(Prop.CONTENT.getName(), gson.toJsonTree(cryptoCompareData));
+				logger.info("Server sends: {}", compareObject);
+				session.sendMessage(new TextMessage(gson.toJson(compareObject)));
+				
 				JsonObject cryptoObject = new JsonObject();
 				cryptoObject.addProperty(Prop.TYPE.getName(), "cryptos");
 				cryptoObject.add(Prop.CONTENT.getName(), gson.toJsonTree(cryptoCurrencies));
 				logger.info("Server sends: {}", cryptoObject);
 				session.sendMessage(new TextMessage(gson.toJson(cryptoObject)));
 				
-				JsonObject compareObject=new JsonObject();
-				compareObject.addProperty(Prop.TYPE.getName(),"compare");
-				compareObject.add(Prop.CONTENT.getName(), gson.toJsonTree(cryptoCompareData));
-				logger.info("Server sends: {}", compareObject);
-				session.sendMessage(new TextMessage(gson.toJson(compareObject)));
+				JsonObject rankingObject = new JsonObject();
+				rankingObject.addProperty(Prop.TYPE.getName(), "ranking");
+				rankingObject.add(Prop.CONTENT.getName(), gson.toJsonTree(cryptoRanking));
+				logger.info("Server sends: {}", rankingObject);
+				session.sendMessage(new TextMessage(gson.toJson(rankingObject)));
 			}
 		}
 		return "嗨";

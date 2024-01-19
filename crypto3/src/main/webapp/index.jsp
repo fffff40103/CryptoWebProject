@@ -458,7 +458,7 @@ body {
 <script>
 	
 	//把WebSocket連線包成一個function
-	webSocketConnection();
+	//webSocketConnection();
 
 	function webSocketConnection() {
 		$(function() {
