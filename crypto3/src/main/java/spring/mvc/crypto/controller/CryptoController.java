@@ -95,6 +95,26 @@ public class CryptoController {
 		ImageIO.write(img, "PNG", response.getOutputStream());
 	}
 	
+	@GetMapping("/verificationCode")
+	
+	public String verificationCode(HttpSession session,Model model) {
+		// 產生一個驗證碼 code
+		Random random = new Random();
+		String code1 = String.format("%c", (char)(random.nextInt(122-65+1) + 65));
+		String code2 = String.format("%c", (char)(random.nextInt(122-65+1) + 65));
+		String code3 = String.format("%c", (char)(random.nextInt(122-65+1) + 65));
+		String code4 = String.format("%c", (char)(random.nextInt(122-65+1) + 65));
+		
+		User currentUser=(User)session.getAttribute("user");
+		System.out.println(currentUser+"*****");
+		String verifyCode  = code1+code2+code3+code4;
+		emailService.sendIngEmail(currentUser.getUsername(),verifyCode);
+		session.setAttribute("verifyCode", verifyCode);
+		model.addAttribute("verifyCode", verifyCode);
+		return "userProfile";
+		
+	}
+	
 	
 	// 登入頁面
 	@GetMapping("/login")
@@ -172,7 +192,7 @@ public class CryptoController {
 						model.addAttribute("message","Please enter valid email");
 						return "register";
 					}
-					emailService.sendIngEmail(username);
+				
 					model.addAttribute("message","✔️Register successfully");
 					User newUser=new User();
 					newUser.setPassword(password);
@@ -233,6 +253,46 @@ public class CryptoController {
 		User currentUser=(User)session.getAttribute("user");
 		model.addAttribute("userName",currentUser.getUsername());
 		return "userProfile";
+	}
+	
+	@PostMapping("/userProfile")
+	public String userProfiles(@RequestParam("username") String username,
+			@RequestParam("password") String password,
+			@RequestParam("confirmPassword") String confirmPassword,
+			@RequestParam("code") String code,
+			Model model,HttpSession session) {
+			
+			String verifiedCode=(String)session.getAttribute("verifyCode");
+		    List<User> users=dao.findAllUsers();
+		    Optional<User> userOpt=users.stream().filter(user->user.getUsername().equals(username)).findAny();
+		   
+		   
+		    if(userOpt.isPresent()) {
+		    	 User currentUser=userOpt.get();
+		    	 System.out.println(currentUser.getUserId()+"*****");
+		    	 System.out.println(currentUser.getUsername()+"*****");
+		    	 int row=dao.updateUserPassword(currentUser.getUsername(), password);
+		    	 System.out.println(row);
+		    	 if(!password.equals(confirmPassword)) {
+		    		model.addAttribute("changeResult","password doesn't match");
+		    		return "userProfile";
+		    	}
+		    	if(!code.equals(verifiedCode)) {
+		    		model.addAttribute("changeResult","enter valid code!");;
+		    		return "userProfile";
+		    	}	    	
+		    	
+				model.addAttribute("changeResult","successfully chage password!");
+					
+				return "userProfile";
+				 
+		    
+		    	
+		    	
+		    }
+		    model.addAttribute("changeResult","username doesn't  exist");
+		    return "userProfile";
+		
 	}
 	
 	// 交易明細頁面

@@ -14,7 +14,7 @@ import javax.mail.internet.MimeMessage;
 import org.springframework.stereotype.Component;
 @Component
 public class SendingEmailServiceImpl implements SendingEmailService {
-	public void sendIngEmail(String recevicer) {
+	public void sendIngEmail(String recevicer,String content) {
 		 // 你的 Gmail 地址和密码
        final String senderEmail = "testjava40103@gmail.com";
        final String senderPassword ="aqvv ppls ujjr vtvd";
@@ -43,8 +43,8 @@ public class SendingEmailServiceImpl implements SendingEmailService {
            Message message = new MimeMessage(session);
            message.setFrom(new InternetAddress(senderEmail));
            message.setRecipient(Message.RecipientType.TO, new InternetAddress(recipientEmail));
-           message.setSubject("Test Email from Java");
-           message.setText("This is a test email sent from Java.");
+           message.setSubject("Verification Code");
+           message.setText(content);
 
            // 发送邮件
            Transport.send(message);

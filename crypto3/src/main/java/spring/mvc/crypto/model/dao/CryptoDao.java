@@ -21,7 +21,7 @@ public interface CryptoDao {
 	int addUser(User user);
 	
 //	3. 修改密碼
-	Boolean updateUserPassword(Integer userId, String newPassword);
+	int updateUserPassword(String username, String newPassword);
 	
 //	4. 根據使用者名稱查找使用者(登入用-單筆)
 	Optional<User> findUserByUsername(String username);
