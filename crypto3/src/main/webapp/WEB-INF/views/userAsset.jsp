@@ -277,7 +277,7 @@ form {
 					<li class="nav-item"><a class="nav-link text-dark"
 						href="./staking">Staking</a></li>
 					<li class="nav-item"><a class="nav-link text-dark"
-						href="./transaction">Transaction</a></li>
+						href="./transfer">Transfer</a></li>
 					<li class="nav-item"><a class="nav-link text-dark"
 						href="./userDetail">Detail</a></li>
 						
@@ -292,7 +292,7 @@ form {
 					class="bi bi-person-circle text-dark h5 mb-0  d-md-block userIcon"
 					onclick=""></i> <a class="nav-link text-dark" href="#">${ user.username }</a>
 				<div class="logoutButton d-none ">
-					<a href="./logout">登出</a>
+					<a href="./logout">logout</a>
 				</div>
 			</div>
 		</div>
@@ -304,7 +304,7 @@ form {
 		<!--錢包餘額-->
 		<div class="row cryptoBody">
 			<div class="balance ">
-				<p>總資產</p>
+				<p>Total Assets</p>
 				<c:forEach var="cryptoType" items="${userAssets }">
 					<c:if test="${cryptoType.getcName() eq 'USDT' }">
 						<h2>${cryptoType.getAccBalance() }<span class="fw-bold">
@@ -351,7 +351,7 @@ form {
 						<button type="submit" class="btn btn-secondary modalButtontrans"
 							data-dismiss="modal">Buy</button>
 						<button type="submit" class="btn btn-secondary modalCancelButton"
-							data-dismiss="modal" >取消</button>
+							data-dismiss="modal" >cancel</button>
 					</div>
 				</form>
 			</div>
@@ -391,7 +391,7 @@ function buyButtonClicked(nameCrypto,priceCrypto) {
   	//動態設定按鈕(買入、賣出)
     let modalFooter=document.querySelector(".modal-footer")
    	let modalButtontrans=modalFooter.querySelector(".modalButtontrans")
-   	modalButtontrans.innerHTML="買入";
+   	modalButtontrans.innerHTML="Buy";
     
   	//把彈跳框取消
     let modalCancel=document.querySelector(".modalCancelButton");
@@ -430,7 +430,7 @@ function sellButtonClicked(nameCrypto,priceCrypto) {
   	//動態設定按鈕(買入、賣出)
     let modalFooter=document.querySelector(".modal-footer")
    	let modalButtontrans=modalFooter.querySelector(".modalButtontrans")
-   	modalButtontrans.innerHTML="賣出";
+   	modalButtontrans.innerHTML="Sell";
     
   	//把彈跳框取消
     let modalCancel=document.querySelector(".modalCancelButton");
@@ -599,7 +599,7 @@ function webSocketConnection(){
 			    		buttonCol.classList.add("trans");
 			    		//設定買入功能
 			    		let buttonBuy=document.createElement("button");
-			    		buttonBuy.textContent="買入"
+			    		buttonBuy.textContent="Buy"
 			    		buttonBuy.classList.add("buyButton");
 			    		
 			    		/*設定按下買入按鈕時觸發的function*/
@@ -622,7 +622,7 @@ function webSocketConnection(){
 			    		//設定賣出功能
 			    		let buttonSell=document.createElement("button");
 			    		
-			    		buttonSell.textContent="賣出"
+			    		buttonSell.textContent="Sell"
 			    		buttonSell.classList.add("sellButton")
 			    	
 			    		

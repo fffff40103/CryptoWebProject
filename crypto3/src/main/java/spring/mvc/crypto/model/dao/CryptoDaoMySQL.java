@@ -122,10 +122,10 @@ public class CryptoDaoMySQL implements CryptoDao {
 		return jdbcTemplate.query(sql,new BeanPropertyRowMapper<>(CrawlerCurrency.class) );
 	}
 	
-	//3.查詢最熱門的5隻貨幣
+	//3.查詢最熱門的10隻貨幣
 	@Override
 	public List<CryptoCurrency> findTopFiveRanking() {
-		String sql="select cNumber,cName,price,rate,cap from cryptoinfo limit 5";
+		String sql="select cNumber,cName,price,rate,cap from cryptoinfo limit 10";
 		return jdbcTemplate.query(sql,new BeanPropertyRowMapper<>(CryptoCurrency.class));
 	}
 	
@@ -161,6 +161,13 @@ public class CryptoDaoMySQL implements CryptoDao {
 		}
 		
 	}
+	
+	@Override
+	public CryptoCurrency findCryptoByCryptoNameForsure(String cName)	 {
+		String sql="select cNumber,cName,price,rate,cap from cryptoInfo where cName=?";
+		return jdbcTemplate.queryForObject(sql,new BeanPropertyRowMapper<>(CryptoCurrency.class),cName);
+	}
+
 	
 	//7.批量插入最新爬取的10隻加密貨幣
 	@Override
@@ -278,6 +285,20 @@ public class CryptoDaoMySQL implements CryptoDao {
 		return jdbcTemplate.update(sql,accBalance,userId,accId)>1;
 	}
 	
+
+	@Override
+	public boolean transferCrypto(Float accBalance, Integer userId, Integer accId) {
+		String sql="update user_ref_account set accBalance=? where userId=? AND accId=?";
+		return jdbcTemplate.update(sql,accBalance,userId,accId)>1;
+	}
+	
+	@Override
+	public boolean receiveCrypto(Float accBalance, Integer userId, Integer accId) {
+		String sql="update user_ref_account set accBalance=accBalance+? where userId=? AND accId=?";
+		return jdbcTemplate.update(sql,accBalance,userId,accId)>1;
+	}
+	
+	
 	//14.購買成功時扣除usdt
 	@Override
 	public boolean deductUSDT(Float balance, Integer userId, Integer accId) {
@@ -333,6 +354,10 @@ public class CryptoDaoMySQL implements CryptoDao {
 		//注入status
 		findStatusById(detail.getStatusId()).ifPresent(detail::setStatusDetail);
 	}
+
+
+	
+
 
 	
 

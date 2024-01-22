@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.UUID;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
@@ -153,50 +154,50 @@ public class CryptoController {
 		return "register";
 	}
 
-	    //收到註冊資料
-		@PostMapping("/register")
-		public String register(@RequestParam("username") String username,
-							   @RequestParam("password") String password,
-							   @RequestParam("password2")String password2,
-							   Model model
-													) {
-			List<User> users=dao.findAllUsers();
-			Optional<User>userOpt=users.stream().filter(oneUser->oneUser.getUsername().equals(username)).findAny();
-			if(userOpt.isPresent()){
-				//帳號已被註冊
-				model.addAttribute("message","❌username already taken");
-			}else {
-				//註冊成功!重導到login頁面
-				if(password.equals(password2)) {
-					if(!username.endsWith("@gmail.com")) {
-						model.addAttribute("message","Please enter valid email");
-						return "register";
-					}
-					emailService.sendIngEmail(username);
-					model.addAttribute("message","✔️Register successfully");
-					User newUser=new User();
-					newUser.setPassword(password);
-					newUser.setUsername(username);
-					//生成新使用者後會自動得到該使用者的id
-					Integer userId=(Integer)dao.addUser(newUser);
-					//幫使用者開設每個幣的帳戶，並且給他入金1000Usdt
-					dao.addAssetsByNewUserId(userId);
-					try {
-						Thread.sleep(5000);
-						return "register";
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					
-				}else {
-					//帳號密碼不一致
-					model.addAttribute("message", "❌The passwords you enter don't match");
+	//收到註冊資料
+	@PostMapping("/register")
+	public String register(@RequestParam("username") String username,
+			@RequestParam("password") String password,
+			@RequestParam("password2")String password2,
+			Model model
+			) {
+		List<User> users=dao.findAllUsers();
+		Optional<User>userOpt=users.stream().filter(oneUser->oneUser.getUsername().equals(username)).findAny();
+		if(userOpt.isPresent()){
+			//帳號已被註冊
+			model.addAttribute("message","❌username already taken");
+		}else {
+			//註冊成功!重導到login頁面
+			if(password.equals(password2)) {
+				if(!username.endsWith("@gmail.com")) {
+					model.addAttribute("message","Please enter valid email");
 					return "register";
 				}
+				emailService.sendIngEmail(username);
+				model.addAttribute("message","✔️Register successfully");
+				User newUser=new User();
+				newUser.setPassword(password);
+				newUser.setUsername(username);
+				//生成新使用者後會自動得到該使用者的id
+				Integer userId=(Integer)dao.addUser(newUser);
+				//幫使用者開設每個幣的帳戶，並且給他入金1000Usdt
+				dao.addAssetsByNewUserId(userId);
+				try {
+					Thread.sleep(5000);
+					return "register";
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}else {
+				//帳號密碼不一致
+				model.addAttribute("message", "❌The passwords you enter don't match");
+				return "register";
 			}
-			return "register";
 		}
+		return "register";
+	}
 
 	// 網站首頁
 	@GetMapping("/index")
@@ -205,9 +206,94 @@ public class CryptoController {
 	}
 
 	// 交易操作頁面
-	@GetMapping("/transaction")
-	public String userAsset() {
-		return "transaction";
+	@GetMapping("/transfer") 
+	public String userAssetPage(HttpSession session, Model model) {
+		//User 把user放到session
+		User currentUser=(User)session.getAttribute("user");
+		model.addAttribute("currentUser", currentUser);
+		//找尋所有有提供交易的加密貨幣
+		List<CryptoCurrency> allCryptos=dao.findTopFiveRanking();
+		model.addAttribute("allCryptos",allCryptos);
+		//創造csrfToken來保護每一筆交易
+		String csrf_token = UUID.randomUUID().toString(); // 得到一個隨機的唯一識別碼
+		session.setAttribute("csrf_token", csrf_token);
+		model.addAttribute("csrf_token",csrf_token);
+		return "transfer";
+	}
+	
+	@PostMapping("/transfer")
+	public String userAsset(@RequestParam("currency") String currency,
+			@RequestParam("transIdFrom") Integer transIdFrom,
+			@RequestParam("transIdTo") Integer transIdTo,
+			@RequestParam("sendAmount") Float sendAmount,
+			@RequestParam("csrfToken") String csrfToken,				
+			HttpSession session, Model model) {
+		
+		//User 把user放到session
+		User currentUser=(User)session.getAttribute("user");
+		model.addAttribute("currentUser", currentUser);
+		//找尋有提供交易的貨幣
+		List<CryptoCurrency> allCryptos=dao.findTopFiveRanking();
+		//先檢查csrfToken，如果跟session裡面的不一樣，就馬上跳轉login頁面
+		String sessionCsrfToken=(String)session.getAttribute("csrfToken");
+		if(csrfToken.equals(sessionCsrfToken)) {
+			return "login";
+		}
+	    Optional<User> toUserOpt=dao.findUserById(transIdTo);
+	    if(toUserOpt.isEmpty()) {
+			model.addAttribute("allCryptos",allCryptos);
+	    	model.addAttribute("resultMessage","The user doesn't exists");
+	    	return "transfer";
+	    }
+		//如果存在的話才可以開始交易
+		
+	    //檢查該帳號資產夠不夠
+	    List<UserAsset> userAssets=dao.findAssetsByUserId(transIdFrom);
+	    //得到該指定加密貨幣的帳戶
+	    Float accBalance= userAssets.stream().filter(userAsset -> userAsset.getcName().equals(currency))
+				.map(UserAsset::getAccBalance).findFirst().orElse(0.0f);	   
+			if(accBalance<sendAmount) {				
+				model.addAttribute("allCryptos",allCryptos);
+				model.addAttribute("resultMessage","Insufficient balance");
+				return "transfer";
+			}
+			//得到當時貨幣價格
+			CryptoCurrency specificCrypto=dao.findCryptoByCryptoNameForsure(currency);
+			
+			
+			//成功交易!
+			//扣除轉帳貨幣剩下的貨幣
+			Float sellCryptoAmount=accBalance-sendAmount;	
+			Account sendCryptoAccount=dao.findAccountByCryptoName(currency);
+			//扣除轉帳者的帳戶
+			dao.transferCrypto(sellCryptoAmount,transIdFrom,sendCryptoAccount.getAccId());
+			//增加接收者的帳戶
+			dao.receiveCrypto(sendAmount, transIdTo,sendCryptoAccount.getAccId() );
+			//設定轉出明細
+            
+			//設定轉入明細
+			model.addAttribute("allCryptos",allCryptos);
+		    model.addAttribute("resultMessage","successully transfer");
+			return "transfer";
+	
+	}
+	
+	//讓前端用貨幣名稱查詢該貨幣帳戶的餘額(fetch)
+	@GetMapping("/api/getBalance")
+	@ResponseBody
+	public Float getBalance(@RequestParam("currency") String currency,HttpSession session, Model model) {
+		//先找到該使用者
+		User currentUser=(User) session.getAttribute("user");
+		List<UserAsset> userAssets=dao.findAssetsByUserId(currentUser.getUserId());
+		Optional<UserAsset>userAssetOpt=userAssets.stream().filter(userAsset->userAsset.getcName().equals(currency)).findAny();
+		if(userAssetOpt.isEmpty()) {
+			return null;
+		}
+		//得到該指定帳戶資產
+		UserAsset specificAsset=userAssetOpt.get();
+		//得到該帳戶餘額
+		Float balance=specificAsset.getAccBalance();
+		return balance;
 	}
 
 	// 使用者持有資產頁面

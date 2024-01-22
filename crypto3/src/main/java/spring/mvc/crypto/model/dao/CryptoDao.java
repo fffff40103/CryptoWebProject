@@ -50,7 +50,10 @@ public interface CryptoDao {
 //  5.根據貨幣編號尋找該貨幣
 	Optional<CryptoCurrency> findCryptoByCryptoId(Integer cNumber);
 	
-//  6.根據貨幣名稱尋找該貨幣
+//  6.根據貨幣名稱尋找該貨幣(一定找到)
+	CryptoCurrency findCryptoByCryptoNameForsure(String cName);	
+	
+//  6.根據貨幣名稱尋找該貨幣(不一定找到)
 	Optional<CryptoCurrency> findCryptoByCryptoName(String cName);
 	
 //	7.根據貨幣名稱查找帳戶ID
@@ -75,10 +78,17 @@ public interface CryptoDao {
 	
 //  12.根據使用者id在使用者購買成功時增加資產	
 	public boolean buyCrypto(Float accBalance,Integer userId,Integer accId);
+	
+//  12.根據使用者id在使用者接收資產成功時增加資產	
+	public boolean receiveCrypto(Float accBalance,Integer userId,Integer accId);
 
 //  13.根據使用者id在使用者出售成功時扣除資產		
 	
 	public boolean sellCrypto(Float accBalance,Integer userId,Integer accId);
+	
+//  13.根據使用者id在使用者轉帳成功時扣除資產		
+	
+	public boolean transferCrypto(Float accBalance,Integer userId,Integer accId);
 
 //  14.根據使用者id在使用者購買加密貨幣後扣除usdt
 	public boolean deductUSDT(Float balance, Integer userId, Integer accId);
