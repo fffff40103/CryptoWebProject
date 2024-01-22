@@ -38,7 +38,7 @@
                         <a class="nav-link text-dark" href="#">Staking</a>
                     </li>
                     <li class="nav-item">
-			            <a class="nav-link text-dark" href="./transaction">Transaction</a>
+			            <a class="nav-link text-dark" href="./transfer">Transfer</a>
 			        </li>
 
 
