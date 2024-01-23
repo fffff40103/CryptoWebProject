@@ -180,7 +180,7 @@ public class CryptoController {
 		public String register(@RequestParam("username") String username,
 				@RequestParam("password") String password,
 				@RequestParam("password2")String password2,
-				@RequestParam("code") String verifiedCode,
+				
 				Model model
 				) {
 			List<User> users=dao.findAllUsers();
