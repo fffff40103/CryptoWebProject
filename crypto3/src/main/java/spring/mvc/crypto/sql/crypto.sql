@@ -158,6 +158,7 @@ create table if not exists trx_detail(
 	foreign key(userId) references user(userId),
 	foreign key(cNumber) references cryptoinfo(cNumber),
     foreign key(statusId) references status_detail(statusId)
+   
 );
 alter table trx_detail auto_increment = 301;
 
@@ -167,13 +168,16 @@ alter table trx_detail auto_increment = 301;
 create table if not exists trx_transfer(
 	trsId int auto_increment primary key,
 	cNumber int  not null,
+    quantity int not null,
 	price float not null,
 	userFrom int not null,
 	userTo  int not null,
-	trxTime datetime default current_timestamp,
+    
+	transferTime datetime default current_timestamp,
 	foreign key(cNumber) references cryptoinfo(cNumber),
 	foreign key(userFrom) references user(userId),
 	foreign key(userTo) references user(userId)
+   
 );
 alter table trx_transfer auto_increment = 401;
 
@@ -199,15 +203,15 @@ create table if not exists compareData(
 
 
 insert into user(userName,password)
-values("abc123","pass123"),
-("abc456","pass456");
+values("abc123","pass123");
+
 
 insert into cryptoinfo(cName,price,rate,cap)
-values("BTC",42325.2,2.6,"42b"),
-("BTC",42325.2,2.6,"42b"),
-("BTC",42325.2,2.6,"42b"),
-("BTC",42325.2,2.6,"42b"),
-("BTC",42325.2,2.6,"42b"),
+values("BTC",42325.2,2.6,"805.67b"),
+("ETH",2270.72,2.64,"294.95b"),
+("USDT",1.0006,0.07,"94.98b"),
+("BNB",305,0.1,"64.25b"),
+("SOL",72.765,-8.16,"40.10b"),
 ("BTC",42325.2,2.6,"42b"),
 ("BTC",42325.2,2.6,"42b"),
 ("BTC",42325.2,2.6,"42b"),
@@ -220,17 +224,19 @@ values(501),
 (502),(503),(504),(505),(506),(507),(508),(509),(510);
 
 INSERT INTO user_ref_account(userId,accId,accBalance)
-values(101,201,1010),
-(101,202,102),
-(101,203,101),
+values(101,201,10),
+(101,202,0),
+(101,203,10000),
 (101,204,0),
 (101,205,0),
 (101,206,0),
-(101,207,22),
+(101,207,0),
 (101,208,0),
 (101,209,0),
 (101,210,0);
 
 insert into status_detail(statusId,statusFor)
-values(1,"買入"),
-(2,"賣出");
+values(1,"Buy"),
+(2,"Sell"),
+(3,"Transfer"),
+(4,"Receive");
