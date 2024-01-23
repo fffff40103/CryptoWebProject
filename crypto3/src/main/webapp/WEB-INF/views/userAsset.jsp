@@ -89,7 +89,7 @@ table, tr, td, th, tbody {
 .logoutButton {
 	top: 2.5rem;
 	position: absolute;
-	background: #f6f6f6;
+	background: white;
 	border-radius: 5px;
 }
 
@@ -160,7 +160,7 @@ form {
 		width: 100%;
 	}
 	.container div {
-		font-size: 1.5rem;
+		font-size: 1rem;
 	}
 	.balance {
 		width: 100vw;
@@ -343,7 +343,7 @@ form {
 						<p id="purchaseInfo2"></p>
 						<input class="modalNameInput" type="text" value="" name="cryptoName" id="cryptoName" readonly="" hidden>
 						<input class="modalPriceInput" type="text" value="" name="cryptoPrice" id="cryptoPrice" readonly="" hidden>
-						<input class="modalAmountInput" type="number" name="cryptoAmount" id="cryptoAmount " placeHolder='請填入數量' required >
+						<input class="modalAmountInput" type="number" name="cryptoAmount" id="cryptoAmount " placeHolder='Amount' required >
 					</div>
 				
 				

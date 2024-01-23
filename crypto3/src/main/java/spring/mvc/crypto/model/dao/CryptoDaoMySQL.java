@@ -20,6 +20,7 @@ import spring.mvc.crypto.model.entity.CrawlerCurrency;
 import spring.mvc.crypto.model.entity.CryptoCurrency;
 import spring.mvc.crypto.model.entity.StatusDetail;
 import spring.mvc.crypto.model.entity.TransactionDetail;
+import spring.mvc.crypto.model.entity.TransferDetail;
 import spring.mvc.crypto.model.entity.User;
 import spring.mvc.crypto.model.entity.UserAsset;
 import spring.mvc.crypto.model.entity.UserRefAccount;
@@ -59,9 +60,10 @@ public class CryptoDaoMySQL implements CryptoDao {
 
 	// 3. 修改密碼
 	@Override
-	public int updateUserPassword(String username, String newPassword) {
-		
-		return 1;
+	public int updateUserPassword(Integer userId, String newPassword) {
+		String sql="update user set password=? where userId=?";
+		int row= jdbcTemplate.update(sql,newPassword,userId);
+		return row;
 	}
 
 	// 4. 根據使用者名稱查找使用者(登入用-單筆)
@@ -319,14 +321,29 @@ public class CryptoDaoMySQL implements CryptoDao {
 		String sql="insert into trx_detail(userId,cNumber,quantity,price,statusId) values(?,?,?,?,?)";
 		return jdbcTemplate.update(sql,detail.getUserId(),detail.getcNumber(),detail.getQuantity(),detail.getPrice(),detail.getStatusId())>0;
 	}
+	
+	@Override
+	public boolean addTransferDetail(TransferDetail transferDetail) {
+		String sql="insert into trx_transfer(cNumber,quantity,price,userFrom,userTo) values(?,?,?,?,?)";
+		return jdbcTemplate.update(sql,transferDetail.getcNumber(),transferDetail.getQuantity(),transferDetail.getPrice(),
+				transferDetail.getUserFrom(),transferDetail.getUserTo())>1;
+	}
+
+	@Override
+	public List<TransferDetail> findTransferDetailByUserId(Integer userId) {
+		String sql="select * from trx_Transfer where userFrom=? || userTo=?";
+		List<TransferDetail> transferDetails=jdbcTemplate.query(sql,new BeanPropertyRowMapper<>(TransferDetail.class),userId,userId );
+		transferDetails.forEach(this::enrichTransferDetail);
+		return transferDetails;
+	}
 
 	// 17.利用userId得到此筆紀錄
 	@Override
-	public List<TransactionDetail> findDetailByUserId(Integer userId) {
+	public List<TransactionDetail> findTransactionDetailByUserId(Integer userId) {
 		String sql="select trxId,userId,cNumber,quantity,price,statusId,purchaseTime from trx_detail where userId=?";
 		
 		 List<TransactionDetail> details=jdbcTemplate.query(sql,new BeanPropertyRowMapper<>(TransactionDetail.class),userId);
-		 details.forEach(this::enrichDetailInDetail);
+		 details.forEach(this::enrichTransactionDetail);
 		 return details;
 	}
 	
@@ -338,13 +355,11 @@ public class CryptoDaoMySQL implements CryptoDao {
 			return Optional.ofNullable(statusDetail);
 		}catch (EmptyResultDataAccessException e) {
 			return Optional.empty();
-		}
-		
-		
+		}		
 	
 	}
 	
-	public void enrichDetailInDetail(TransactionDetail detail) {
+	public void enrichTransactionDetail(TransactionDetail detail) {
 		//注入CryptoCurrency資訊
 		findCryptoByCryptoId(detail.getcNumber()).ifPresent(detail::setCryptoInfo);
 		
@@ -354,6 +369,23 @@ public class CryptoDaoMySQL implements CryptoDao {
 		//注入status
 		findStatusById(detail.getStatusId()).ifPresent(detail::setStatusDetail);
 	}
+	
+	public void enrichTransferDetail(TransferDetail transFerDetail) {
+		//注入CryptoCurrency資訊
+		findCryptoByCryptoId(transFerDetail.getcNumber()).ifPresent(transFerDetail::setCryptoInfo);
+		
+		//注入user資訊
+	
+		
+		//注入status
+		findStatusById(transFerDetail.getStatusId()).ifPresent(transFerDetail::setStatusDetail);
+	}
+
+	
+	
+	
+	
+	
 
 
 	

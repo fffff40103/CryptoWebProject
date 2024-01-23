@@ -35,6 +35,7 @@ import spring.mvc.crypto.model.entity.CrawlerCurrency;
 import spring.mvc.crypto.model.entity.CryptoCurrency;
 import spring.mvc.crypto.model.entity.StatusDetail;
 import spring.mvc.crypto.model.entity.TransactionDetail;
+import spring.mvc.crypto.model.entity.TransferDetail;
 import spring.mvc.crypto.model.entity.User;
 import spring.mvc.crypto.model.entity.UserAsset;
 import spring.mvc.crypto.service.CryptoService;
@@ -180,7 +181,6 @@ public class CryptoController {
 		public String register(@RequestParam("username") String username,
 				@RequestParam("password") String password,
 				@RequestParam("password2")String password2,
-				
 				Model model
 				) {
 			List<User> users=dao.findAllUsers();
@@ -269,36 +269,46 @@ public class CryptoController {
 	    	return "transfer";
 	    }
 		//如果存在的話才可以開始交易
-		
-	    //檢查該帳號資產夠不夠
-	    List<UserAsset> userAssets=dao.findAssetsByUserId(transIdFrom);
-	    //得到該指定加密貨幣的帳戶
-	    Float accBalance= userAssets.stream().filter(userAsset -> userAsset.getcName().equals(currency))
-				.map(UserAsset::getAccBalance).findFirst().orElse(0.0f);	   
-			if(accBalance<sendAmount) {				
+		Optional<CryptoCurrency> currentCryptoOpt=dao.findCryptoByCryptoName(currency);
+		if(currentCryptoOpt.isPresent()) {
+			//如果存在就拿到此crypto
+			CryptoCurrency currentCrypto=currentCryptoOpt.get();
+		    //檢查該帳號資產夠不夠
+		    List<UserAsset> userAssets=dao.findAssetsByUserId(transIdFrom);
+		    //得到該指定加密貨幣的帳戶
+		    Float accBalance= userAssets.stream().filter(userAsset -> userAsset.getcName().equals(currency))
+					.map(UserAsset::getAccBalance).findFirst().orElse(0.0f);	   
+				if(accBalance<sendAmount) {				
+					model.addAttribute("allCryptos",allCryptos);
+					model.addAttribute("resultMessage","Insufficient balance");
+					return "transfer";
+				}
+				//得到當時貨幣價格
+				CryptoCurrency specificCrypto=dao.findCryptoByCryptoNameForsure(currency);			
+				//成功交易!
+				//扣除轉帳貨幣剩下的貨幣
+				Float sellCryptoAmount=accBalance-sendAmount;	
+				Account sendCryptoAccount=dao.findAccountByCryptoName(currency);
+				//扣除轉帳者的帳戶
+				dao.transferCrypto(sellCryptoAmount,transIdFrom,sendCryptoAccount.getAccId());
+				//增加接收者的帳戶
+				dao.receiveCrypto(sendAmount, transIdTo,sendCryptoAccount.getAccId() );
+				//設定轉出者明細
+	            TransferDetail transferFromDetail=new TransferDetail();
+	            transferFromDetail.setcNumber(currentCrypto.getcNumber());
+	            transferFromDetail.setQuantity(sendAmount);
+	            transferFromDetail.setPrice(currentCrypto.getPrice());
+	            transferFromDetail.setUserFrom(transIdFrom);
+	            transferFromDetail.setUserTo(transIdTo);
+	            //把該筆紀錄加入到資料庫
+	            dao.addTransferDetail(transferFromDetail);
+	            //把所有有提供交易的貨幣給transfer
 				model.addAttribute("allCryptos",allCryptos);
-				model.addAttribute("resultMessage","Insufficient balance");
+			    model.addAttribute("resultMessage","successully transfer");
 				return "transfer";
-			}
-			//得到當時貨幣價格
-			CryptoCurrency specificCrypto=dao.findCryptoByCryptoNameForsure(currency);
-			
-			
-			//成功交易!
-			//扣除轉帳貨幣剩下的貨幣
-			Float sellCryptoAmount=accBalance-sendAmount;	
-			Account sendCryptoAccount=dao.findAccountByCryptoName(currency);
-			//扣除轉帳者的帳戶
-			dao.transferCrypto(sellCryptoAmount,transIdFrom,sendCryptoAccount.getAccId());
-			//增加接收者的帳戶
-			dao.receiveCrypto(sendAmount, transIdTo,sendCryptoAccount.getAccId() );
-			//設定轉出明細
-            
-			//設定轉入明細
-			model.addAttribute("allCryptos",allCryptos);
-		    model.addAttribute("resultMessage","successully transfer");
-			return "transfer";
+		}
 	
+		return null;
 	}
 	
 	//讓前端用貨幣名稱查詢該貨幣帳戶的餘額(fetch)
@@ -321,7 +331,10 @@ public class CryptoController {
 
 	// 使用者持有資產頁面
 	@GetMapping("/userAsset")
-	public String userPage() {
+	public String userPage(Model model,HttpSession session) {
+		User currentUser=(User)session.getAttribute("user");
+		List<UserAsset> userAssets=dao.findAssetsByUserId(currentUser.getUserId());
+		model.addAttribute("userAssets", userAssets);
 		return "userAsset";
 	}
 
@@ -339,8 +352,8 @@ public class CryptoController {
 	
 	@GetMapping("/userProfile")
 	public String userProfile(Model model,HttpSession session) {
-		User currentUser=(User)session.getAttribute("user");
-		model.addAttribute("userName",currentUser.getUsername());
+		User currentUser=(User)session.getAttribute("user");	
+		model.addAttribute("userName",currentUser.getUsername());	
 		return "userProfile";
 	}
 	
@@ -351,25 +364,27 @@ public class CryptoController {
 			@RequestParam("code") String code,
 			Model model,HttpSession session) {
 			
+			//先從session中得到驗證碼
 			String verifiedCode=(String)session.getAttribute("verifyCode");
 		    List<User> users=dao.findAllUsers();
+		    //檢查該user
 		    Optional<User> userOpt=users.stream().filter(user->user.getUsername().equals(username)).findAny();
-		   
-		   
+		   		    
+		    //先檢查該用戶有無存在
 		    if(userOpt.isPresent()) {
 		    	 User currentUser=userOpt.get();
-		    	 System.out.println(currentUser.getUserId()+"*****");
-		    	 System.out.println(currentUser.getUsername()+"*****");
-		    	 int row=dao.updateUserPassword(currentUser.getUsername(), password);
-		    	 System.out.println(row);
+		    	 dao.updateUserPassword(currentUser.getUserId(), password);
+
 		    	 if(!password.equals(confirmPassword)) {
 		    		model.addAttribute("changeResult","password doesn't match");
 		    		return "userProfile";
-		    	}
-		    	if(!code.equals(verifiedCode)) {
-		    		model.addAttribute("changeResult","enter valid code!");;
-		    		return "userProfile";
-		    	}	    	
+		    	 }
+		    	 
+		    	 //比對驗證碼
+			     if(!code.equals(verifiedCode)) {
+			    		model.addAttribute("changeResult","enter valid code!");;
+			    		return "userProfile";
+			     }	    	
 		    	
 				model.addAttribute("changeResult","successfully chage password!");
 					
@@ -387,10 +402,18 @@ public class CryptoController {
 	// 交易明細頁面
 	@GetMapping("/userDetail")
 	public String userDetail(Model model,HttpSession session) {
+		//得到當前crypto資訊
+		List<CryptoCurrency> currentCryptos=dao.findTopFiveRanking();
 		//得到User
 		User currentUser=(User)session.getAttribute("user");
-		List<TransactionDetail> details=dao.findDetailByUserId(currentUser.getUserId());
+		//得到交易的資訊
+		List<TransactionDetail> details=dao.findTransactionDetailByUserId(currentUser.getUserId());
+		//得到轉帳的資訊
+		List<TransferDetail> transferDetails=dao.findTransferDetailByUserId(currentUser.getUserId());
+        //把交易以及轉帳資訊給model
 		model.addAttribute("details",details);
+		model.addAttribute("transferDetails",transferDetails);
+		model.addAttribute("currentCryptos",currentCryptos);
 		return "userDetail";
 	}
 	
