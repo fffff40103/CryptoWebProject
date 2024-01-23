@@ -9,6 +9,7 @@ import spring.mvc.crypto.model.entity.CrawlerCurrency;
 import spring.mvc.crypto.model.entity.CryptoCurrency;
 import spring.mvc.crypto.model.entity.StatusDetail;
 import spring.mvc.crypto.model.entity.TransactionDetail;
+import spring.mvc.crypto.model.entity.TransferDetail;
 import spring.mvc.crypto.model.entity.User;
 import spring.mvc.crypto.model.entity.UserAsset;
 
@@ -21,7 +22,7 @@ public interface CryptoDao {
 	int addUser(User user);
 	
 //	3. 修改密碼
-	int updateUserPassword(String username, String newPassword);
+	int updateUserPassword(Integer userId, String newPassword);
 	
 //	4. 根據使用者名稱查找使用者(登入用-單筆)
 	Optional<User> findUserByUsername(String username);
@@ -101,10 +102,17 @@ public interface CryptoDao {
 	
 //  1.將交易加入交易明細	
 	public boolean addTransactionDetail(TransactionDetail  detail);
+	
+//  2.將轉帳加入交易明細	
+	public boolean addTransferDetail(TransferDetail  transferDetail);
 
-//  2.根據使用者id尋找交易明細
-	public  List<TransactionDetail> findDetailByUserId(Integer userId);
-//  3.根據狀態id狀態明細
+//  3.根據使用者id尋找交易明細
+	public List<TransactionDetail> findTransactionDetailByUserId(Integer userId);
+	
+//	4.根據使用者id尋找交易明細
+	public List<TransferDetail> findTransferDetailByUserId(Integer userId);
+	
+//  5.根據狀態id狀態明細
 	
 	public Optional<StatusDetail> findStatusById(Integer statusId);
 	

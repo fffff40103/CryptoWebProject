@@ -52,7 +52,11 @@ body {
 	background-size: auto;
 	
 }
-.testArea{
+select{
+	border:2px solid black!important;
+}
+
+.outerArea{
 	display:flex
 }
 
@@ -128,7 +132,7 @@ form {
 .logoutButton {
 	top: 2.5rem;
 	position: absolute;
-	width: 3vw;
+	width: 5vw;
 	height: 5vh;
 	background: #f6f6f6;
 	border-radius: 5px;
@@ -180,6 +184,21 @@ input {
 	border: none;
 }
 
+/*寬度1600以上設定導覽列左右距離*/
+@media ( min-width :1600px) {
+	.navRWD {
+		margin-left: 30rem;
+		margin-right: 30rem;
+	}
+}
+
+@media ( max-width :1450px) {
+	.navRWD {
+		margin-left: 5rem;
+		margin-right: 5rem;
+	}
+}
+
 /*在螢幕寬度700以上設置與上方距離5的字大小*/
 @media ( min-width :700px) {
 	.content {
@@ -189,7 +208,7 @@ input {
 
 /*在螢幕寬度700以下變成直欄排列，並設定為寬度為螢幕寬度*/
 @media ( max-width :700px) {
-	.testArea{
+	.outerArea{
 		justify-content:center;
 		align-items:center;
 	}
@@ -201,25 +220,31 @@ input {
 	.transIdTo {
 		width: 100vw;
 	}
+	.sendAmount{
+		width:100vw;
+	}
 	
 }
 
 /*登出按鈕RWD設定*/
 @media ( max-width :1170px) {
 	.logoutButton {
-		height: 10vh;
+		width:8vw;
+		height: 5vh;
 	}
 }
 
 @media ( max-width :800px) {
 	.logoutButton {
-		height: 10vh;
-		width: 5vw;
+		width:15vw;
+		height: 5vh;
 	}
 }
 
+
+
 @media ( max-width :705px) {
-	.testArea {
+	.outerArea {
 		flex-direction:column;
 	}
 	
@@ -233,7 +258,9 @@ input {
 
 @media ( max-width :330px) {
 	.logoutButton {
-		width: 8vw;
+		width:15vw;
+		height: 5vh;
+		z-index:1;
 	}
 }
 
@@ -266,8 +293,8 @@ input {
 
 	/*設置圓形餘額大小*/
 	.balanceSection {
-		width: 200px;
-		height: 200px;
+		width: 250px;
+		height: 250px;
 	}
 }
 
@@ -309,16 +336,16 @@ input {
 			</button>
 			<div class="collapse navbar-collapse" id="navbarNavDropdown">
 				<ul class="navbar-nav">
-					<li class="nav-item"><a class="nav-link active text-dark"
+					<li class="nav-item"><a class="nav-link active text-light"
 						aria-current="page" href="./market">Markets</a></li>
-					<li class="nav-item"><a class="nav-link text-dark"
+					<li class="nav-item"><a class="nav-link text-light"
 						href="./staking">Staking</a></li>
-					<li class="nav-item"><a class="nav-link text-dark"
+					<li class="nav-item"><a class="nav-link text-light"
 						href="./transfer">Transfer</a></li>
-					<li class="nav-item"><a class="nav-link text-dark"
+					<li class="nav-item"><a class="nav-link text-light"
 						href="./userDetail">Detail</a></li>
 						
-					<li class="nav-item"><a class="nav-link text-dark"
+					<li class="nav-item"><a class="nav-link text-light"
 						href="./userProfile">Profile</a></li>
 
 
@@ -327,11 +354,11 @@ input {
 
 			<!--rigth side navbar-->
 			<div class="rightPartNav">
-				<a class="nav-link text-light" href="#">Assets</a> <i
-					class="bi bi-person-circle text-light h5 mb-0  d-md-block userIcon"></i>
-				<a class="nav-link text-light" href="#">username</a>
+				<i
+					class="bi bi-person-circle text-light h5 mb-0  d-md-block userIcon"
+					onclick=""></i> <a class="nav-link text-light" href="#">${ user.username }</a>
 				<div class="logoutButton d-none ">
-					<a href="" onclick="">logout</a>
+					<a href="./logout">logout</a>
 				</div>
 			</div>
 		</div>
@@ -339,11 +366,11 @@ input {
 	<!--餘額內容-->
 	<div class="content">
 		<form method="post" action="./transfer">
-			<div class="testArea">
+			<div class="outerArea">
 			<!-- 餘額區域 -->
 			<div class="balanceSection">
 				<!-- 下拉式选择框 -->
-				<select class="dropdown" id="currency" name="currency" onChange="updateBalance() " style="background-color: black;color:white">
+				<select class="dropdown" id="currency" name="currency" onChange="updateBalance() " style="background-color: #D9D9D9;color:black;">
 					<c:forEach items="${allCryptos}" var="currency">
 						<option value="${currency.getcName() }">${currency.getcName() }</option>
 					</c:forEach>
@@ -365,7 +392,7 @@ input {
 				<div class="transactionButton">
 
 					<div class="transfer">
-						<a href="#">transfer</a>
+						<a href="#">Transfer</a>
 					</div>
 				</div>
 				<!-- 轉給誰 -->
@@ -373,7 +400,7 @@ input {
 				<input type="text" class="transIdTo" placeholder="To" id="transIdTo" name="transIdTo" >
 				<input type="number" class="sendAmount" placeholder="amount" id="sendAmount" name="sendAmount" >
 				<input type="text" hidden class="csrfToken" name="csrfToken" id="csrfToken" value="${csrf_token }">					
-				<button class=submitButton>submit</button>
+				<button class=submitButton>Submit</button>
 
 				</div>
 			</div>
