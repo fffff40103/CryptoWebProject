@@ -123,11 +123,6 @@
 				<ul class="navbar-nav">
 					<li class="nav-item"><a class="nav-link active text-dark"
 						aria-current="page" href="./market">Markets</a></li>
-					<li class="nav-item"><a class="nav-link text-dark"
-						href="./chart">Chart</a></li>
-					<li class="nav-item"><a class="nav-link text-dark"
-						href="./staking">Staking</a></li>
-
 
 				</ul>
 			</div>
