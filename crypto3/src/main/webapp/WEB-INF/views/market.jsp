@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ page import="javax.servlet.http.HttpSession"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 <meta charset="UTF-8">
 <meta cName="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,73 +21,52 @@
 
 <style>
 /*   Css RWD排版規則，由大排到小，同屬性的話會單獨排，如果只有單一屬性會在最下面    */
-	  
-	
-*{
-	margin:0;
-	padding:0;
-	box-sizing:border-box;
-
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
 }
 
 /*把背景顏色設定成:#181a20*/
 body {
 	background-color: "white";
-	
 }
 
 /*設定標題列的排版*/
-
 .navbar-brand {
-
-    margin-left: 1rem;
-
+	margin-left: 1rem;
 }
 /*黑色被景色的框框以及標題*/
 .title {
-	background-color:black;
-
-	padding-bottom:1rem;
+	background-color: black;
+	padding-bottom: 1rem;
 	display: flex;
-
-
 	/*設定標題排版*/
 	font-size: 2rem;
 	/*設定字體大小*/
 	color: white;
-	padding-top:1rem;
-
+	padding-top: 1rem;
 }
-
-
 
 /*在每個不同的幣種相同的uniquePrice設定相同的屬性*/
 .uniquePrice {
 	display: flex;
 	/*設定標題排版*/
 	justify-content: space-between;
-
 	/*設定標題排版*/
 	font-size: 1.5rem;
 	/*設定字體大小*/
 	color: black;
-	padding-top:1rem;
-
-	
+	padding-top: 1rem;
 }
 
 /*設定價格旁邊的圖片*/
-.uniquePrice{
-
-	img{
-	  margin-top:0.5rem;
-	  width:25px;
-	  height:25px;
-	}
+.uniquePrice {img { margin-top:0.5rem;
+	width: 25px;
+	height: 25px;
 }
 
-
-
+}
 
 /*設定nav bar右半邊*/
 .rightPartNav {
@@ -118,8 +97,8 @@ body {
 	color: black;
 }
 
-.containerContent{
-	margin-top:2rem;
+.containerContent {
+	margin-top: 2rem;
 }
 
 /*寬度1650以上設定導覽列左右距離*/
@@ -130,9 +109,6 @@ body {
 	}
 }
 
-
-
-
 /*寬度1600以上設定導覽列左右距離*/
 @media ( min-width :1600px) {
 	.navRWD {
@@ -141,12 +117,11 @@ body {
 	}
 }
 
-@media(max-width:1450px){
+@media ( max-width :1450px) {
 	.navRWD {
 		margin-left: 5rem;
 		margin-right: 5rem;
 	}
-
 }
 
 /*登出按鈕RWD設定*/
@@ -155,53 +130,41 @@ body {
 		height: 10vh;
 		width: 5vw;
 	}
-	
-	.uniquePrice{
-	img{
-	  margin-top:0rem;
-	  width:25px;
-	  height:25px;
-	}
-}
-	
-}
-
-
-@media(max-width:770px){
-	.container{
-		width:100%;
-	}
-
-	.container div{
-		font-size:1rem;
+	.uniquePrice {img { margin-top:0rem;
+		width: 25px;
+		height: 25px;
 	}
 }
 
-@media(max-width:600px){
-	.containerContent{
-		margin-top:0rem;
+}
+@media ( max-width :770px) {
+	.container {
+		width: 100%;
 	}
-	
+	.container div {
+		font-size: 1rem;
+	}
 }
 
-
-
-@media(max-width:500px){
-	.uniquePrice{
-		padding-top:2rem;
+@media ( max-width :600px) {
+	.containerContent {
+		margin-top: 0rem;
 	}
-	
 }
 
+@media ( max-width :500px) {
+	.uniquePrice {
+		padding-top: 2rem;
+	}
+}
 
 /*在寬度為450時讓導覽列左右沒有距離*/
 @media ( max-width :440px) {
 	nav {
 		margin-left: 0rem;
 	}
-	
-	.titleRate{
-		margin-right:0rem;
+	.titleRate {
+		margin-right: 0rem;
 	}
 }
 
@@ -213,13 +176,10 @@ body {
 		/*把標題字體縮小做RWD*/
 		font-weight: 200;
 	}
-	
-	
 }
 
 /*在螢幕寬度350以下時讓幣價都呈現為螢幕最大寬度，並且把字體縮小*/
 @media ( max-width :350px) {
-	
 	.uniquePrice p {
 		font-size: 1rem;
 	}
@@ -242,8 +202,6 @@ body {
 	}
 }
 
-
-
 /*在螢幕250以下時讓標題高度為11vh並且讓user字體變小*/
 @media ( max-width :250px) {
 	.title {
@@ -253,7 +211,6 @@ body {
 		font-size: 15px;
 	}
 }
-
 </style>
 
 </head>
@@ -263,7 +220,7 @@ body {
 	<nav class="navbar navbar-expand-lg navbar-light  ">
 		<!--Left side navbar-->
 		<div class="container-fluid  fs-5 navRWD ">
-			<a class="navbar-brand text-dark fs-2 fw-bolder" href="#">ZheZhe</a>
+			<a class="navbar-brand text-dark fs-2 fw-bolder" href="/crypto2/index.jsp">ZheZhe</a>
 			<button class="navbar-toggler buttonRWD text-dark" type="button"
 				data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown "
 				aria-controls="navbarNavDropdown" aria-expanded="false"
@@ -272,106 +229,133 @@ body {
 			</button>
 			<div class="collapse navbar-collapse" id="navbarNavDropdown">
 				<ul class="navbar-nav">
-				
-					
-					<li class="nav-item">
-						<a class="nav-link active text-dark"aria-current="page" href="/crypto2/index.jsp">Homepage</a>			
-					</li>	
-					
-					
+
+					<c:if test="${not empty sessionScope.user }">
+						<li class="nav-item"><a class="nav-link active text-dark"
+							aria-current="page" href="./transfer">Transfer</a></li>
+							
+						<li class="nav-item"><a class="nav-link active text-dark"
+							aria-current="page" href="./userAsset">Assets</a></li>
+
+						<li class="nav-item"><a class="nav-link active text-dark"
+							aria-current="page" href="./transfer">Detail</a></li>
+						<li class="nav-item"><a class="nav-link active text-dark"
+							aria-current="page" href="./transfer">Profile</a></li>
+					</c:if>
+
+
 				</ul>
 			</div>
+			
+			
+			
+			
 
 			<!--rigth side navbar-->
 			<div class="rightPartNav">
-				<a class="nav-link text-dark" href="./userAsset">Assets</a> <i
-					class="bi bi-person-circle text-dark h5 mb-0  d-md-block userIcon"
-					onclick="./login"></i> <a class="nav-link text-dark"
-					href="./userAsset">username</a>
+				<!-- 如果有登入 -->
+				<c:if test="${not empty sessionScope.user }">
+					<i
+						class="bi bi-person-circle text-dark h5 mb-0 d-md-block userIcon"
+						onclick=""></i>
+					<a class="nav-link text-dark" href="#">${user.username}</a>
+					<div class="logoutButton d-none">
+						<a href="./logout">logout</a>
+					</div>						
+				</c:if>
+				
+				<!-- 如果沒登入 -->
+				<c:if test="${empty sessionScope.user}">
+				    <!-- 如果 sessionScope.user 为空，执行以下内容 -->
+				    <i
+						class="bi bi-person-circle text-dark h5 mb-0 d-md-block userIcon"
+						onclick=""></i>
+					<a class="nav-link text-dark" href="./login">login</a>
+				</c:if>
 			</div>
 		</div>
 	</nav>
-	
+
 	<!--Crpto行情以及標題內容(新版)-->
 	<div class=" container  containerContent">
-	  <div class="row title">
-	    <div class="col">Name</div>
-	    <div class="col">Price</div>
-	    <div class="col ">Rate</div>
-	    <div class="col">Cap</div>
-	  </div>
-	  <!-- BTC -->
-	  <div class="row uniquePrice ">
-	    <div class="col cName d-flex "></div>
-	    <div class="col price"></div>
-	    <div class="col rate  "></div>
-	    <div class="col cap"></div>
-	  </div>
-	    <!-- ETH -->
-	  <div class="row uniquePrice">
-	    <div class="col cName d-flex "></div>
-	    <div class="col price"></div>
-	    <div class="col rate  me-2"></div>
-	    <div class="col cap"></div>
-	  </div>
-	  
-	    <!-- USDT -->
-	  <div class="row uniquePrice">
-	    <div class="col cName d-flex "></div>
-	    <div class="col price"></div>
-	    <div class="col rate"></div>
-	    <div class="col cap"></div>
-	  </div>
-	    <!-- SOL -->
-	  <div class="row uniquePrice">
-	    <div class="col cName d-flex "></div>
-	    <div class="col price"></div>
-	    <div class="col rate"></div>
-	    <div class="col cap"></div>
-	  </div>
-	    <!-- BNB -->
-	  <div class="row uniquePrice">
-	    <div class="col cName d-flex "></div>
-	    <div class="col price"></div>
-	    <div class="col rate"></div>
-	    <div class="col cap"></div>
-	  </div>
-	  
-	    <!-- XRP -->
-	  <div class="row uniquePrice">
-	    <div class="col cName d-flex "></div>
-	    <div class="col price"></div>
-	    <div class="col rate "></div>
-	    <div class="col cap"></div>
-	  </div>
-	    <!-- USDC -->
-	   <div class="row uniquePrice">
-	    <div class="col cName d-flex "></div>
-	    <div class="col price"></div>
-	    <div class="col rate "></div>
-	    <div class="col cap"></div>
-	
-	   </div>
-		  <!-- ADA -->
-	   <div class="row uniquePrice">
-	    <div class="col cName d-flex "></div>
-	    <div class="col price"></div>
-	    <div class="col rate"></div>
-	    <div class="col cap"></div>
-	  </div>
-	
-	  	<!-- stETH -->
-		<div class="row uniquePrice">
-		    <div class="col cName d-flex "></div>
-		    <div class="col price"></div>
-		    <div class="col rate"></div>
-		    <div class="col cap"></div>
-		
+		<div class="row title">
+			<div class="col">Name</div>
+			<div class="col">Price</div>
+			<div class="col ">Rate</div>
+			<div class="col">Cap</div>
 		</div>
-		
-		  <!-- AVAX -->
+		<!-- BTC -->
+		<div class="row uniquePrice ">
+			<div class="col cName d-flex "></div>
+			<div class="col price"></div>
+			<div class="col rate  "></div>
+			<div class="col cap"></div>
+		</div>
+		<!-- ETH -->
 		<div class="row uniquePrice">
-		    <div class="col cName d-flex "></div>
+			<div class="col cName d-flex "></div>
+			<div class="col price"></div>
+			<div class="col rate  me-2"></div>
+			<div class="col cap"></div>
+		</div>
+
+		<!-- USDT -->
+		<div class="row uniquePrice">
+			<div class="col cName d-flex "></div>
+			<div class="col price"></div>
+			<div class="col rate"></div>
+			<div class="col cap"></div>
+		</div>
+		<!-- SOL -->
+		<div class="row uniquePrice">
+			<div class="col cName d-flex "></div>
+			<div class="col price"></div>
+			<div class="col rate"></div>
+			<div class="col cap"></div>
+		</div>
+		<!-- BNB -->
+		<div class="row uniquePrice">
+			<div class="col cName d-flex "></div>
+			<div class="col price"></div>
+			<div class="col rate"></div>
+			<div class="col cap"></div>
+		</div>
+
+		<!-- XRP -->
+		<div class="row uniquePrice">
+			<div class="col cName d-flex "></div>
+			<div class="col price"></div>
+			<div class="col rate "></div>
+			<div class="col cap"></div>
+		</div>
+		<!-- USDC -->
+		<div class="row uniquePrice">
+			<div class="col cName d-flex "></div>
+			<div class="col price"></div>
+			<div class="col rate "></div>
+			<div class="col cap"></div>
+
+		</div>
+		<!-- ADA -->
+		<div class="row uniquePrice">
+			<div class="col cName d-flex "></div>
+			<div class="col price"></div>
+			<div class="col rate"></div>
+			<div class="col cap"></div>
+		</div>
+
+		<!-- stETH -->
+		<div class="row uniquePrice">
+			<div class="col cName d-flex "></div>
+			<div class="col price"></div>
+			<div class="col rate"></div>
+			<div class="col cap"></div>
+
+		</div>
+
+		<!-- AVAX -->
+		<div class="row uniquePrice">
+			<div class="col cName d-flex "></div>
 			<div class="col price"></div>
 			<div class="col rate"></div>
 			<div class="col cap"></div>
@@ -379,8 +363,8 @@ body {
 
 
 	</div>
-	
-	
+
+
 </body>
 <script>
 
@@ -514,6 +498,13 @@ function resetColor() {
 			    console.log('WebSocket連線已關閉');
 			};
 		}  
+		
+/***********************設定登出按鈕*********************************************/
+	let test = document.querySelector(".userIcon");
+    let test1 = document.querySelector(".logoutButton");
+    test.addEventListener("click", (e) => {
+		  test1.classList.toggle("d-none");
+	})	
 
 </script>
 </html>

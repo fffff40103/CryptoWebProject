@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ page import="javax.servlet.http.HttpSession"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -162,6 +164,18 @@ body {
       height: 300px; /* 圖片高度為300像素（可根據需要調整） */
       object-fit: cover; /* 保持圖片比例，裁剪多餘部分 */
     }
+    
+.logoutButton {
+	top: 4rem;
+	position: absolute;
+	background: white;
+	border-radius: 5px;
+}
+
+.logoutButton a {
+	text-decoration: none;
+	color: black;
+}  
 /*寬度1650以上設定導覽列左右距離*/
 @media ( min-width :1650px) {
 	.navRWD {
@@ -310,7 +324,7 @@ body {
 	<nav class="navbar navbar-expand-lg navbar-light  ">
 		<!--Left side navbar-->
 		<div class="container-fluid  fs-5 navRWD ">
-			<a class="navbar-brand text-light fs-2 fw-bolder" href="#">ZheZhe</a>
+			<a class="navbar-brand text-light fs-2 fw-bolder" href="">ZheZhe</a>
 			<button class="navbar-toggler buttonRWD" type="button"
 				data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
 				aria-controls="navbarNavDropdown" aria-expanded="false"
@@ -321,18 +335,42 @@ body {
 				<ul class="navbar-nav">
 					<li class="nav-item"><a class="nav-link active text-light"
 						aria-current="page" href="/crypto2/mvc/crypto/market">Markets</a></li>
-					<li class="nav-item"><a class="nav-link text-light"
-						href="/crypto2/mvc/crypto/staking">Staking</a></li>
+					<!-- 如果有登入的話就顯示 -->
+					<c:if test="${not empty sessionScope.user }">
+						<li class="nav-item"><a class="nav-link active text-light"
+							aria-current="page" href="/crypto2/mvc/crypto//transfer">Transfer</a></li>
+							
+						<li class="nav-item"><a class="nav-link active text-light"
+							aria-current="page" href="/crypto2/mvc/crypto//userAsset">Assets</a></li>
+
+						<li class="nav-item"><a class="nav-link active text-light"
+							aria-current="page" href="/crypto2/mvc/crypto//userDetail">Detail</a></li>
+						<li class="nav-item"><a class="nav-link active text-light"
+							aria-current="page" href="/crypto2/mvc/crypto//userProfile">Profile</a></li>
+					</c:if>
 				</ul>
 			</div>
 
 			<!--rigth side navbar-->
 			<div class="rightPartNav">
-				<a class="nav-link text-light" href="/crypto2/mvc/crypto/login">Assets</a>
-				<i
-					class="bi bi-person-circle text-light h5 mb-0  d-md-block userIcon"
-					onclick="location.href='./login'"></i> <a
-					class="nav-link text-light" href="/crypto2/mvc/crypto/login">username</a>
+				<c:if test="${not empty sessionScope.user }">
+					<i class="bi bi-person-circle text-light h5 mb-0  d-md-block userIcon" onclick=""></i> <a class="nav-link text-light" href="#">${ user.username }</a>
+					<div class="logoutButton d-none ">
+					  <a href="./mvc/crypto/logout">logout</a>
+					</div>
+				</c:if>
+				<c:if test="${empty sessionScope.user }">
+					 <!-- 如果 sessionScope.user 为空，执行以下内容 -->
+				    <i
+						class="bi bi-person-circle text-light h5 mb-0 d-md-block userIcon"
+						onclick=""></i>
+					<a class="nav-link text-light" href="./mvc/crypto/login">login</a>
+				</c:if>
+				
+				<div class="logoutButton d-none ">
+					<a href="./logout">logout</a>
+				</div>
+				
 			</div>
 		</div>
 	</nav>
@@ -588,5 +626,11 @@ body {
 	}
 	//設定排程(多久執行一次)
 	setInterval(updateTime, 1000);
+	/***********************設定登出按鈕*********************************************/
+	let test = document.querySelector(".userIcon");
+	let test1 = document.querySelector(".logoutButton");
+	test.addEventListener("click", (e) => {
+	  test1.classList.toggle("d-none");
+	})
 </script>
 </html>

@@ -346,7 +346,7 @@ public class CryptoController {
 
 	// 市場行情頁面
 	@GetMapping("/market")
-	public String market() {
+	public String market(HttpSession session,Model model) {
 		return "market";
 	}
 	

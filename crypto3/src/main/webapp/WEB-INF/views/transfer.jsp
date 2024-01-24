@@ -341,7 +341,7 @@ input {
 					<li class="nav-item"><a class="nav-link text-light"
 						href="./staking">Staking</a></li>
 					<li class="nav-item"><a class="nav-link text-light"
-						href="./transfer">Transfer</a></li>
+						href="./userAsset">Assets</a></li>
 					<li class="nav-item"><a class="nav-link text-light"
 						href="./userDetail">Detail</a></li>
 						

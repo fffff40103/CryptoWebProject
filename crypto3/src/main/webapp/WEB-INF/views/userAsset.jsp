@@ -263,7 +263,7 @@ form {
 	<nav class="navbar navbar-expand-lg navbar-light  ">
 		<!--Left side navbar-->
 		<div class="container-fluid  fs-5 navRWD ">
-			<a class="navbar-brand text-dark fs-2 fw-bolder" href="#">ZheZhe</a>
+			<a class="navbar-brand text-dark fs-2 fw-bolder" href="/crypto2/index.jsp">ZheZhe</a>
 			<button class="navbar-toggler buttonRWD text-dark" type="button"
 				data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown "
 				aria-controls="navbarNavDropdown" aria-expanded="false"
