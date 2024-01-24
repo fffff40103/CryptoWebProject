@@ -447,23 +447,17 @@ function sellButtonClicked(nameCrypto,priceCrypto) {
 //設定顯示購買結果
 function showMessage(){
 	let Message="${resultMessage}";
-	if(Message=="餘額不足，購買失敗"){
-		alert("餘額不足，購買失敗")
+	if(Message=="Insufficient balance"){
+		alert("Insufficient balance")
 		return;
 	}
-	if(Message=="購買成功!"){
-		alert("購買成功!");
-		return;
-	}
-	
-	if(Message=="餘額不足，售出失敗"){
-		alert("餘額不足，售出失敗");
+	if(Message=="Successfully purchase!"){
+		alert("Successfully purchase!");
 		return;
 	}
 	
-	
-	if(Message=="售出成功!"){
-		alert("售出成功!");
+	if(Message=="successfully Sell!"){
+		alert("successfully Sell!");
 		return;
 	}
 	

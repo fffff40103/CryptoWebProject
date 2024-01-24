@@ -448,7 +448,7 @@ public class CryptoController {
 		//如果餘額不足就顯示購買失敗
 		if (usdt <= totalAmount) {
 			model.addAttribute("userAssets", userAssets);
-			model.addAttribute("resultMessage","餘額不足，購買失敗");
+			model.addAttribute("resultMessage","Insufficient balance");
 			return "userAsset";
 		}
 		//扣除購買貨幣價格剩下的貨幣
@@ -474,7 +474,7 @@ public class CryptoController {
 		userAssets=dao.findAssetsByUserId(currentUser.getUserId());
 		//購買成功!
 		model.addAttribute("userAssets", userAssets);
-		model.addAttribute("resultMessage","購買成功!");
+		model.addAttribute("resultMessage","Successfully purchase!");
 		return "userAsset";
 	}
     
@@ -512,7 +512,7 @@ public class CryptoController {
 				//如果餘額不足就顯示購買失敗
 				if (sellCrypto < amount) {
 					model.addAttribute("userAssets", userAssets);
-					model.addAttribute("resultMessage","餘額不足，售出失敗");
+					model.addAttribute("resultMessage","Insufficient balance");
 					return "userAsset";
 				}
 				//扣除購買貨幣價格剩下的貨幣
@@ -535,7 +535,7 @@ public class CryptoController {
 				userAssets=dao.findAssetsByUserId(currentUser.getUserId());
 				//購買成功!
 				model.addAttribute("userAssets", userAssets);
-				model.addAttribute("resultMessage","售出成功!");
+				model.addAttribute("resultMessage","successfully Sell!");
 				return "userAsset";
 	}
 
