@@ -38,6 +38,7 @@ import spring.mvc.crypto.model.entity.TransactionDetail;
 import spring.mvc.crypto.model.entity.TransferDetail;
 import spring.mvc.crypto.model.entity.User;
 import spring.mvc.crypto.model.entity.UserAsset;
+import spring.mvc.crypto.security.sample.AESSample;
 import spring.mvc.crypto.service.CryptoService;
 import spring.mvc.crypto.service.SendingEmailService;
 
@@ -129,7 +130,7 @@ public class CryptoController {
 
 	public String login(@RequestParam("username") String username, @RequestParam("password") String password,
 			@RequestParam("code") String code,
-			HttpSession session, Model model) {
+			HttpSession session, Model model) throws Exception {
 		//先看驗證碼對或錯，如果錯就不放行，如果隊就放行
 		
 		//先查找有無該位使用者，如果沒有就不放行
@@ -137,9 +138,10 @@ public class CryptoController {
 		if (userOpt.isPresent()) {
 			//得到此user
 			User user = userOpt.get();
-			
 			// 使用加密過的密碼跟使用者輸入的密碼來做驗證，如果一致就放行
-			if (user.getPassword().equals(password)) {
+			AESSample aesSample=new AESSample();
+			String decryptedPassword=aesSample.decryption(user.getPassword());
+			if (decryptedPassword.equals(password)) {
 				//把user資料加入session方便做驗證
 				session.setAttribute("user", user);
 				//登入成功後查找user的資產，並且傳給前端渲染
@@ -182,7 +184,7 @@ public class CryptoController {
 				@RequestParam("password") String password,
 				@RequestParam("password2")String password2,
 				Model model
-				) {
+				) throws Exception {
 			List<User> users=dao.findAllUsers();
 			Optional<User>userOpt=users.stream().filter(oneUser->oneUser.getUsername().equals(username)).findAny();
 			if(userOpt.isPresent()){
@@ -196,10 +198,12 @@ public class CryptoController {
 
 						return "register";
 					}
-					//emailService.sendIngEmail(username,);
 					model.addAttribute("message","✔️Register successfully");
 					User newUser=new User();
-					newUser.setPassword(password);
+					//幫密碼用AES加密
+					AESSample aesEncryption=new AESSample();
+					String encryptPassword=aesEncryption.encryption(password);
+					newUser.setPassword(encryptPassword);
 					newUser.setUsername(username);
 					//生成新使用者後會自動得到該使用者的id
 					Integer userId=(Integer)dao.addUser(newUser);
@@ -362,7 +366,7 @@ public class CryptoController {
 			@RequestParam("password") String password,
 			@RequestParam("confirmPassword") String confirmPassword,
 			@RequestParam("code") String code,
-			Model model,HttpSession session) {
+			Model model,HttpSession session) throws Exception {
 			
 			//先從session中得到驗證碼
 			String verifiedCode=(String)session.getAttribute("verifyCode");
@@ -372,23 +376,25 @@ public class CryptoController {
 		   		    
 		    //先檢查該用戶有無存在
 		    if(userOpt.isPresent()) {
+		    	 //得到user
 		    	 User currentUser=userOpt.get();
-		    	 dao.updateUserPassword(currentUser.getUserId(), password);
-
 		    	 if(!password.equals(confirmPassword)) {
 		    		model.addAttribute("changeResult","password doesn't match");
 		    		return "userProfile";
 		    	 }
-		    	 
+		    	
 		    	 //比對驗證碼
 			     if(!code.equals(verifiedCode)) {
 			    		model.addAttribute("changeResult","enter valid code!");;
 			    		return "userProfile";
 			     }	    	
-		    	
-				model.addAttribute("changeResult","successfully chage password!");
+			     //幫新密碼加密
+			     AESSample aesSample =new AESSample();
+			     String encryptedNewPassword=aesSample.encryption(confirmPassword); 
+		    	 dao.updateUserPassword(currentUser.getUserId(), encryptedNewPassword);
+		    	 model.addAttribute("changeResult","successfully chage password!");
 					
-				return "userProfile";
+				 return "userProfile";
 				 
 		    
 		    	

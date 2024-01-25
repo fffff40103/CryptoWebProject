@@ -19,7 +19,7 @@ public class AESSample {
 	// 建立 SecureRandom
 	private static final SecureRandom SECURE_RANDOM = new SecureRandom();
 	
-	public void encryption(String password) throws Exception {
+	public String encryption(String password) throws Exception {
 		System.out.println("AES-256 加密範例:");
 		String originalText = password; // 原始明文
 		System.out.println("原始明文: " + originalText);
@@ -32,23 +32,26 @@ public class AESSample {
 		System.out.println("ECB 模式");
 		byte[] encryptedECB = KeyUtil.encryptWithAESKey(aesKeySpec, originalText);
 		System.out.println("加密後的訊息:" + Arrays.toString(encryptedECB));
+		String finalPassword=Base64.getEncoder().encodeToString(encryptedECB);
 		System.out.println("加密後的訊息(Base64):" + Base64.getEncoder().encodeToString(encryptedECB));
+		return finalPassword;
 	}
 	
 	
-	public void decryption(String encrypedPassword) throws Exception {
+	public String decryption(String encrypedPassword) throws Exception {
 		SecretKeySpec aesKeySpec = new SecretKeySpec(KEY.getBytes(), "AES");
 		// 將 Base64 字串轉換成 byte[]
 	    byte[] base64Bytes = Base64.getDecoder().decode(encrypedPassword);
 	    
 		String decryptedECB = KeyUtil.decryptWithAESKey(aesKeySpec, base64Bytes);
 		System.out.println("解密後的訊息:" + decryptedECB);
+		return decryptedECB;
 	}
 	
 	
 	public static void main(String[] args) throws Exception {
 		System.out.println("AES-256 加密範例:");
-		String originalText = "pass789"; // 原始明文
+		String originalText = "pass123"; // 原始明文
 		System.out.println("原始明文: " + originalText);
 		System.out.println("------------------------------------------------------------");
 		

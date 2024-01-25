@@ -203,7 +203,7 @@ create table if not exists compareData(
 
 
 insert into user(userName,password)
-values("abc123","pass123");
+values("abc123","JqKLj+4Aw3DnndH0MHUQkg==");
 
 
 insert into cryptoinfo(cName,price,rate,cap)

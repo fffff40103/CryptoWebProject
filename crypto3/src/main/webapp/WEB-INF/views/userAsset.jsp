@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -310,7 +311,8 @@ form {
 						<h2>${cryptoType.getAccBalance() }<span class="fw-bold">
 								USDT</span>
 						</h2>
-						<p class="TWD">≈${cryptoType.getAccBalance()*32 }TWD</p>
+						<fmt:formatNumber value="${cryptoType.getAccBalance()*32 }" pattern="#.###" var="formattedNumber" />
+						<p class="TWD">≈${formattedNumber }TWD</p>
 					</c:if>
 				</c:forEach>
 			</div>
