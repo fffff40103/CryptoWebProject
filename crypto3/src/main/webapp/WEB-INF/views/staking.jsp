@@ -132,6 +132,7 @@
 	margin-right: 3rem'
 }
 
+
 /*寬度1600以上設定導覽列左右距離*/
 @media ( min-width :1600px) {
 	.navRWD {
@@ -215,24 +216,22 @@
 				aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
+			
 			<div class="collapse navbar-collapse" id="navbarNavDropdown">
 				<ul class="navbar-nav">
 					<li class="nav-item"><a class="nav-link active text-dark"
 						aria-current="page" href="./market">Markets</a></li>
-						
+
 					<li class="nav-item"><a class="nav-link text-dark"
 						href="./transfer">Transfer</a></li>
-					<li class="nav-item"><a class="nav-link text-dark" href="./userAsset">Assets</a>
-					</li>
-					
-					<li class="nav-item"><a class="nav-link text-dark" href="./userDetail">Detail</a>
-					</li>
-					
-					<li class="nav-item"><a class="nav-link text-dark" href="./userProfile">Profile</a>
-					</li>
-				
-					
+					<li class="nav-item"><a class="nav-link text-dark"
+						href="./userAsset">Assets</a></li>
 
+					<li class="nav-item"><a class="nav-link text-dark"
+						href="./userDetail">Detail</a></li>
+
+					<li class="nav-item"><a class="nav-link text-dark"
+						href="./userProfile">Profile</a></li>
 
 				</ul>
 			</div>
@@ -274,7 +273,7 @@
 		</div>
 
 		<div class="stakingForm">
-			<form action="./staking" method="post">
+			<form action="" method="post">
 				<fieldset class="login">
 					<legend class="text-center fs-3 fw-bold">Staking Setting</legend>
 					<div class="stakingDataInfo  ">
@@ -289,18 +288,19 @@
 								<p class="aprExplain ps-5">APR❔</p>
 							</div>
 
-							<div class="stakedData d-flex ">
-								<h3>0.0stEth</h3>
-								<h3 class="aprData ps-5 text-danger">4.8%</h3>
+							<div class="stakedData d-flex">
+								<h3>0.0ETH</h3>
+								<h3 class="aprData  text-danger" style="padding-left:4.5rem;">4.8%</h3>
 							</div>
 						</div>
 					</div>
-					
+
 					<!-- 下拉式選單 -->
 					<div class="stakingDays ">
-					
+
 						<select class="dropdownDays" id="days" name="days"
-							style="background-color: white; color: black;" onChange="updateAPR()"> 
+							style="background-color: white; color: black;"
+							onChange="updateAPR()">
 							<option value="1">1day</option>
 							<option value="7">7days</option>
 							<option value="31">31days</option>
@@ -311,8 +311,9 @@
 					<!-- 數量以及送出按鈕 -->
 					<div class="stakingAmount mt-2">
 
-						<input type="text" placeholder="Eth you wanna stake" name="stakingAmount" id="stakingAmount">
-						<button>submit</button>
+						<input type="number" placeholder="Eth you wanna stake"
+							name="stakingAmount" id="stakingAmount" required>
+						<button type="button" class="stakingButton">submit</button>
 					</div>
 
 				</fieldset>
@@ -320,7 +321,39 @@
 		</div>
 
 	</div>
+
+	<!-- 模态框 -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Staking
+						Confirmation</h5>
+				</div>
+				<form class="confirmForm" method="post" action="./staking">
+					<div class="modal-body">
+						<!-- 显示购买信息的地方 -->
+						<p id="purchaseInfo"></p>
+						<p id="purchaseInfo2"></p>
+						<input class="modalDaysInput" type="number" value="" name="days"
+							id="days" readonly="" hidden> <input
+							class="modalAmountInput" type="number" name="stakingAmount"
+							id="stakingAmount " placeHolder='Amount' required readonly=""
+							hidden>
+					</div>
+
+
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-secondary modalButtontrans"
+							data-dismiss="modal">staking</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
 </body>
+
 <script
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
 <script
@@ -348,6 +381,46 @@
     test.addEventListener("click", (e) => {
         test1.classList.toggle("d-none");
     })
+    
+    /*設定模態框*/
+     $(document).ready(function() {
+		   $(".stakingButton").click(function() {
+		     $("#myModal").modal("show");
+		   });
+  	});
+    
+    /*按下質押按鈕跳出模態框*/
+    let stakingButton=document.querySelector(".stakingButton");
+    
+    stakingButton.addEventListener("click",function(event){
+    	let stakingAmount=document.querySelector(".stakingAmount input").value;
+    	let dropdownDays=document.querySelector(".dropdownDays").value;
+    	sellButtonClicked(stakingAmount,dropdownDays)		    			
+	});
+    
+    /*設定彈跳框賣出賣出彈跳框*/
+    function sellButtonClicked(stakingAmount,dropdownDays) {
+    	  
+
+    	 // 将值填充到模态框中
+        document.getElementById("purchaseInfo").innerHTML = "Staking amount: " + stakingAmount;
+        document.getElementById("purchaseInfo2").innerHTML = "Staking days: " + dropdownDays;
+        
+        //動態設定隱藏表單的value
+        let daysInput=document.querySelector(".modalDaysInput");
+        daysInput.value=dropdownDays;
+        
+        //動態設定隱藏表單的value
+        let AmountInput=document.querySelector(".modalAmountInput");
+
+        AmountInput.value=stakingAmount;
+        
+        
+        
+        // 显示模态框
+        $('#myModal').modal('show');
+    } 
+    
 </script>
 
 </html>

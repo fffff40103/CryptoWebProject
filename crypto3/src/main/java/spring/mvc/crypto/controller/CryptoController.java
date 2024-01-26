@@ -348,9 +348,12 @@ public class CryptoController {
 		return "staking";
 	}
 	
+	
 	// 共同質押頁面
 	@PostMapping("/staking")
 	public String staking(@RequestParam("days") int days,@RequestParam("stakingAmount") int stakingAmount) {
+		
+		
 		return "staking";
 	}
 
