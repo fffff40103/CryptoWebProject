@@ -337,6 +337,10 @@ body {
 						aria-current="page" href="/crypto2/mvc/crypto/market">Markets</a></li>
 					<!-- 如果有登入的話就顯示 -->
 					<c:if test="${not empty sessionScope.user }">
+						
+						<li class="nav-item"><a class="nav-link active text-light"
+							aria-current="page" href="/crypto2/mvc/crypto//staking">Staking</a></li>
+					
 						<li class="nav-item"><a class="nav-link active text-light"
 							aria-current="page" href="/crypto2/mvc/crypto//transfer">Transfer</a></li>
 							

@@ -347,6 +347,12 @@ public class CryptoController {
 	public String stakingPage() {
 		return "staking";
 	}
+	
+	// 共同質押頁面
+	@PostMapping("/staking")
+	public String staking(@RequestParam("days") int days,@RequestParam("stakingAmount") int stakingAmount) {
+		return "staking";
+	}
 
 	// 市場行情頁面
 	@GetMapping("/market")
@@ -441,7 +447,6 @@ public class CryptoController {
 		// 檢查該加密貨幣是否有提供交易
 		Optional<CryptoCurrency> mycrypto = dao.findCryptoByCryptoName(name);
 		if (mycrypto.isEmpty()) {
-			
 			model.addAttribute("resultMessage", "This crypto is currently not  provided transaction");
 			return "userAsset";
 		}

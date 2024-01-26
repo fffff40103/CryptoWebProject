@@ -231,11 +231,17 @@ body {
 				<ul class="navbar-nav">
 
 					<c:if test="${not empty sessionScope.user }">
+					
+						<li class="nav-item"><a class="nav-link active text-dark"
+							aria-current="page" href="./staking">Staking</a></li>
+					
 						<li class="nav-item"><a class="nav-link active text-dark"
 							aria-current="page" href="./transfer">Transfer</a></li>
 							
 						<li class="nav-item"><a class="nav-link active text-dark"
 							aria-current="page" href="./userAsset">Assets</a></li>
+							
+						
 
 						<li class="nav-item"><a class="nav-link active text-dark"
 							aria-current="page" href="./transfer">Detail</a></li>
