@@ -90,6 +90,7 @@ ps:購買編號、購買帳戶、購買幣種、購買數量、當時購買價�
 -- 授權資料表
 drop table if exists trx_detail;
 drop table if exists trx_transfer;
+drop table if exists staking_detail;
 drop table if exists crawlerData;
 drop table if exists compareData;
 drop table if exists user_ref_account;
@@ -97,6 +98,7 @@ drop table if exists user;
 drop table if exists account;
 drop table if exists cryptoInfo;
 drop table if exists status_detail;
+
 
 
 create table if not exists cryptoinfo(
@@ -128,10 +130,6 @@ create table if not exists account(
 
 alter table account auto_increment = 201;
 
-
-
-
-
 create table if not exists user_ref_account(
     userId INT,
     accId INT,
@@ -162,9 +160,6 @@ create table if not exists trx_detail(
 );
 alter table trx_detail auto_increment = 301;
 
-
-
-
 create table if not exists trx_transfer(
 	trsId int auto_increment primary key,
 	cNumber int  not null,
@@ -179,7 +174,22 @@ create table if not exists trx_transfer(
 	foreign key(userTo) references user(userId)
    
 );
+
 alter table trx_transfer auto_increment = 401;
+
+create table if not exists staking_detail(
+	stakingId int primary key auto_increment,
+    userId int not null,
+    quantity FLOAT not null,
+    stakingApr Float not null,
+	stakingDays int not null,
+    stakingTime timestamp not null,
+    redeemTime timestamp not null,
+    isRedeem int not null,
+    
+    foreign key(userId) references user(userid)
+);
+alter table staking_detail auto_increment = 601;
 
 create table if not exists crawlerData(
 	pNumber int auto_increment primary key,
@@ -240,3 +250,10 @@ values(1,"Buy"),
 (2,"Sell"),
 (3,"Transfer"),
 (4,"Receive");
+
+INSERT INTO staking_detail(userId,quantity,stakingApr,stakingDays,stakingTime,redeemTime,isRedeem)
+values(101,1,5,1,"2024-01-27 03:25:02","2024-01-27 04:25:02",1),
+(101,1,5,1,"2024-01-27 03:25:02","2024-01-27 04:25:02",0),
+(101,3,5,1,"2024-01-27 03:25:02","2024-01-27 04:25:02",0);
+
+

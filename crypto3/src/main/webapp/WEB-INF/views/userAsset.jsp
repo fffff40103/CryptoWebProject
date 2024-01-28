@@ -697,13 +697,13 @@ function webSocketConnection(){
 }
 	
 	
-	//為不同的按鈕設定不同form的action
+	/**
 	function setFormAction(action,formAttr) {
 		
 	    // 設置表單的 action 屬性
 	    document.getElementById(formAttr).action = action
 	}
-
+	**/
 
   /***********************設定登出按鈕*********************************************/
   let test = document.querySelector(".userIcon");

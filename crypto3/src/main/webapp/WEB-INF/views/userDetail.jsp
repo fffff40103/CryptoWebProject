@@ -279,6 +279,55 @@ body {
 	</div>
 	
 	
+	<!-- 質押資訊 -->
+	<div style="padding: 15px">
+		<form class="pure-form">
+			<fieldset>
+				<legend class="center-table" style="width: 50%;border:none">Staking Detail</legend>
+				<table class="pure-table pure-table-bordered center-table">
+					<thead>
+						<tr >
+							<th>StakingId</th>
+							<th>userId</th>
+							<th>Quantity</th>
+							<th>Apr</th>
+							<th>Days</th>
+							<th>StakingTime</th>
+							<th>RedeemTime</th>
+							<th>isRedeem</th>
+						</tr>
+					</thead>
+					<tbody>
+						<c:forEach items="${ stakingDetails }" var="stakingDetail">
+							<tr class="text-center">
+								<td>${ stakingDetail.getStakingId() }</td>
+								<td>${ stakingDetail.getUserId() }</td>
+								<td>${ stakingDetail.getQuantity() }</td>
+								<td>${ stakingDetail.getStakingApr() }</td>
+								<td>${ stakingDetail.getStakingDays() }</td>
+								<td>${ stakingDetail.getStakingTime() }</td>
+								<td>${ stakingDetail.getRedeemTime() }</td>
+								<c:if test='${stakingDetail.getIsRedeem() eq 1 }'>
+									<td>Yes</td>
+								</c:if>	
+								<c:if test='${stakingDetail.getIsRedeem() eq 0 }'>
+									<td>No</td>
+								</c:if>								
+																
+							</tr>
+							
+							
+						</c:forEach>
+
+					</tbody>
+				</table>
+				<p />
+
+			</fieldset>
+		</form>
+	</div>
+	
+	
 	
 	
 

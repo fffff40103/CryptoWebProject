@@ -1,6 +1,7 @@
 package spring.mvc.crypto.test;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,15 +36,12 @@ return affectedRows;
 public class crawlerTest {
 	public static void main(String[] args) {
 		
-		CryptoServiceImpl2 test= new CryptoServiceImpl2();
+
+		Timestamp now = new Timestamp(System.currentTimeMillis());
+		System.out.println(now);
 		
-		try {
-			test.crawlerRanking();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
+	
 }
 
 

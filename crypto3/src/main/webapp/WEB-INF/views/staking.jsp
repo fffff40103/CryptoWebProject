@@ -273,13 +273,13 @@
 		</div>
 
 		<div class="stakingForm">
-			<form action="" method="post">
+			<form action="./staking" method="post">
 				<fieldset class="login">
 					<legend class="text-center fs-3 fw-bold">Staking Setting</legend>
 					<div class="stakingDataInfo  ">
 						<div class="availableToStake flex-column  ">
 							<p>Available to stake</p>
-							<h3>0.048ETH</h3>
+							<h3>${ethBalance }ETH</h3>
 						</div>
 						<hr>
 						<div class="stakedAmount ">
@@ -289,8 +289,9 @@
 							</div>
 
 							<div class="stakedData d-flex">
-								<h3>0.0ETH</h3>
-								<h3 class="aprData  text-danger" style="padding-left:4.5rem;">4.8%</h3>
+								<h3>${totalStakingAmount }ETH</h3>
+								<h3  class="aprData ps-5" style="margin-left:1rem;color:red">4.8%</h3>
+									
 							</div>
 						</div>
 					</div>
@@ -310,10 +311,11 @@
 
 					<!-- 數量以及送出按鈕 -->
 					<div class="stakingAmount mt-2">
-
+						
 						<input type="number" placeholder="Eth you wanna stake"
 							name="stakingAmount" id="stakingAmount" required>
-						<button type="button" class="stakingButton">submit</button>
+						<button type="button" class="stakingButton">Submit</button>
+						<button type="button" class="redeemButton" onclick="window.location.href='./redeem'">Redeem</button>
 					</div>
 
 				</fieldset>
@@ -359,19 +361,47 @@
 <script
 	src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 <script>
+	//設定顯示購買結果
+	showMessage();
+	function showMessage(){
+		let Message="${stakingMessage}";
+		let RedeemMessage="${redeemMessage}"
+		if(Message=="stake successfully"){
+			alert("stake successfully")
+			return;
+		}
+		if(Message=="Insufficient balance"){
+			alert("Insufficient balance");
+			return;
+		}
+		if(RedeemMessage=="Redeem successfully"){
+			alert("Redeem successfully");
+			return;
+		}
+		if(RedeemMessage=="No redeem currently"){
+			alert("No redeem currently");
+			return;
+		}
+		
+		
+		
+		
+		
+	}
+
 	/*設定APR*/
 	updateAPR();
 	function updateAPR(){
 		let chose=document.querySelector(".dropdownDays").value;
 		let aprData=document.querySelector(".aprData");
 		if(chose==1){
-			aprData.innerText="4.8%";
+			aprData.value="4.8%";
 		}
 		if(chose==7){
-			aprData.innerText="5%";
+			aprData.value="5%";
 		}
 		if(chose==31){
-			aprData.innerText="5.5%";
+			aprData.value="5.5%";
 		}
 	}
 

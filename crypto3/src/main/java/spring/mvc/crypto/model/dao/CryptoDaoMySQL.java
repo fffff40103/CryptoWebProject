@@ -1,8 +1,10 @@
 package spring.mvc.crypto.model.dao;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +20,7 @@ import spring.mvc.crypto.model.entity.Account;
 import spring.mvc.crypto.model.entity.CompareData;
 import spring.mvc.crypto.model.entity.CrawlerCurrency;
 import spring.mvc.crypto.model.entity.CryptoCurrency;
+import spring.mvc.crypto.model.entity.StakingDetail;
 import spring.mvc.crypto.model.entity.StatusDetail;
 import spring.mvc.crypto.model.entity.TransactionDetail;
 import spring.mvc.crypto.model.entity.TransferDetail;
@@ -322,13 +325,22 @@ public class CryptoDaoMySQL implements CryptoDao {
 		return jdbcTemplate.update(sql,detail.getUserId(),detail.getcNumber(),detail.getQuantity(),detail.getPrice(),detail.getStatusId())>0;
 	}
 	
+	//  17.將此筆轉帳加入交易明細
 	@Override
 	public boolean addTransferDetail(TransferDetail transferDetail) {
 		String sql="insert into trx_transfer(cNumber,quantity,price,userFrom,userTo) values(?,?,?,?,?)";
 		return jdbcTemplate.update(sql,transferDetail.getcNumber(),transferDetail.getQuantity(),transferDetail.getPrice(),
 				transferDetail.getUserFrom(),transferDetail.getUserTo())>1;
 	}
-
+	
+	//  18.將此筆轉帳加入質押明細
+	@Override
+	public boolean addStakingDetail(StakingDetail stakingDetail) {
+		String sql="insert into staking_detail(userId,quantity,stakingApr,stakingDays,stakingTime,redeemTime,isRedeem) values(?,?,?,?,?,?,?)";
+		return jdbcTemplate.update(sql,stakingDetail.getUserId(),stakingDetail.getQuantity(),stakingDetail.getStakingApr(),stakingDetail.getStakingDays(),stakingDetail.getStakingTime(),stakingDetail.getRedeemTime(),stakingDetail.getIsRedeem())>1;
+	}
+	
+	// 19.透過UserID找轉帳明細
 	@Override
 	public List<TransferDetail> findTransferDetailByUserId(Integer userId) {
 		String sql="select * from trx_Transfer where userFrom=? || userTo=?";
@@ -337,7 +349,7 @@ public class CryptoDaoMySQL implements CryptoDao {
 		return transferDetails;
 	}
 
-	// 17.利用userId得到此筆紀錄
+	// 20.利用userId得到此筆交易紀錄
 	@Override
 	public List<TransactionDetail> findTransactionDetailByUserId(Integer userId) {
 		String sql="select trxId,userId,cNumber,quantity,price,statusId,purchaseTime from trx_detail where userId=?";
@@ -346,6 +358,44 @@ public class CryptoDaoMySQL implements CryptoDao {
 		 details.forEach(this::enrichTransactionDetail);
 		 return details;
 	}
+	
+	// 21.利用userId得到未贖回此筆質押紀錄
+	@Override
+	public List<StakingDetail> findNoneRedeemStakingDetailByUserId(Integer userId) {
+		String sql="select * from staking_detail where userId=? AND isRedeem=0";
+		return jdbcTemplate.query(sql,new BeanPropertyRowMapper<>(StakingDetail.class),userId);
+		
+	}
+	
+	//22.找到所有質押資訊(包誇以贖回以及未贖回)
+	@Override
+	public List<StakingDetail> findAllRedeemStakingDetailByUserId(Integer userId) {
+		String sql="select * from staking_detail where userId=?";
+		return jdbcTemplate.query(sql,new BeanPropertyRowMapper<>(StakingDetail.class),userId);
+	}
+
+	
+	//  23.在使用者質押成功之後根據使用者id扣除Eth裡面的資產
+	@Override
+	public boolean stakingCrypto(Float balance, Integer userId) {
+		String sql="update user_ref_account set accBalance=accBalance-? where userId=? AND accId=202";
+		return jdbcTemplate.update(sql,balance,userId)>1;
+	}
+	//  24.在使用者贖回後增加使用者資產
+	@Override
+	public boolean redeemCrypto(Float balance, Integer userId) {
+		String sql="update user_ref_account set accBalance=accBalance+? where userId=? AND accId=202";
+		return jdbcTemplate.update(sql,balance,userId)>1;
+	}
+	
+	//  25.更新該使用者的質押狀態(把未贖回改成贖回)
+	@Override
+	public boolean changeIsRedeem(Integer stakingId) {
+		String sql="update staking_detail set isRedeem=1 where stakingId=?";
+		return jdbcTemplate.update(sql,stakingId)>1;
+	}
+
+	
 	
 	@Override
 	public Optional<StatusDetail> findStatusById(Integer statusId) {
@@ -358,6 +408,10 @@ public class CryptoDaoMySQL implements CryptoDao {
 		}		
 	
 	}
+	
+
+	
+	
 	
 	public void enrichTransactionDetail(TransactionDetail detail) {
 		//注入CryptoCurrency資訊
@@ -374,27 +428,21 @@ public class CryptoDaoMySQL implements CryptoDao {
 		//注入CryptoCurrency資訊
 		findCryptoByCryptoId(transFerDetail.getcNumber()).ifPresent(transFerDetail::setCryptoInfo);
 		
-		//注入user資訊
-	
-		
 		//注入status
 		findStatusById(transFerDetail.getStatusId()).ifPresent(transFerDetail::setStatusDetail);
 	}
 
 	
 	
-	
-	
-	
 
 
 	
 
+	
 
 	
 
-
-
+	
 
 	
 	
