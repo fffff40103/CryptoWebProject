@@ -1,4 +1,3 @@
-
 /*   Css RWD排版規則，由大排到小，同屬性的話會單獨排，如果只有單一屬性會在最下面    */
 * {
 	margin: 0;
@@ -6,50 +5,45 @@
 	box-sizing: border-box;
 }
 
-img {
-	width: 2rem;
-	height: 2rem;
-}
-
+/*把背景顏色設定成:#181a20*/
 body {
-	background-color: white;
+	background-color: "white";
 }
 
+/*設定標題列的排版*/
+.navbar-brand {
+	margin-left: 1rem;
+}
 /*黑色被景色的框框以及標題*/
 .title {
+	background-color: black;
 	padding-bottom: 1rem;
 	display: flex;
 	/*設定標題排版*/
 	font-size: 2rem;
 	/*設定字體大小*/
-	color: black;
+	color: white;
 	padding-top: 1rem;
-	font-weight: bold;
 }
-/***********test***************/
-input {
-	border: none;
-	outline: none;
-}
-
-table, tr, td, th, tbody {
-	border: none;
-	padding: 0;
-	margin: 0;
-}
-
-/************test**********************/
-.balance {
-	background-color: #f6f6f6;
-}
-/*設定市場價格幣種圖片大小*/
 
 /*在每個不同的幣種相同的uniquePrice設定相同的屬性*/
 .uniquePrice {
+	display: flex;
+	/*設定標題排版*/
+	justify-content: space-between;
+	/*設定標題排版*/
 	font-size: 1.5rem;
 	/*設定字體大小*/
 	color: black;
-	padding-top: 1.5rem;
+	padding-top: 1rem;
+}
+
+/*設定價格旁邊的圖片*/
+.uniquePrice {img { margin-top:0.5rem;
+	width: 25px;
+	height: 25px;
+}
+
 }
 
 /*設定nav bar右半邊*/
@@ -72,7 +66,7 @@ table, tr, td, th, tbody {
 .logoutButton {
 	top: 2.5rem;
 	position: absolute;
-	background: white;
+	background: #f6f6f6;
 	border-radius: 5px;
 }
 
@@ -81,24 +75,18 @@ table, tr, td, th, tbody {
 	color: black;
 }
 
-/*讓導覽列左右各有3個字的距離*/
-.navRWD {
-	margin-left: 3rem;
-	margin-right: 3rem;
+.containerContent {
+	margin-top: 2rem;
 }
 
-input {
-	width: 8rem;
-	height: 2rem;
+/*寬度1650以上設定導覽列左右距離*/
+@media ( min-width :1650px) {
+	.navRWD {
+		margin-left: 18rem;
+		margin-right: 18rem;
+	}
 }
 
-form {
-	margin-top: 1rem;
-}
-
-.row {
-	--bs-gutter-x: 0rem;
-}
 /*寬度1600以上設定導覽列左右距離*/
 @media ( min-width :1600px) {
 	.navRWD {
@@ -120,81 +108,58 @@ form {
 		height: 10vh;
 		width: 5vw;
 	}
+	.uniquePrice {img { margin-top:0rem;
+		width: 25px;
+		height: 25px;
+	}
 }
 
+}
 @media ( max-width :770px) {
-	form input {
-		font-size: 1rem;
-	}
-	form button {
-		font-size: 1rem;
-	}
-	input {
-		width: 5rem;
-		height: 2rem;
-	}
-	.title {
-		font-size: 1.5rem;
-	}
-}
-
-@media ( max-width :600px) {
 	.container {
 		width: 100%;
 	}
 	.container div {
 		font-size: 1rem;
 	}
-	.balance {
-		width: 100vw;
-		text-align: center;
+}
+
+@media ( max-width :600px) {
+	.containerContent {
+		margin-top: 0rem;
 	}
 }
 
-@media ( max-width :480px) {
-	input {
-		width: 5rem;
-		height: 2rem;
-	}
-	.ms-5 {
-		margin-left: 0rem !important;
+@media ( max-width :500px) {
+	.uniquePrice {
+		padding-top: 2rem;
 	}
 }
 
 /*在寬度為450時讓導覽列左右沒有距離*/
-@media ( max-width :450px) {
+@media ( max-width :440px) {
 	nav {
 		margin-left: 0rem;
 	}
-}
-
-/*在寬度為400時讓導覽列左右沒有距離*/
-@media ( max-width :400px) {
-	.title {
-		width: 100vw;
-		margin-left: 1rem;
+	.titleRate {
+		margin-right: 0rem;
 	}
 }
 
 /*在寬度在365以下時把標題背景寬度設定為視窗最大寬度*/
 @media ( max-width :365px) {
 	.title {
-		width: 80vw;
+		width: 100vw;
+		font-size: 1.5rem;
 		/*把標題字體縮小做RWD*/
-		font-weight: bold;
-	}
-	.uniquePrice {
-		margin-top: 3rem;
+		font-weight: 200;
 	}
 }
 
 /*在螢幕寬度350以下時讓幣價都呈現為螢幕最大寬度，並且把字體縮小*/
 @media ( max-width :350px) {
-	.uniquePrice div {
+	.uniquePrice p {
 		font-size: 1rem;
-	}
-	.cryptoprice {
-		width: 100vw;
 	}
 }
 
@@ -202,6 +167,10 @@ form {
 @media ( max-width :320px) {
 	.buttonRWD {
 		margin-right: 3rem;
+	}
+	/*在寬度為320時讓錶覽列往左邊靠*/
+	.navRWD {
+		margin-left: 0rem;
 	}
 }
 
@@ -211,25 +180,10 @@ form {
 	}
 }
 
-/*在寬度為300時讓導覽列的右半邊部分沒有距離*/
-@media ( max-width :300px) {
-	.navRWD {
-		margin-left: 0rem;
-	}
-}
-
 /*在螢幕250以下時讓標題高度為11vh並且讓user字體變小*/
-@media ( max-width :260px) {
-	.container div {
-		font-size: 1rem;
-	}
-	.uniquePrice {
-		padding-top: 0rem;
-		margin-top: 0rem;
-	}
+@media ( max-width :250px) {
 	.title {
 		height: 11vh;
-		margin-left: 0rem;
 	}
 	.rightPartNav {
 		font-size: 15px;

@@ -135,8 +135,8 @@ public class CryptoController {
 
 	public String login(@RequestParam("username") String username, @RequestParam("password") String password,
 			@RequestParam("code") String code, HttpSession session, Model model) throws Exception {
-		// 先看驗證碼對或錯，如果錯就不放行，如果隊就放行
-
+		
+		
 		// 先查找有無該位使用者，如果沒有就不放行
 		Optional<User> userOpt = dao.findUserByUsername(username);
 		if (userOpt.isPresent()) {

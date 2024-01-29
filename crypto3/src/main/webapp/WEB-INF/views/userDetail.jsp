@@ -14,130 +14,7 @@
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css">
-<style>
-.center-table {                       
-		        margin: 0 auto; /* 將margin左右設為auto可以將元素水平置中 */
-			    width: 50%; /* 設定表格寬度，你可以根據需要調整 */
-			    text-align: right; /* 將文本水平置中 */
-
-}
-
-body {
-	font-family: Arial, sans-serif;
-}
-/*   Css RWD排版規則，由大排到小，同屬性的話會單獨排，如果只有單一屬性會在最下面    */
-* {
-	margin: 0;
-	padding: 0;
-	box-sizing: border-box;
-}
-
-/*設定nav bar右半邊*/
-.rightPartNav {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-}
-
-/*設定使用者圖片*/
-.rightPartNav i {
-	cursor: pointer;
-}
-
-/*設定登出按鈕顯示*/
-.rightPartNav {
-	position: relative;
-}
-
-.logoutButton {
-	top: 2.5rem;
-	position: absolute;
-	background: #f6f6f6;
-	border-radius: 5px;
-}
-
-.logoutButton a {
-	text-decoration: none;
-	color: black;
-}
-
-/*讓導覽列左右各有3個字的距離*/
-.navRWD {
-	margin-left: 3rem;
-	margin-right: 3rem;
-}
-
-.contentPart {
-	margin-top: 3rem;
-}
-
-/*寬度1600以上設定導覽列左右距離*/
-@media ( min-width :1600px) {
-	.navRWD {
-		margin-left: 25rem;
-		margin-right: 25rem;
-	}
-}
-
-@media ( max-width :1450px) {
-	.navRWD {
-		margin-left: 5rem;
-		margin-right: 5rem;
-	}
-}
-
-/*登出按鈕RWD設定*/
-@media ( max-width :800px) {
-	.logoutButton {
-		height: 10vh;
-		width: 5vw;
-	}
-}
-
-@media ( max-width :770px) {
-	form input {
-		font-size: 1rem;
-	}
-	form button {
-		font-size: 1rem;
-	}
-}
-
-/*在寬度為450時讓導覽列左右沒有距離*/
-@media ( max-width :450px) {
-	nav {
-		margin-left: 0rem;
-	}
-}
-
-/*在寬度為320時讓導覽列的button右邊有3個字的距離*/
-@media ( max-width :320px) {
-	.buttonRWD {
-		margin-right: 3rem;
-	}
-}
-
-@media ( max-width :330px) {
-	.logoutButton {
-		width: 8vw;
-	}
-}
-
-/*在寬度為300時讓導覽列的右半邊部分沒有距離*/
-@media ( max-width :300px) {
-	.navRWD {
-		margin-left: 0rem;
-	}
-}
-
-/*在螢幕250以下時讓標題高度為11vh並且讓user字體變小*/
-@media ( max-width :260px) {
-	.rightPartNav {
-		font-size: 15px;
-	}
-}
-</style>
-
+<link rel="stylesheet" type="text/css" href="/crypto2/css/userDetail.css">
 </head>
 <body>
 	<!--navbar-->
@@ -350,8 +227,6 @@ body {
   })
 
 
-
-</script>
 
 </script>
 </html>
