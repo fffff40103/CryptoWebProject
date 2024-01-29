@@ -117,7 +117,7 @@
   /*設定resultMessage*/
   function showMessage() {
 		let message="${resultMessage}";
-		if(message=="The user doesn't exists"){
+		if(message=="The user doesn't exist"){
 			alert(message);			
 		}
 		

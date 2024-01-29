@@ -265,7 +265,7 @@ public class CryptoController {
 		Optional<User> toUserOpt = dao.findUserById(transIdTo);
 		if (toUserOpt.isEmpty()) {
 			model.addAttribute("allCryptos", allCryptos);
-			model.addAttribute("resultMessage", "The user doesn't exists");
+			model.addAttribute("resultMessage", "The user doesn't exist");
 			return "transfer";
 		}
 		// 如果存在的話才可以開始交易
