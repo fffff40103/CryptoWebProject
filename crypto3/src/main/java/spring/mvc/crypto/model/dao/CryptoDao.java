@@ -129,10 +129,13 @@ public interface CryptoDao {
 //  5.根據使用者id尋找質押明細	
 	public List<StakingDetail> findNoneRedeemStakingDetailByUserId(Integer userId);
 	
-//  6.找到所有質押資訊(包誇以贖回以及未贖回)
+//	6.搜尋所有質押使用者
+	public List<StakingDetail >findAllNoneRedeemStakingDetail();
+	
+//  7.找到所有質押資訊(包誇以贖回以及未贖回)
 	public List<StakingDetail> findAllRedeemStakingDetailByUserId(Integer userId);
 	
-//  7.根據狀態id狀態明細
+//  8.根據狀態id狀態明細
 	
 	public Optional<StatusDetail> findStatusById(Integer statusId);
 	

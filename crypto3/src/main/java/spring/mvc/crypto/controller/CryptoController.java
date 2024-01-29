@@ -349,6 +349,13 @@ public class CryptoController {
 		double totalStakingAmount = stakingDetails.stream()
 				.mapToDouble(stakingDetail -> stakingDetail.getQuantity().doubleValue()).sum();
 		model.addAttribute("totalStakingAmount", totalStakingAmount);
+		//得到當前所有用戶總質押人數
+		List<StakingDetail> totalStakingDetails=dao.findAllNoneRedeemStakingDetail();
+		Float totalStakingNumber=0f;
+		for(int i=0;i<totalStakingDetails.size();i++) {
+			totalStakingNumber+=totalStakingDetails.get(i).getQuantity();
+		}
+		model.addAttribute("totalStakingNumber", totalStakingNumber);
 		// 透過當前用戶尋找當前Eth資產
 		List<UserAsset> userAssets = dao.findAssetsByUserId(currentUser.getUserId());
 		Optional<UserAsset> ethOpt = userAssets.stream().filter(userAsset -> userAsset.getcName().equals("ETH"))
@@ -384,7 +391,14 @@ public class CryptoController {
 				double totalStakingAmount=stakingDetails.stream().mapToDouble(stakingDetail->stakingDetail.getQuantity().doubleValue()).sum();
 				model.addAttribute("totalStakingAmount",totalStakingAmount);
 				model.addAttribute("ethBalance",ethBalance);
-				model.addAttribute("stakingMessage","Insufficient balance");			
+				model.addAttribute("stakingMessage","Insufficient balance");		
+				//得到當前所有用戶總質押人數
+				List<StakingDetail> totalStakingDetails=dao.findAllNoneRedeemStakingDetail();
+				Float totalStakingNumber=0f;
+				for(int i=0;i<totalStakingDetails.size();i++) {
+					totalStakingNumber+=totalStakingDetails.get(i).getQuantity();
+				}
+				model.addAttribute("totalStakingNumber", totalStakingNumber);
 				return "staking";
 			}
 			// 設定質押開始時間以及結束時間
@@ -428,6 +442,13 @@ public class CryptoController {
 				model.addAttribute("totalStakingAmount",totalStakingAmount);
 				model.addAttribute("stakingMessage","stake successfully");
 				model.addAttribute("ethBalance",afterStakingEthBalance);
+				//得到當前所有用戶總質押人數
+				List<StakingDetail> totalStakingDetails=dao.findAllNoneRedeemStakingDetail();
+				Float totalStakingNumber=0f;
+				for(int i=0;i<totalStakingDetails.size();i++) {
+					totalStakingNumber+=totalStakingDetails.get(i).getQuantity();
+				}
+				model.addAttribute("totalStakingNumber", totalStakingNumber);
 				return "staking";
 			}		
 							
@@ -443,8 +464,28 @@ public class CryptoController {
 		//得到此帳號未贖回的質押清單
 		List<StakingDetail> stakingDetails=dao.findNoneRedeemStakingDetailByUserId(currentUser.getUserId());
 		//如果當前無質押
-		if(stakingDetails.size()<1) {
-			model.addAttribute("redeemMessage","No redeem currently");
+		if(stakingDetails.isEmpty()) {
+			//更新現在此帳戶資訊
+			List<UserAsset> userAssets=dao.findAssetsByUserId(currentUser.getUserId());
+	        Optional<UserAsset> ethOpt=userAssets.stream().filter(userAsset->userAsset.getcName().equals("ETH")).findAny();
+			if(ethOpt.isPresent()) {
+				UserAsset ethAsset=ethOpt.get();
+				Float ethBalance=ethAsset.getAccBalance();
+
+				//得到用戶質押未贖回的以太幣數量
+				List<StakingDetail> afterRedeemDetails=dao.findNoneRedeemStakingDetailByUserId(currentUser.getUserId());
+				double totalStakingAmount=afterRedeemDetails.stream().mapToDouble(stakingDetail->stakingDetail.getQuantity().doubleValue()).sum();
+				model.addAttribute("totalStakingAmount",totalStakingAmount);
+				model.addAttribute("ethBalance",ethBalance);
+				model.addAttribute("redeemMessage","No redeem currently");	
+				//得到當前所有用戶總質押人數
+				List<StakingDetail> totalStakingDetails=dao.findAllNoneRedeemStakingDetail();
+				Float totalStakingNumber=0f;
+				for(int i=0;i<totalStakingDetails.size();i++) {
+					totalStakingNumber+=totalStakingDetails.get(i).getQuantity();
+				}
+				model.addAttribute("totalStakingNumber", totalStakingNumber);
+			}					
 			return "staking";
 		}
 		//先查看是否日期到期，再來用利率以及apr算出可以領回的錢
@@ -452,7 +493,31 @@ public class CryptoController {
                 .filter(         		
                 		stakingDetail -> stakingDetail.getRedeemTime().before(new Timestamp(System.currentTimeMillis())))
                 .collect(Collectors.toList());
-        
+        //如果還未到取回日期
+        if(redeemLists.isEmpty()) {
+        	List<UserAsset> userAssets=dao.findAssetsByUserId(currentUser.getUserId());
+	        Optional<UserAsset> ethOpt=userAssets.stream().filter(userAsset->userAsset.getcName().equals("ETH")).findAny();
+			if(ethOpt.isPresent()) {
+				UserAsset ethAsset=ethOpt.get();
+				Float ethBalance=ethAsset.getAccBalance();
+
+				//得到用戶質押未贖回的以太幣數量
+				List<StakingDetail> afterRedeemDetails=dao.findNoneRedeemStakingDetailByUserId(currentUser.getUserId());
+				double totalStakingAmount=afterRedeemDetails.stream().mapToDouble(stakingDetail->stakingDetail.getQuantity().doubleValue()).sum();
+				model.addAttribute("totalStakingAmount",totalStakingAmount);
+				model.addAttribute("ethBalance",ethBalance);	
+				model.addAttribute("redeemMessage","Not able to retrieve it yet");	
+				//得到當前所有用戶總質押人數
+				List<StakingDetail> totalStakingDetails=dao.findAllNoneRedeemStakingDetail();
+				Float totalStakingNumber=0f;
+				for(int i=0;i<totalStakingDetails.size();i++) {
+					totalStakingNumber+=totalStakingDetails.get(i).getQuantity();
+				}
+				model.addAttribute("totalStakingNumber", totalStakingNumber);
+	        	return "staking";
+			}					     
+        }
+        //下面是有東西未贖回
         Float totalRedeemAmount=0f;
         for(int i=0;i<redeemLists.size();i++) {
         	//拿到該筆質押紀錄的stakingId
@@ -485,7 +550,14 @@ public class CryptoController {
 			double totalStakingAmount=afterRedeemDetails.stream().mapToDouble(stakingDetail->stakingDetail.getQuantity().doubleValue()).sum();
 			model.addAttribute("totalStakingAmount",totalStakingAmount);
 			model.addAttribute("ethBalance",ethBalance);
-			model.addAttribute("redeemMessage","Redeem successfully");		
+			model.addAttribute("redeemMessage","Redeem successfully");	
+			//得到當前所有用戶總質押人數
+			List<StakingDetail> totalStakingDetails=dao.findAllNoneRedeemStakingDetail();
+			Float totalStakingNumber=0f;
+			for(int i=0;i<totalStakingDetails.size();i++) {
+				totalStakingNumber+=totalStakingDetails.get(i).getQuantity();
+			}
+			model.addAttribute("totalStakingNumber", totalStakingNumber);
 		}	
 		return "staking";
 	}

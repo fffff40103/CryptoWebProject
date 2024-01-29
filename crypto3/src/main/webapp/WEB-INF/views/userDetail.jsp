@@ -208,18 +208,21 @@ body {
 								<td>${ detail.getStatusDetail().getStatusFor() }</td>
 								<c:forEach items="${currentCryptos}" var="crypto">
 							      <c:if test="${crypto.getcName() eq detail.getCryptoInfo().getcName()}">
-							        <c:set var="profitLoss" value="${(crypto.getPrice()-detail.getPrice()  ) * detail.getQuantity()}" />
-							        <c:set var="percentage" value="${(profitLoss / (crypto.getPrice() * detail.getQuantity())) * 100}" />
 							        <c:set var="totalBuyMoney" value="${detail.getQuantity()*detail.getPrice() }"/>
-							        <c:set var="totalProfitAndLoss" value="${ totalBuyMoney*percentage}"/>
+							        <c:set var="currentTotalBuyMoney" value="${detail.getQuantity()*crypto.getPrice() }"/>
+							        <c:set var="totalProfitAndLoss" value="${ currentTotalBuyMoney-totalBuyMoney}"/>
+							        <c:set var="profitLoss" value="${totalProfitAndLoss}" />
+							        <c:set var="percentage" value="${(totalProfitAndLoss/totalBuyMoney)*10}" />
+							        
+							        
 							        <c:set var="colorClassForPercentage" value="${percentage ge 0 ? 'text-success' : 'text-danger'}" />
 							        <c:set var="colorClassForProitAndLoss" value="${totalProfitAndLoss ge 0 ? 'text-success' : 'text-danger'}" />
 							        <td class="${colorClassForPercentage}">
-							          <fmt:formatNumber value="${percentage}" maxFractionDigits="2" type="percent" />
+							          <fmt:formatNumber value="${percentage}" maxFractionDigits="1" type="percent" />
 							        </td>
 							  
 							        <td class="${colorClassForProitAndLoss}">
-							          <fmt:formatNumber value="${totalProfitAndLoss}" maxFractionDigits="2"  />
+							          <fmt:formatNumber value="${profitLoss}" maxFractionDigits="3"  />
 							        </td>
 							        
 							      </c:if>

@@ -260,7 +260,7 @@
 				<div class="bondedToken section">
 					<h2 class="text-center">BondedToken</h2>
 					<div class="bondedNumber">
-						<h1 class="text-center  fw-bolder">15869315.5</h1>
+						<h1 class="text-center  fw-bolder">${totalStakingNumber }</h1>
 						<img src="/crypto2/images/eth.png" alt="">
 					</div>
 
@@ -290,7 +290,7 @@
 
 							<div class="stakedData d-flex">
 								<h3>${totalStakingAmount }ETH</h3>
-								<h3  class="aprData ps-5" style="margin-left:1rem;color:red">4.8%</h3>
+								<h3  class="aprData ps-5" style="margin-left:1rem;color:red" >4.8%</h3>
 									
 							</div>
 						</div>
@@ -339,10 +339,10 @@
 						<p id="purchaseInfo"></p>
 						<p id="purchaseInfo2"></p>
 						<input class="modalDaysInput" type="number" value="" name="days"
-							id="days" readonly="" hidden> <input
+							id="days" readonly="" hidden required> <input
 							class="modalAmountInput" type="number" name="stakingAmount"
-							id="stakingAmount " placeHolder='Amount' required readonly=""
-							hidden>
+							id="stakingAmount " placeHolder='Amount'  readonly=""
+							hidden >
 					</div>
 
 
@@ -365,7 +365,8 @@
 	showMessage();
 	function showMessage(){
 		let Message="${stakingMessage}";
-		let RedeemMessage="${redeemMessage}"
+		let RedeemMessage="${redeemMessage}";
+		let ErrorMessage="${ErrorMessage}";
 		if(Message=="stake successfully"){
 			alert("stake successfully")
 			return;
@@ -383,6 +384,17 @@
 			return;
 		}
 		
+		if(RedeemMessage=="Not able to retrieve it yet"){
+			alert("Not able to retrieve it yet");
+			return;
+		}
+		
+		if(ErrorMessage=="Value required"){
+			alert("Value required");
+			return;
+			
+		}
+		
 		
 		
 		
@@ -395,13 +407,13 @@
 		let chose=document.querySelector(".dropdownDays").value;
 		let aprData=document.querySelector(".aprData");
 		if(chose==1){
-			aprData.value="4.8%";
+			aprData.innerText="4.8%";
 		}
 		if(chose==7){
-			aprData.value="5%";
+			aprData.innerText="5%";
 		}
 		if(chose==31){
-			aprData.value="5.5%";
+			aprData.innerText="5.5%";
 		}
 	}
 
@@ -443,9 +455,7 @@
         //動態設定隱藏表單的value
         let AmountInput=document.querySelector(".modalAmountInput");
 
-        AmountInput.value=stakingAmount;
-        
-        
+        AmountInput.value=stakingAmount;        
         
         // 显示模态框
         $('#myModal').modal('show');

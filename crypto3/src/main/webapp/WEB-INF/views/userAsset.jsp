@@ -449,6 +449,7 @@ function sellButtonClicked(nameCrypto,priceCrypto) {
 //設定顯示購買結果
 function showMessage(){
 	let Message="${resultMessage}";
+	let ErrorMessage="${ErrorMessage}";
 	if(Message=="Insufficient balance"){
 		alert("Insufficient balance")
 		return;
@@ -461,6 +462,12 @@ function showMessage(){
 	if(Message=="successfully Sell!"){
 		alert("successfully Sell!");
 		return;
+	}
+	
+	if(ErrorMessage=="Value required"){
+		alert("Value required");
+		return;
+		
 	}
 	
 	

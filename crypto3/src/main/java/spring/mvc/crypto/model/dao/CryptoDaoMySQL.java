@@ -373,6 +373,13 @@ public class CryptoDaoMySQL implements CryptoDao {
 		String sql="select * from staking_detail where userId=?";
 		return jdbcTemplate.query(sql,new BeanPropertyRowMapper<>(StakingDetail.class),userId);
 	}
+	
+	//22.找到所有質押資訊(不根據userId搜索)
+	@Override
+	public List<StakingDetail> findAllNoneRedeemStakingDetail() {
+		String sql="select * from staking_detail where isRedeem=0";
+		return jdbcTemplate.query(sql,new BeanPropertyRowMapper<>(StakingDetail.class));
+	}
 
 	
 	//  23.在使用者質押成功之後根據使用者id扣除Eth裡面的資產
@@ -431,6 +438,8 @@ public class CryptoDaoMySQL implements CryptoDao {
 		//注入status
 		findStatusById(transFerDetail.getStatusId()).ifPresent(transFerDetail::setStatusDetail);
 	}
+
+
 
 	
 	

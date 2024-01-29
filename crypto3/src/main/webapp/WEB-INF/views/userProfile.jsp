@@ -204,7 +204,7 @@ input {
 					placeholder="New password" value="" required>
 				<p />
 				🔑 confirm: <input type="password" id="confirmPassword"
-					name="confirmPassword" placeholder="connfirm password" required />
+					name="confirmPassword" placeholder="confirm password" required />
 				<p />
 
 				🔐 Verification code: <input type="text" id="code" name="code">
