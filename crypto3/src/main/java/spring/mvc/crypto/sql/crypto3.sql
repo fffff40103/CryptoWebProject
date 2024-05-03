@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /*
 
 1. 使用者
@@ -70,4 +71,78 @@ drop table if exists account;
 drop table if exists user_ref_account;
 drop table if exists transaction;
 drop table if exists account_ref_transaction;
+=======
+/*
+
+1. 使用者
++------=--+----------+----------+
+| user_id | username | password |      
++------=--+----------+----------+
+|   101   | user123  | pass123  |       
+|   102   | user456  | pass456  |  
+|   103   | user789  | pass789  |      
++---------+----------+----------+
+
+2. 帳戶(Account)
++-------------+----------+-------------+
+|    acc_id   |   type   |  balance    |
++-------------+----------+-------------+
+|    201      |   ETH    |   105       |
+|    202      |   BNB    |   22        |
+|    203      |   XRP    |   11        |
+|    204      |   SOL    |   250       |
+|    205      |   LLL    |   125       |
++-------------+----------+-------------+
+
+3.user_ref_account(用戶關聯帳戶)
++--------+---------+
+| userId | acc_id  |
++--------+---------+
+|  101   |   201   |
+|  102   |   202   |
+|  103   |   203   |
++--------+---------+
+
+4.購買貨幣交易資訊(trx_exchange)
++--------+---------+---------+---------+
+| trx_id |   type  |  price  |  profit |
++--------+---------+---------+---------+
+|	301  |   ETH   |  2330.1 |  -2.55% |
+|	302  |	 BNB   |  242.5  |  +268%  |
+|   303  |	 BTC   |  42000  |  +25%   |
++--------+---------+---------+---------+
+
+
+5.轉帳交易資訊(trx_transfer)
++--------+---------+---------+----------+--------+
+| trx_id |   type  |  price  | acc_from | acc_to |  
++--------+---------+---------+----------+--------+
+|	301  |   ETH   |  2330.1 |    201   |   202  |
+|	302  |	 BNB   |  242.5  |    201   |   203  |
+|   303  |	 BTC   |  42000  |    202   |   201  |
++--------+---------+---------+----------+--------+
+
+5. 單獨貨幣資訊(cryptoInfo)
++----------+----------+----------+-----------+--------------------+
+| c_number |  cName   |	  price  |   cRate   |    cValue          |
++----------+----------+----------+-----------+--------------------+
+|    1     |   BTC    |  42000.2 |    2.72   |  $850.39B,991,320$ |
+|    2     |   ETH    |  2300    |    8.76   |  $289.65B,728,802$ |
+|    3     |   BNB    |  322.6   |    0.08   |  $49.05B,586,955$  |   
+|    4     |   XRP    |  25.11   |    12.06  |  $44.28B,003,746$  |
+|    5     |   USDT   |  30.52   |    3.5    |  $34.65B,555,290$  |
+|    6     |   SOL    |  110.68  |    0.85   |  $44.28B,003,746$  |
++----------+----------+----------+-----------+--------------------+
+
+
+資料庫的建立: CREATE SCHEMA `crypto` DEFAULT CHARACTER SET utf8mb4 ;
+
+ * */
+-- 授權資料表
+drop table if exists user;
+drop table if exists account;
+drop table if exists user_ref_account;
+drop table if exists transaction;
+drop table if exists account_ref_transaction;
+>>>>>>> branch 'master' of https://github.com/fffff40103/CryptoWebProject.git
 drop table if exists cryptoInfo;
