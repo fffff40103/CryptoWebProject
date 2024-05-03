@@ -50,7 +50,7 @@ import spring.mvc.crypto.service.CryptoService;
 import spring.mvc.crypto.service.SendingEmailService;
 
 //Controller
-//test
+//test2
 @Controller
 @RequestMapping("/crypto")
 public class CryptoController {
